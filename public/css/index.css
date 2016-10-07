@@ -1,0 +1,168 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  text-decoration: none;
+}
+html, body {
+  height: 100%;
+}
+body {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+.head {
+  height: 42px;
+}
+.head > div {
+  display: flex;
+  background-color: #000;
+  height: 42px;
+}
+.head .head-back {
+  width: 70px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.head .head-back-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 10px;
+  height: 10px;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  transform: rotate(45deg);
+}
+
+.head-title {
+  flex: 1;
+  color: #fff;
+  line-height: 42px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.head-option {
+  width: 70px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.head-option .head-option-icon {
+  margin-right: 5px;
+  display: inline-block;
+  width: 36px;
+  height: 12px;
+  vertical-align: middle;
+  background: url(../images/option.png);
+}
+.head-title-loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(../images/loading.gif);
+  background-size: cover;
+  vertical-align: -3px;
+  margin-right: 6px;
+}
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #3cc51f;
+  position: fixed;
+  z-index: 1031;
+  top: 42px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  opacity: 1;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+#toast-container {
+  position: fixed;
+  z-index: 9999;
+  top: 120px;
+  right: 60px;
+}
+
+#toast-container .toast {
+  touch-action: pan-y;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  margin: 1em 0;
+  color: #ffffff;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: light;
+  padding: 12px;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.5);
+  animation: toastUp 0.2s cubic-bezier(0, 0.4, 0.6, 1);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 1, 0.6);;
+  background-color: rgba(0,0,0,0.8);
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+#toast-container .toast.success {
+  background-color: rgba(133, 204, 61, 0.8);
+}
+
+#toast-container .toast.error {
+  background-color: rgba(255, 65, 51, 0.8);
+}
+
+#toast-container .toast.fadeout {
+  opacity: 0.2;
+}
+
+@keyframes toastUp {
+  from {
+    opacity: 0.4;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* mobile*/
+@media only screen and (max-width: 767px){
+  #toast-container {
+    left: 30px;
+    right: 30px;
+  }
+}

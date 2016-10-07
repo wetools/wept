@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link href="https://res.wx.qq.com/mpres/htmledition/images/favicon218877.ico" rel="Shortcut Icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/default.css">
+  <link rel="stylesheet" type="text/css" href="/app/app.wxss">
+  <link rel="stylesheet" type="text/css" href="/app/{{= _.path}}.wxss">
+  <script> var __path__ = '{{= _.path}}'</script>
+  <script src="/script/ViewBridge.js" async type="text/javascript"></script>
+  <script src="/script/view.js" type="text/javascript"></script>
+  <script>
+  {{= _.inject_js}}
+  </script>
+  <script>
+    document.dispatchEvent(new CustomEvent("generateFuncReady", {
+      detail: {
+        generateFunc: $gwx('./{{= _.path}}.wxml')
+      }
+    }))
+  </script>
+</head>
+<body>
+  <div></div>
+</body>
+</html>

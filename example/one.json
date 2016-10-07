@@ -1,0 +1,24 @@
+{
+  "eventName": "appDataChange",
+  "data": {
+    "data": {
+      "data": {
+        "hidden": true
+      }
+    },
+    "options": {
+      "timestamp": 1475528931440
+    }
+  },
+  "sdkName": "publish",
+  "webviewIds": [
+    0
+  ],
+  "to": "backgroundjs",
+  "comefrom": "webframe",
+  "command": "COMMAND_FROM_ASJS",
+  "appid": "touristappid",
+  "appname": "chat",
+  "apphash": 70475629,
+  "webviewID": 100000
+}

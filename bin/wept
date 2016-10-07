@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var cli = require('cli')
+var server = require('../lib/server')
+//var cofs = require('co-fs')
+var options = cli.parse({
+  port: ['p', 'port for server', 'int', 3000]
+})
+var port = options.port
+
+
+server.listen(port)
+
+console.log(`listening on port ${port}`);
+

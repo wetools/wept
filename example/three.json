@@ -1,0 +1,18 @@
+{
+  "appData": {
+    "page/index": {
+      "title": "这是一个页面",
+      "input_value": 1,
+      "hidden": false,
+      "__webviewId__": 0
+    }
+  },
+  "sdkName": "send_app_data",
+  "to": "backgroundjs",
+  "comefrom": "webframe",
+  "command": "COMMAND_FROM_ASJS",
+  "appid": "touristappid",
+  "appname": "chat",
+  "apphash": 70475629,
+  "webviewID": 100000
+}

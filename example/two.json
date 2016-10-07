@@ -1,0 +1,31 @@
+{
+  "to": "webframe",
+  "msg": {
+    "eventName": "appDataChange",
+    "data": {
+      "data": {
+        "data": {
+          "hidden": false
+        }
+      },
+      "options": {
+        "timestamp": 1475528706311
+      }
+    },
+    "sdkName": "publish",
+    "webviewIds": [
+      0
+    ],
+    "to": "backgroundjs",
+    "comefrom": "webframe",
+    "command": "COMMAND_FROM_ASJS",
+    "appid": "touristappid",
+    "appname": "chat",
+    "apphash": 70475629,
+    "webviewID": 100000,
+    "act": "sendMsgFromAppService"
+  },
+  "command": "MSG_FROM_APPSERVICE",
+  "webviewID": 0,
+  "id": 0.10577065353216675
+}
