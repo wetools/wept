@@ -6,9 +6,11 @@ export default class View {
     if (!path) throw new Error('path required for view')
     let id = this.id = uid()
     let o = parsePath(path)
+    this.url = path
     this.path = o.path
     this.query = o.query
-    this.el = createFrame(`view-${id}`, `/app/${path}`)
+    let root = document.querySelector('.scrollable')
+    this.el = createFrame(`view-${id}`, `/app/${path}`, false, root)
     let gbc = window.__wxConfig__.window.backgroundColor || '#fff'
     this.el.style.backgroundColor = gbc
     let ua = window.navigator.userAgent

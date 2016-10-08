@@ -26,8 +26,7 @@ export function publish(data) {
     msg: data,
     command: 'MSG_FROM_APPSERVICE'
   }
-  ids.forEach(id => {
-    let view = viewManage.getViewById(id)
+  viewManage.eachView(view => {
     view.postMessage(obj)
   })
 }

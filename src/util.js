@@ -14,7 +14,7 @@ export function loadCss(href) {
   document.head.appendChild(ss)
 }
 
-export function createFrame(id, src, hidden) {
+export function createFrame(id, src, hidden, parent = document.body) {
   let el = document.createElement('iframe')
   el.setAttribute('src', src)
   el.setAttribute('id', id)
@@ -26,7 +26,7 @@ export function createFrame(id, src, hidden) {
   if (hidden) {
     el.setAttribute('style', 'width:0;height:0;border:0; display:none;')
   }
-  document.body.appendChild(el)
+  parent.appendChild(el)
   return el
 }
 
@@ -35,7 +35,7 @@ export function reloadCss(href) {
   for (let i = 0, l = links.length; i < l; i++) {
     let link = links[i];
 
-    if (link.getAttribute("href").indexOf(href) !== -1) {
+    if (link.getAttribute("href").indexOf(href) !== 0) {
       link.href = link.href.replace(/(\?id=\d+)?$/, "?id=" + Date.now())
     }
   }
@@ -47,4 +47,12 @@ export function parsePath(path) {
     path: parts[0],
     query: qs.parse(parts[1])
   }
+}
+
+export function isTabbar(url) {
+  let list = window.__wxConfig__.tabBar && window.__wxConfig__.tabBar.list
+  if (!list) return
+  let pages = list.map(o => o.pagePath)
+  let {path} = parsePath(url)
+  return pages.indexOf(path) !== -1
 }

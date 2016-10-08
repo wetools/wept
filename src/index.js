@@ -3,9 +3,11 @@ import * as util from './util'
 import {onReload} from './notify'
 import Bus from './bus'
 import header from './header'
-import {navigateBack} from './viewManage'
+import {navigateBack, navigateTo, currentView} from './viewManage'
 import {onBack} from './service'
 import toast from './toast'
+import tabbar from './tabbar'
+import {lifeSycleEvent} from './service'
 require('./message')
 require('./polyfill')
 
@@ -17,9 +19,22 @@ header.on('back', () => {
   onBack()
 })
 
-Bus.on('route', n => {
+tabbar.on('active', url => {
+  let curr = currentView()
+  if (curr && curr.url == url) return
+  let {path, query} = util.parsePath(url)
+  navigateTo(path, true)
+  lifeSycleEvent(path, query, 'switchTab')
+})
+
+Bus.on('route', (n, curr) => {
+  if(util.isTabbar(curr.url)) {
+    tabbar.show(curr.url)
+  } else {
+    tabbar.hide()
+  }
   header.resetTitle()
-  if (n > 1) {
+  if (curr.pid != null) {
     header.backStatus(true)
   } else {
     header.backStatus(false)
@@ -49,9 +64,12 @@ socket.onerror = function (e) {
   console.error('socket error ' + e.message)
 }
 
-function redirectToHome() {
+window.addEventListener('unload', function () {
   // reload all pages
   socket.close()
+})
+
+function redirectToHome() {
   window.history.replaceState({path: '/'}, '', '/')
   window.location.reload()
 }

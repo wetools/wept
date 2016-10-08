@@ -1,9 +1,9 @@
 {
   "name": "wept",
-  "version": "0.0.1",
-  "description": "weapp page test",
+  "version": "0.0.3",
+  "description": "weapp page development tool",
   "main": "index.js",
-  "bind": "./bin/wept",
+  "bin": "./bin/wept",
   "directories": {
     "example": "example",
     "test": "test"

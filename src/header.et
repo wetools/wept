@@ -7,7 +7,7 @@
     <i class="head-title-loading" style="display:none;"></i>
     <span>{{= _.title}}</span>
   </h3>
-  <div class="head-option" style="visibility:hidden;">
+  <div class="head-option">
     <i class="head-option-icon"></i>
   </div>
 </div>

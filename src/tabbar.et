@@ -1,0 +1,8 @@
+<div class="tabbar" style="{{= _.style}}">
+  {{each _.items as item}}
+  <div class="tabbar-item" data-path="{{= item.path}}">
+    <img class="tabbar-icon" src="{{= item.icon}}" alt="" />
+    <p class="tabbar-label" style="color: {{= item.color}};">{{= item.text}}</p>
+  </div>
+  {{/}}
+</div>

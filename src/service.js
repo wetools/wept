@@ -27,6 +27,8 @@ export function toAppService(data) {
 
   if (obj.msg) {
     obj.msg.webviewID = data.webviewID || id
+    obj.msg.options = obj.msg.options || {}
+    obj.msg.options.timestamp = Date.now()
   }
 
   if (serviceReady) {
@@ -48,13 +50,13 @@ export function reload(path) {
   })
 }
 
-function lifeSycleEvent(path, query, openType) {
+export function lifeSycleEvent(path, query, openType) {
   toAppService({
     msg: {
       eventName: 'onAppRoute',
       type: 'ON_APPLIFECYCLE_EVENT',
       data: {
-        path: `${path}.html`,
+        path: `${path}.wxml`,
         query: query,
         openType: openType
       }

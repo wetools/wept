@@ -1,46 +1,61 @@
+import {isTabbar} from './util'
 import Bus from './bus'
 import View from './view'
 
 let curr = null
-
 let views = {}
+let tabViews = {}
+
+function onRoute() {
+  window.location.hash = curr.path
+  Bus.emit('route', getViewIds().length, curr)
+}
 
 export function redirectTo(path) {
   path = normalize(path)
-  if (curr) {
-    curr.destroy()
-    delete views[curr.id]
-  }
+  if (!curr) throw new Error('Current view not exists')
+  let pid = curr.pid
+  curr.destroy()
+  delete views[curr.id]
+  eachView(view => {
+    if (view.url == path) throw new Error(`Page ${path} already exists`)
+  })
   let v = curr = new View(path)
+  curr.pid = pid
   views[curr.id] = v
-  window.location.hash = path
-  Bus.emit('route', getViewIds().length)
+  onRoute()
 }
 
-export function navigateTo(path) {
+export function navigateTo(path, isTab) {
   path = normalize(path)
-  Object.keys(views).forEach(key => {
-    if (views[key].path == path) throw new Error('Not allowed navigateTo exists page')
+  eachView(view => {
+    if (!isTab && view.url == path) throw new Error(`Page ${path} already exists`)
   })
+  let exists = tabViews[path]
   if (curr) curr.hide()
-  let v = curr = new View(path)
-  views[curr.id] = v
-  window.location.hash = path
-  Bus.emit('route', getViewIds().length)
+  if (exists) {
+    curr = exists
+    exists.show()
+  } else {
+    let isTabView = isTabbar(path)
+    let pid = curr ? curr.id : null
+    let v = curr = new View(path)
+    curr.pid = isTabView ? null : pid
+    views[v.id] = v
+    if (isTabView) tabViews[path] = curr
+  }
+  onRoute()
 }
 
 export function navigateBack() {
-  let keys = Object.keys(views)
-  if (!curr || keys.length <= 1) return redirectTo(window.__root__)
-  let idx = keys.indexOf(curr.id)
-  keys.splice(idx, 1)
-  let max = Math.max.apply(null, keys)
+  if (!curr) throw new Error('Current page not exists')
+  let pid = curr.pid
+  if (pid == null) throw new Error(`Parent webview id not found on view-${curr.id}`)
   curr.destroy()
   delete views[curr.id]
-  curr = views[max]
+  curr = views[pid]
   curr.show()
-  window.location.hash = curr.path
-  Bus.emit('route', getViewIds().length)
+  onRoute()
 }
 
 export function currentView() {
@@ -64,9 +79,7 @@ export function eachView(fn) {
 }
 
 export function notifyViews(msg) {
-  let keys = Object.keys(views)
-  keys.forEach(key => {
-    let view =views[key]
+  eachView(view => {
     view.postMessage({
       msg: msg,
       command: 'CUSTOM'

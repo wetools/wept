@@ -1,3 +1,4 @@
+import classes from 'classes'
 import domify from 'domify'
 import event from 'event'
 import headerFn from './header.et'
@@ -18,6 +19,9 @@ class Header extends Emitter {
     }
     this.defaultTitle = win.navigationBarTitleText || window.__wxConfig__.appname
     let el = this.el = domify(headerFn(config))
+    if (config.color == 'white') {
+      classes(el.querySelector('.head-option-icon')).add('white')
+    }
     p.appendChild(el)
     event.bind(el, 'touchstart', tap(this.ontap.bind(this)))
   }
@@ -42,6 +46,12 @@ class Header extends Emitter {
     if (el) {
       e.preventDefault()
       this.emit('back')
+    }
+    el = closest(e.target, '.head-option', this.el)
+    if (el) {
+      e.preventDefault()
+      window.history.replaceState({path: '/'}, '', '/')
+      window.location.reload()
     }
   }
   showLoading() {
