@@ -48,7 +48,8 @@ WEPT 是一个微信小程序页面开发辅助工具，它的目标是为小程
 ## TODO
 
 * 支持 tabbar 模块
-*
+* storage API 支持
+* Mock API 支持
 
 ## LICENSE
 
