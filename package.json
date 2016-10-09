@@ -8,6 +8,9 @@
     "example": "example",
     "test": "test"
   },
+  "scripts": {
+    "postinstall": "webpack"
+  },
   "author": "chemzqm@gmail.com",
   "license": "MIT",
   "dependencies": {
