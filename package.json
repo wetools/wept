@@ -37,6 +37,7 @@
     "koa-send": "^3.2.0",
     "koa-static": "^2.0.0",
     "merge": "^1.2.0",
+    "node-xml-lite": "0.0.7",
     "nprogress": "^0.2.0",
     "prop-detect": "^1.1.0"
   },
