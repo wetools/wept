@@ -17,20 +17,14 @@ export function redirectTo(path) {
   let pid = curr.pid
   curr.destroy()
   delete views[curr.id]
-  eachView(view => {
-    if (view.url == path) throw new Error(`Page ${path} already exists`)
-  })
   let v = curr = new View(path)
   curr.pid = pid
   views[curr.id] = v
   onRoute()
 }
 
-export function navigateTo(path, isTab) {
+export function navigateTo(path) {
   path = normalize(path)
-  eachView(view => {
-    if (!isTab && view.url == path) throw new Error(`Page ${path} already exists`)
-  })
   let exists = tabViews[path]
   if (curr) curr.hide()
   if (exists) {

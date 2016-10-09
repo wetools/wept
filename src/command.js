@@ -38,6 +38,12 @@ export function navigateTo(data) {
   onNavigate(data)
 }
 
+export function navigateBack(data) {
+  viewManage.navigateBack()
+  data.args.url = viewManage.currentView().url
+  onNavigate(data)
+}
+
 export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
   Bus.emit('APP_SERVICE_COMPLETE')
   viewManage.navigateTo(root_path)
