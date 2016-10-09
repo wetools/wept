@@ -10,7 +10,7 @@ export default class View {
     this.path = o.path
     this.query = o.query
     let root = document.querySelector('.scrollable')
-    this.el = createFrame(`view-${id}`, `/app/${path}`, false, root)
+    this.el = createFrame(`view-${id}`, `/app/${path}.wxml`, false, root)
     let gbc = window.__wxConfig__.window.backgroundColor || '#fff'
     this.el.style.backgroundColor = gbc
     let ua = window.navigator.userAgent
