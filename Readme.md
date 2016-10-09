@@ -1,6 +1,6 @@
 # Wept (Wechat app page development tool)
 
-WEPT 是一个微信小程序页面开发辅助工具，它的目标是为小程序页面开发提供更流畅的开发体验。
+WEPT 是一个微信小程序页面开发工具，它的目标是为小程序开发提供更流畅的开发体验。
 
 它的后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service
 层和控制层之间的相关通讯逻辑。
@@ -46,7 +46,10 @@ WEPT 是一个微信小程序页面开发辅助工具，它的目标是为小程
 
 ## TODO
 
-* storage API 支持
+* 修复部分页面 template 找不到问题
+* 支持模拟更多的原生 API
+* wxml，storage，appData Chrome 插件支持
+* 可视化代理模式支持
 * Mock API 支持
 
 ## LICENSE
