@@ -4,6 +4,8 @@ import Bus from './bus'
 import * as viewManage from './viewManage'
 import {onNavigate, onLaunch} from './service'
 import header from './header'
+import throttle from 'throttleit'
+import {toAppService} from './service'
 
 // get current page
 let root_path = window.location.hash.replace('#', '') || window.__root__
@@ -67,4 +69,29 @@ export function showNavigationBarLoading() {
 
 export function hideNavigationBarLoading() {
   header.hideLoading()
+}
+
+export function enableAccelerometer() {
+  if(window.DeviceMotionEvent){
+    let handler = throttle(event => {
+      let {x, y, z} = {
+        x: event.accelerationIncludingGravity.x,
+        y: event.accelerationIncludingGravity.y,
+        z: event.accelerationIncludingGravity.z
+      }
+      toAppService({
+        msg: {
+          eventName: 'onAccelerometerChange',
+          type: 'ON_APPLIFECYCLE_EVENT',
+          data: {x, y, z}
+        }
+      })
+    }, 200)
+    window.addEventListener("devicemotion", handler, false);
+    viewManage.currentView().on('destroy', () => {
+      window.removeEventListener("devicemotion", handler, false);
+    })
+  } else {
+    console.warn("DeviceMotionEvent is not supported");
+  }
 }

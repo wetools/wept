@@ -23,28 +23,17 @@ WEPT 是一个微信小程序页面开发工具，它的目标是为小程序开
 
 另一个不足是没有开发者工具提供的 wxml、data 和 storage 面板，后续会考虑提供 Chrome 插件。
 
-## 安装方法
+## 安装 & 使用方法
 
 下载安装 [nodejs](https://nodejs.org), 请确保 node 版本 `> 6.0`， 执行：
 
     npm install wept -g
 
-## 使用方法
+到小程序项目根目录下执行命令：
 
-到项目根目录下执行命令：
-
-    wept -p 3000
+    wept
 
 使用 Chrome 访问 `http://localhost:3000` 打开开发者工具后启用移动页面调试模式（Mac 下快捷键为 `⌘ ⇧ M`）
-
-## 可使用的 API 方法
-
-* request 方法
-* WebSocket 相关方法
-* 页面导航条相关配置和方法
-* 导航条相关方法
-* 动画绘图相关方法
-* tabbar 相关配置
 
 ## API 接口实现状态
 

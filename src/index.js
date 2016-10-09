@@ -70,6 +70,5 @@ window.addEventListener('unload', function () {
 })
 
 function redirectToHome() {
-  window.history.replaceState({path: '/'}, '', '/')
   window.location.reload()
 }

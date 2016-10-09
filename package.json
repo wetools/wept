@@ -40,7 +40,8 @@
     "merge": "^1.2.0",
     "node-xml-lite": "0.0.7",
     "nprogress": "^0.2.0",
-    "prop-detect": "^1.1.0"
+    "prop-detect": "^1.1.0",
+    "throttleit": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

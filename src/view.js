@@ -1,9 +1,11 @@
+import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
 import merge from 'merge'
 
-export default class View {
+export default class View extends Emitter {
   constructor(path) {
     if (!path) throw new Error('path required for view')
+    super()
     let id = this.id = uid()
     let o = parsePath(path)
     this.url = path
@@ -27,6 +29,7 @@ export default class View {
     this.el.style.display = 'block'
   }
   destroy() {
+    this.emit('destroy')
     this.el.parentNode.removeChild(this.el)
   }
   postMessage(data) {

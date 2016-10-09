@@ -234,6 +234,7 @@
       r = !0,
       t = !1,
       a = void 0;
+      console.log(Y)
     try {
       for (var i, s = n[Symbol.iterator](); !(r = (i = s.next()).done); r = !0) {
         var c = i.value;
@@ -260,6 +261,12 @@
 
   function b(e, o) {
     m("onAppRoute", o)
+  }
+
+  function ac(e, o) {
+    console.log(e)
+    console.log(o)
+    m("onAccelerometerChange", o)
   }
 
   function y(e, o) {
@@ -370,6 +377,7 @@
       setNavigationBarTitle: !0,
       showNavigationBarLoading: !0,
       hideNavigationBarLoading: !0,
+      enableAccelerometer: !0,
       getLocation: !0,
       openLocation: !0,
       getNetworkType: !0,
@@ -399,6 +407,7 @@
     Y = {
       onAppLaunch: !1,
       onAppShow: !1,
+      onAccelerometerChange: [],
       onAppTerminate: [],
       onAppRoute: [],
       onAppEnterBackground: [],
@@ -491,7 +500,7 @@
       eventName: e,
       data: arguments,
       timesmap: new Date
-    }), "onSocketOpen" == e ? g(e, o) : "onSocketError" == e ? v(e, o) : "onSocketMessage" == e ? f(e, o) : "onSocketClose" == e ? w(e, o) : "onAppLaunch" == e ? h(e, o) : "onAppTerminate" == e ? _(e, o) : "onAppRoute" == e ? b(e, o) : "onAppEnterBackground" == e ? y(e, o) : "onAppEnterForeground" == e ? M(e, o) : "onMusicPlay" == e ? D(e, o) : "onMusicPause" == e ? x(e, o) : "onMusicEnd" == e ? N(e, o) : "onMusicError" == e && E(e, o)
+    }), "onSocketOpen" == e ? g(e, o) : "onSocketError" == e ? v(e, o) : "onSocketMessage" == e ? f(e, o) : "onSocketClose" == e ? w(e, o) : "onAppLaunch" == e ? h(e, o) : "onAppTerminate" == e ? _(e, o) : "onAppRoute" == e ? b(e, o) : "onAppEnterBackground" == e ? y(e, o) : "onAppEnterForeground" == e ? M(e, o) : "onMusicPlay" == e ? D(e, o) : "onMusicPause" == e ? x(e, o) : "onMusicEnd" == e ? N(e, o) : "onMusicError" == e ? E(e, o) : "onAccelerometerChange" == e && ac(e, o)
   }, n({
     command: "SHAKE_HANDS"
   }), window.addEventListener("load", function() {
