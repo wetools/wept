@@ -53,6 +53,5 @@ export function isTabbar(url) {
   let list = window.__wxConfig__.tabBar && window.__wxConfig__.tabBar.list
   if (!list) return
   let pages = list.map(o => o.pagePath)
-  let {path} = parsePath(url)
-  return pages.indexOf(path) !== -1
+  return pages.indexOf(url) !== -1
 }
