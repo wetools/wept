@@ -46,7 +46,6 @@ WEPT 是一个微信小程序页面开发工具，它的目标是为小程序开
 
 ## TODO
 
-* 修复部分页面 template 找不到问题
 * 支持模拟更多的原生 API
 * wxml，storage，appData Chrome 插件支持
 * 可视化代理模式支持
