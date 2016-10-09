@@ -10,14 +10,14 @@ class Tabbar extends Emitter {
     super()
     let list = window.__wxConfig__.tabBar && window.__wxConfig__.tabBar.list
     let shown = this.shown = list && list.length > 0
-    this.list = list.map(o => {
+    this.list = list ? list.map(o => {
       return {
         path: o.pagePath,
         icon: o.iconPath,
         selectedIcon: o.selectedIconPath,
         text: o.text
       }
-    })
+    }) : []
     if (shown) {
       let o = window.__wxConfig__.tabBar
       this.style = `background-color: ${o.backgroundColor}; border-color: ${o.borderStyle}; color: rgb(221, 221, 221); visibility: visible;`

@@ -17,7 +17,6 @@ window.addEventListener('message', function (e) {
     toAppService(data)
     return
   }
-  console.log(cmd)
   if (sdkName) {
     if (command.hasOwnProperty(sdkName)) {
       command[sdkName](data)

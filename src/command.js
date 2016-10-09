@@ -45,7 +45,6 @@ export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
 }
 
 export function send_app_data(data) {
-  data.appData
   // TODO edit for appData
   //console.log(data)
   //data.appData
