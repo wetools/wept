@@ -12,22 +12,17 @@ if (!root_path) throw new Error('path not found')
 
 // publish event to views
 export function publish(data) {
-  let ids = data.webviewIds
   let all_ids = viewManage.getViewIds()
-  if (!ids) {
-    ids = all_ids
-  } else {
-    ids = ids.filter(id => {
-      return all_ids.indexOf(id) !== -1
-    })
-  }
+  let ids = data.webviewIds || all_ids
   data.act = 'sendMsgFromAppService'
   let obj = {
     msg: data,
     command: 'MSG_FROM_APPSERVICE'
   }
   viewManage.eachView(view => {
-    view.postMessage(obj)
+    if (ids.indexOf(view.id) !== -1) {
+      view.postMessage(obj)
+    }
   })
 }
 
