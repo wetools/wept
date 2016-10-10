@@ -1,3 +1,4 @@
+import Nprogress from 'nprogress'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
 import merge from 'merge'
@@ -11,8 +12,10 @@ export default class View extends Emitter {
     this.url = path
     this.path = o.path
     this.query = o.query
+    let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
-    this.el = createFrame(`view-${id}`, `/app/${path}.wxml`, false, root)
+    let url = external ? path : `/app/${path}.wxml`
+    this.el = createFrame(`view-${id}`, url, false, root)
     let gbc = window.__wxConfig__.window.backgroundColor || '#fff'
     this.el.style.backgroundColor = gbc
     let ua = window.navigator.userAgent

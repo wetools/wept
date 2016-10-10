@@ -264,9 +264,11 @@
   }
 
   function ac(e, o) {
-    console.log(e)
-    console.log(o)
     m("onAccelerometerChange", o)
+  }
+
+  function cc(e, o) {
+    m("onCompassChange", o)
   }
 
   function y(e, o) {
@@ -378,6 +380,7 @@
       showNavigationBarLoading: !0,
       hideNavigationBarLoading: !0,
       enableAccelerometer: !0,
+      enableCompass: !0,
       getLocation: !0,
       openLocation: !0,
       getNetworkType: !0,
@@ -408,6 +411,7 @@
       onAppLaunch: !1,
       onAppShow: !1,
       onAccelerometerChange: [],
+      onCompassChange: [],
       onAppTerminate: [],
       onAppRoute: [],
       onAppEnterBackground: [],
@@ -500,7 +504,7 @@
       eventName: e,
       data: arguments,
       timesmap: new Date
-    }), "onSocketOpen" == e ? g(e, o) : "onSocketError" == e ? v(e, o) : "onSocketMessage" == e ? f(e, o) : "onSocketClose" == e ? w(e, o) : "onAppLaunch" == e ? h(e, o) : "onAppTerminate" == e ? _(e, o) : "onAppRoute" == e ? b(e, o) : "onAppEnterBackground" == e ? y(e, o) : "onAppEnterForeground" == e ? M(e, o) : "onMusicPlay" == e ? D(e, o) : "onMusicPause" == e ? x(e, o) : "onMusicEnd" == e ? N(e, o) : "onMusicError" == e ? E(e, o) : "onAccelerometerChange" == e && ac(e, o)
+    }), "onSocketOpen" == e ? g(e, o) : "onSocketError" == e ? v(e, o) : "onSocketMessage" == e ? f(e, o) : "onSocketClose" == e ? w(e, o) : "onAppLaunch" == e ? h(e, o) : "onAppTerminate" == e ? _(e, o) : "onAppRoute" == e ? b(e, o) : "onAppEnterBackground" == e ? y(e, o) : "onAppEnterForeground" == e ? M(e, o) : "onMusicPlay" == e ? D(e, o) : "onMusicPause" == e ? x(e, o) : "onMusicEnd" == e ? N(e, o) : "onMusicError" == e ? E(e, o) : "onAccelerometerChange" == e ? ac(e, o) : "onCompassChange" == e && cc(e, o)
   }, n({
     command: "SHAKE_HANDS"
   }), window.addEventListener("load", function() {

@@ -14,6 +14,8 @@ window.addEventListener('message', function (e) {
     if (data.msg && data.msg.eventName == 'DOMContentLoaded') {
       Nprogress.done()
     }
+    delete data.to
+    delete data.command
     toAppService(data)
   } else if (cmd == 'COMMAND_FROM_ASJS') {
     let sdkName = data.sdkName

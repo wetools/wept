@@ -15,8 +15,9 @@ Nprogress.start()
 util.createFrame('service', '/appservice', true)
 
 header.on('back', () => {
+  let curr = currentView()
   navigateBack()
-  onBack()
+  if (!curr.external) onBack()
 })
 
 tabbar.on('active', url => {

@@ -16,11 +16,11 @@ function message(obj) {
 }
 
 export function toAppService(data) {
-  let obj = merge.recursive(true, data, {
+  let obj = merge.recursive(true, {
     to: 'appservice',
     command: 'MSG_FROM_WEBVIEW',
     webviewID: SERVICE_ID
-  })
+  }, data)
 
   if (obj.msg) {
     let view = currentView()
@@ -29,7 +29,6 @@ export function toAppService(data) {
     obj.msg.options = obj.msg.options || {}
     obj.msg.options.timestamp = Date.now()
   }
-
   if (serviceReady) {
     message(obj)
   } else {
@@ -44,8 +43,7 @@ export function reload(path) {
     msg: {
       data: { path },
       eventName: 'reload'
-    },
-    command: 'CUSTOM'
+    }
   })
 }
 

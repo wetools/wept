@@ -7,7 +7,7 @@ let views = {}
 let tabViews = {}
 
 function onRoute() {
-  window.location.hash = curr.path
+  window.location.hash = curr.url
   Bus.emit('route', getViewIds().length, curr)
 }
 
@@ -49,6 +49,16 @@ export function navigateBack() {
   delete views[curr.id]
   curr = views[pid]
   curr.show()
+  onRoute()
+}
+
+export function openExternal (url) {
+  if (curr) curr.hide()
+  let pid = curr ? curr.id : null
+  let v = curr = new View(url)
+  views[v.id] = v
+  v.pid = pid
+  v.show()
   onRoute()
 }
 
