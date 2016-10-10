@@ -16,8 +16,8 @@ function message(obj) {
 }
 
 export function toAppService(data) {
+  data.to = 'appservice'
   let obj = merge.recursive(true, {
-    to: 'appservice',
     command: 'MSG_FROM_WEBVIEW',
     webviewID: SERVICE_ID
   }, data)

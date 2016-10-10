@@ -1,3 +1,4 @@
+import record from './record'
 import Nprogress from 'nprogress'
 import merge from 'merge'
 import Bus from './bus'
@@ -8,6 +9,7 @@ import throttle from 'throttleit'
 import {toAppService} from './service'
 import Compass from './compass'
 import storage from './storage'
+import {once} from './event'
 
 let appData = {} //eslint-disable-line
 
@@ -235,4 +237,77 @@ export function clearStorage(data) {
       errMsg: "clearStorage:ok"
     }
   })
+}
+
+export function startRecord(data) {
+  record.startRecord({
+    success: url => {
+      toAppService({
+        command: "GET_ASSDK_RES",
+        ext: merge.recursive(true, {}, data),
+        msg: {
+          errMsg: "startRecord:ok",
+          tempFilePath: url
+        }
+      })
+    },
+    fail: err => {
+      toAppService({
+        command: "GET_ASSDK_RES",
+        ext: merge.recursive(true, {}, data),
+        msg: {
+          errMsg: "startRecord:fail",
+          message: err.message
+        }
+      })
+    }
+  }).catch((e) => {
+    console.warn(`Audio record failed: ${e.message}`)
+  })
+}
+
+export function stopRecord() {
+  record.stopRecord()
+}
+
+export function playVoice(data) {
+  let url = data.args.filePath
+  let audio = document.getElementById("audio");
+  if (audio.src && audio.paused && !audio.ended) {
+    // resume
+    audio.play()
+  } else {
+    audio.src = url;
+    audio.load();
+    audio.play();
+    once(audio, 'error', () => {
+      toAppService({
+        command: "GET_ASSDK_RES",
+        ext: merge.recursive(true, {}, data),
+        msg: {
+          errMsg: "playVoice:fail"
+        }
+      })
+    })
+    once(audio, 'ended', () => {
+      toAppService({
+        command: "GET_ASSDK_RES",
+        ext: merge.recursive(true, {}, data),
+        msg: {
+          errMsg: "playVoice:ok"
+        }
+      })
+    })
+  }
+}
+
+export function pauseVoice() {
+  let audio = document.getElementById("audio");
+  audio.pause()
+}
+
+export function stopVoice() {
+  let audio = document.getElementById("audio");
+  audio.stop()
+  audio.src = null
 }

@@ -283,7 +283,6 @@
       r = !0,
       t = !1,
       a = void 0;
-      console.log(Y)
     try {
       for (var i, s = n[Symbol.iterator](); !(r = (i = s.next()).done); r = !0) {
         var c = i.value;
@@ -417,6 +416,11 @@
       getStorage: !0,
       setStorage: !0,
       clearStorage: !0,
+      startRecord: !0,
+      stopRecord: !0,
+      playVoice: !0,
+      pauseVoice: !0,
+      stopVioce: !0,
       getStorageSync: !0,
       setStorageSync: !0,
       clearStorageSync: !0,

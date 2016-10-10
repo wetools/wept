@@ -279,7 +279,12 @@ var wx = function(e) {
         }) && (0, s.invokeMethod)("previewImage", e)
       },
       startRecord: function(e) {
-        (0, s.invokeMethod)("startRecord", e)
+        (0, s.invokeMethod)("startRecord", e, {
+          beforeSuccess: function (e) {
+            delete e.options
+            delete e.webviewId
+          }
+        })
       },
       stopRecord: function(e) {
         (0, s.invokeMethod)("stopRecord", e)

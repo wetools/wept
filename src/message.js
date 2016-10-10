@@ -6,16 +6,20 @@ import sdk from './sdk'
 window.addEventListener('message', function (e) {
   let data = e.data
   let cmd = data.command
+  let msg = data.msg
   // no need for contentscript
   if (data.to == 'contentscript') return
   if (data.command == 'EXEC_JSSDK') {
     sdk(data)
   } else if (cmd == 'TO_APP_SERVICE') {
-    if (data.msg && data.msg.eventName == 'DOMContentLoaded') {
-      Nprogress.done()
-    }
-    delete data.to
     delete data.command
+    if (msg) {
+      switch (msg.eventName) {
+        case 'DOMContentLoaded':
+          Nprogress.done()
+          break
+      }
+    }
     toAppService(data)
   } else if (cmd == 'COMMAND_FROM_ASJS') {
     let sdkName = data.sdkName
