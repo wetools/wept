@@ -308,6 +308,64 @@ export function pauseVoice() {
 
 export function stopVoice() {
   let audio = document.getElementById("audio");
-  audio.stop()
+  audio.pause()
+  audio.currentTime = 0
   audio.src = null
+}
+
+export function getMusicPlayerState(data) {
+  let a = document.getElementById("background-audio");
+  let obj = {
+    status: a.src ? a.paused ? 0 : 1 : 2,
+    currentPosition: Math.floor(a.currentTime) || -1
+  }
+  if (a.src && !a.paused) {
+    obj.duration = a.duration || 0
+    try {
+      obj.downloadPercent = Math.round(100*a.buffered.end(0)/a.duration)
+    } catch(e) {
+    }
+    obj.dataUrl = a.currentSrc
+  }
+  obj.errMsg = "getMusicPlayerState:ok"
+  toAppService({
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: obj
+  })
+}
+
+export function operateMusicPlayer(data) {
+  let args = data.args
+  let a = document.getElementById("background-audio");
+  switch (args.operationType) {
+    case 'play':
+      if (a.src == args.dataUrl && a.paused && !a.ended) {
+        a.play()
+      } else {
+        a.src = args.dataUrl
+        a.load()
+        a.loop = true
+        a.play()
+      }
+      break
+    case 'pause':
+      a.pause()
+      break
+    case 'seek':
+      a.currentTime = args.position
+      break
+    case 'stop':
+      a.pause()
+      a.currentTime = 0
+      a.src = null
+      break
+  }
+  toAppService({
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: "operateMusicPlayer:ok"
+    }
+  })
 }

@@ -25,9 +25,11 @@ export function toAppService(data) {
   if (obj.msg) {
     let view = currentView()
     let id = view ? view.id : 0
-    obj.msg.webviewID = data.webviewID || id
-    obj.msg.options = obj.msg.options || {}
-    obj.msg.options.timestamp = Date.now()
+    if (obj.command !== 'GET_ASSDK_RES') {
+      obj.msg.webviewID = data.webviewID || id
+      obj.msg.options = obj.msg.options || {}
+      obj.msg.options.timestamp = Date.now()
+    }
   }
   if (serviceReady) {
     message(obj)
