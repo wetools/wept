@@ -1,5 +1,6 @@
 import record from './record'
 import Nprogress from 'nprogress'
+import filePicker from 'file-picker'
 import merge from 'merge'
 import Bus from './bus'
 import * as viewManage from './viewManage'
@@ -10,6 +11,7 @@ import {toAppService} from './service'
 import Compass from './compass'
 import storage from './storage'
 import {once} from './event'
+import {toBlobUrl} from './util'
 
 let appData = {} //eslint-disable-line
 
@@ -75,6 +77,50 @@ export function showNavigationBarLoading() {
 export function hideNavigationBarLoading() {
   header.hideLoading()
 }
+
+export function chooseImage(data) {
+  var URL = (window.URL || window.webkitURL)
+  filePicker({ multiple: true, accept: 'image/*' }, files => {
+    files = [].slice.call(files)
+    let paths = files.map(file => URL.createObjectURL(file))
+    toAppService({
+      command: "GET_ASSDK_RES",
+      ext: merge.recursive(true, {}, data),
+      msg: {
+        errMsg: "chooseImage:ok",
+        tempFilePaths: paths
+      }
+    })
+  })
+}
+
+export function chooseVideo(data) {
+  var URL = (window.URL || window.webkitURL)
+  filePicker({accept: 'video/*' }, files => {
+    let path = URL.createObjectURL(files[0])
+    let video = document.createElement('video')
+    video.preload = 'metadata'
+    video.onloadedmetadata = function () {
+      let duration = video.duration
+      let size = files[0].size
+      console.log(333)
+      toAppService({
+        command: "GET_ASSDK_RES",
+        ext: merge.recursive(true, {}, data),
+        msg: {
+          errMsg: "chooseVideo:ok",
+          duration,
+          size,
+          height: video.videoHeight,
+          width: video.videoWidth,
+          tempFilePath: path
+        }
+      })
+    }
+    video.src =  path
+  })
+}
+
 
 export function enableCompass() {
   let id = Compass.watch(throttle(head => {
@@ -277,9 +323,9 @@ export function playVoice(data) {
     // resume
     audio.play()
   } else {
-    audio.src = url;
-    audio.load();
-    audio.play();
+    audio.src = url
+    audio.load()
+    audio.play()
     once(audio, 'error', () => {
       toAppService({
         command: "GET_ASSDK_RES",
@@ -310,8 +356,20 @@ export function stopVoice() {
   let audio = document.getElementById("audio");
   audio.pause()
   audio.currentTime = 0
-  audio.src = null
+  audio.src = ''
 }
+
+window.addEventListener('DOMContentLoaded', function () {
+  let audio = document.getElementById("audio");
+  audio.addEventListener('error', function () {
+    toAppService({
+      msg: {
+        eventName: 'onMusicError',
+        type: 'ON_MUSIC_EVENT'
+      }
+    })
+  }, false)
+}, false)
 
 export function getMusicPlayerState(data) {
   let a = document.getElementById("background-audio");
@@ -348,9 +406,21 @@ export function operateMusicPlayer(data) {
         a.loop = true
         a.play()
       }
+      toAppService({
+        msg: {
+          eventName: 'onMusicPlay',
+          type: 'ON_MUSIC_EVENT'
+        }
+      })
       break
     case 'pause':
       a.pause()
+      toAppService({
+        msg: {
+          eventName: 'onMusicPause',
+          type: 'ON_MUSIC_EVENT'
+        }
+      })
       break
     case 'seek':
       a.currentTime = args.position
@@ -358,7 +428,13 @@ export function operateMusicPlayer(data) {
     case 'stop':
       a.pause()
       a.currentTime = 0
-      a.src = null
+      a.src = ''
+      toAppService({
+        msg: {
+          eventName: 'onMusicEnd',
+          type: 'ON_MUSIC_EVENT'
+        }
+      })
       break
   }
   toAppService({

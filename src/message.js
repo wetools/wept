@@ -13,12 +13,8 @@ window.addEventListener('message', function (e) {
     sdk(data)
   } else if (cmd == 'TO_APP_SERVICE') {
     delete data.command
-    if (msg) {
-      switch (msg.eventName) {
-        case 'DOMContentLoaded':
-          Nprogress.done()
-          break
-      }
+    if (msg && msg.eventName == 'DOMContentLoaded') {
+      Nprogress.done()
     }
     toAppService(data)
   } else if (cmd == 'COMMAND_FROM_ASJS') {

@@ -22,6 +22,7 @@
     "component-closest": "^1.0.1",
     "component-emitter": "^1.2.1",
     "component-event": "^0.2.0",
+    "component-file-picker": "^0.2.1",
     "component-querystring": "^2.0.0",
     "component-raf": "^1.2.0",
     "component-tap-event": "^1.1.4",
@@ -61,6 +62,7 @@
     "closest": "component-closest",
     "tween": "component-tween",
     "raf": "component-raf",
-    "classes": "component-classes"
+    "classes": "component-classes",
+    "file-picker": "component-file-picker"
   }
 }
