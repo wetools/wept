@@ -2,6 +2,16 @@
 "use strict";
 !function() {
   function initMappingID() { }
+  var storage = window.top.__storage
+
+  function toResult(msg, data, command) {
+    let obj = {
+      ext: data,
+      msg: msg
+    }
+    if (command) obj.command = command
+    return obj
+  }
 
   function e(e) {
     var o = JSON.parse(JSON.stringify(e));
@@ -11,9 +21,48 @@
   function o(e) {
     e.command = "COMMAND_FROM_ASJS", e.appid = W, e.appname = C, e.apphash = T, e.webviewID = L;
     var o = "____sdk____" + JSON.stringify(e);
+    var args = e.args
+    delete e.to
+    if (e.sdkName == 'setStorageSync') {
+      if (args.key == null || args.data == null) {
+        a(toResult({
+          errMsg: "setStorage:fail"
+        }, e))
+      } else {
+        storage.set(args.key, args.data)
+        a(toResult({
+          errMsg: "setStorage:ok"
+        }, e))
+      }
+    } else if (e.sdkName == 'getStorageSync'){
+      if (args.key == null || args.key == '') {
+        return a(toResult({
+          errMsg: "getStorage:fail"
+        }), 'GET_ASSDK_RES')
+      }
+      var res = storage.get(args.key)
+      if (res == null) {
+        return a(toResult({
+          errMsg: "getStorage:fail"
+        }), 'GET_ASSDK_RES')
+      }
+      var type = typeof res
+      type = type[0].toUpperCase() + type.slice(1)
+      a(toResult({
+        data: res,
+        dataType: type,
+        errMsg: "getStorage:ok"
+      }, e, 'GET_ASSDK_RES'))
+    } else if (e.sdkName == 'clearStorageSync') {
+      storage.clear()
+      a(toResult({
+        errMsg: "clearStorage:ok"
+      }, e))
+    } else {
+      console.log('Ignored sdk call ' + JSON.stringify(o))
+    }
     //  n = prompt(o);
     //n = JSON.parse(n), delete n.to, a(n)
-    console.log('Ignored sdk call ' + JSON.stringify(o))
   }
 
   function n(e) {
@@ -451,53 +500,59 @@
       webviewIds: r
     })
   }, WeixinJSBridge.invoke = function(e, o, n) {
-    return J && (console.group(new Date + " WeixinJSBridge invoke " + e), console.debug(e, o, n), console.groupEnd()), O && j[e] ? (console.warn("请注意无 AppID 关联下，调用 wx." + e + " 是受限的, API 的返回是工具的模拟返回"), void setTimeout(function() {
-      "operateWXData" === e ? n({
-        errMsg: "operateWXData:ok",
-        data: {
-          data: JSON.stringify({
-            nickName: R.nickName,
-            avatarUrl: R.headUrl,
-            gender: "male" === R.sex ? 1 : 2,
-            province: R.province,
-            city: R.city,
-            country: R.country
+    if (O && j[e]) {
+      console.warn("请注意无 AppID 关联下，调用 wx." + e + " 是受限的, API 的返回是工具的模拟返回");
+        void setTimeout(function() {
+        "operateWXData" === e ? n({
+          errMsg: "operateWXData:ok",
+          data: {
+            data: JSON.stringify({
+              nickName: R.nickName,
+              avatarUrl: R.headUrl,
+              gender: "male" === R.sex ? 1 : 2,
+              province: R.province,
+              city: R.city,
+              country: R.country
+            })
+          }
+        }) : "login" === e ? n({
+          errMsg: "login:ok",
+          code: "the code is a mock one"
+        }) : "authorize" === e && n({
+          errMsg: "authorize:fail"
+        })
+      })
+    } else {
+      P.push({
+        type: "invoke",
+        eventName: e,
+        data: arguments,
+        timesmap: new Date
+      })
+      U[e] ? void t(e, o, function(o) {
+        if (o.errMsg.indexOf("ok") > -1 && ("navigateTo" === e || "redirectTo" === e)) {
+          var r = o.url || "",
+            t = r.match(/(([^\?]*)(\?([^\/]*))?)$/),
+            a = "",
+            i = {};
+          if (t) {
+            a = t[2] || "";
+            for (var s = (t[4] || "").split("&"), c = 0; c < s.length; ++c) {
+              var u = s[c].split("=");
+              2 == u.length && (i[u[0]] = u[1])
+            }
+          }
+          var p = e;
+          S("onAppRoute", {
+            path: a,
+            query: i,
+            openType: p,
+            webviewId: o.webviewId
           })
         }
-      }) : "login" === e ? n({
-        errMsg: "login:ok",
-        code: "the code is a mock one"
-      }) : "authorize" === e && n({
-        errMsg: "authorize:fail"
-      })
-    })) : (P.push({
-      type: "invoke",
-      eventName: e,
-      data: arguments,
-      timesmap: new Date
-    }), U[e] ? void t(e, o, function(o) {
-      if (o.errMsg.indexOf("ok") > -1 && ("navigateTo" === e || "redirectTo" === e)) {
-        var r = o.url || "",
-          t = r.match(/(([^\?]*)(\?([^\/]*))?)$/),
-          a = "",
-          i = {};
-        if (t) {
-          a = t[2] || "";
-          for (var s = (t[4] || "").split("&"), c = 0; c < s.length; ++c) {
-            var u = s[c].split("=");
-            2 == u.length && (i[u[0]] = u[1])
-          }
-        }
-        var p = e;
-        S("onAppRoute", {
-          path: a,
-          query: i,
-          openType: p,
-          webviewId: o.webviewId
-        })
-      }
-      n && n(o)
-    }) : void("request" == e ? s(e, o, n) : "connectSocket" == e ? p(e, o, n) : "closeSocket" == e ? d(e, o, n) : "sendSocketMessage" == e ? l(e, o, n) : "openAddress" == e && I(e, o, n)))
+        n && n(o)
+      }) : void("request" == e ? s(e, o, n) : "connectSocket" == e ? p(e, o, n) : "closeSocket" == e ? d(e, o, n) : "sendSocketMessage" == e ? l(e, o, n) : "openAddress" == e && I(e, o, n))
+    }
   }, WeixinJSBridge.on = function(e, o) {
     J && (console.group(new Date + " WeixinJSBridge on " + e), console.debug(e, o), console.groupEnd()), P.push({
       type: "on",

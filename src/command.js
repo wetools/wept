@@ -7,6 +7,7 @@ import header from './header'
 import throttle from 'throttleit'
 import {toAppService} from './service'
 import Compass from './compass'
+import storage from './storage'
 
 let appData = {} //eslint-disable-line
 
@@ -175,6 +176,63 @@ export function openLocation(data) {
       errMsg: "openLocation:ok",
       latitude: args.latitude,
       longitude: args.longitude
+    }
+  })
+}
+
+export function setStorage(data) {
+  let args = data.args
+  storage.set(args.key, args.data)
+  if (args.key == null || args.key == '') {
+    return toAppService({
+      command: "GET_ASSDK_RES",
+      ext: merge.recursive(true, {}, data),
+      msg: {
+        errMsg: "setStorage:fail"
+      }
+    })
+  }
+  toAppService({
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: "setStorage:ok"
+    }
+  })
+}
+
+export function getStorage(data) {
+  let args = data.args
+  if (args.key == null || args.key == '') {
+    return toAppService({
+      command: "GET_ASSDK_RES",
+      ext: merge.recursive(true, {}, data),
+      msg: {
+        errMsg: "getStorage:fail"
+      }
+    })
+  }
+  let res = storage.get(args.key)
+  let t = typeof res
+  let dataType = t[0].toUpperCase() + t.slice(1)
+  toAppService({
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: "getStorage:ok",
+      data: res,
+      dataType
+    }
+  })
+}
+
+export function clearStorage(data) {
+  storage.clear()
+  toAppService({
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: "clearStorage:ok"
     }
   })
 }
