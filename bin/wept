@@ -11,7 +11,7 @@ const options = cli.parse({
 const port = options.port
 
 if (os.platform() == 'darwin') {
-  exec(`osascript chrome.scpt`, {cwd: __dirname}, () => {
+  exec(`osascript chrome.scpt ${port}`, {cwd: __dirname}, () => {
   })
 }
 

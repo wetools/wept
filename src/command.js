@@ -125,7 +125,6 @@ export function saveFile(data) {
   let upload = new Upload(file)
   upload.to('/upload')
   upload.on('end', xhr => {
-    console.log(xhr.responseText)
     if (xhr.status / 100 | 0 == 2) {
       let result = JSON.parse(xhr.responseText)
       onSuccess('saveFile', data, {
