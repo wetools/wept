@@ -130,7 +130,7 @@
   }
 
   function i(e, o) {
-    if (O) return console.warn("请注意无 AppID 关联下，工具未检查安全域名，更多请参考文档-API-网络"), !0;
+    if (O) return console.warn("请注意 WEPT 请求的是后端代理！"), !0;
     try {
       for (var n = G.projectConfig, r = n.Network, t = "webscoket" === o ? r.WsRequestDomain : r.RequestDomain, a = 0; a < t.length; a++)
         if (0 === e.indexOf(t[a])) return !0
@@ -151,7 +151,7 @@
     var a, s = new XMLHttpRequest,
       c = o.method || "POST",
       u = (o.complete, G.networkTimeout && G.networkTimeout.request);
-    s.open(c, o.url, !0), s.onreadystatechange = function() {
+    s.open(c, '/remoteProxy', !0), s.onreadystatechange = function() {
       if (3 == s.readyState, 4 == s.readyState) {
         s.onreadystatechange = null;
         var e = s.status;
@@ -164,6 +164,7 @@
         }), H--, a && clearTimeout(a)
       }
     };
+    s.setRequestHeader('X-Remote', o.url)
     var p = !1;
     for (var d in t)
       if (t.hasOwnProperty(d)) {

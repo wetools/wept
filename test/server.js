@@ -1,6 +1,5 @@
 const koa = require('koa')
 const http = require('http')
-const path = require('path')
 const logger = require('koa-logger')
 const formidable = require('koa-formidable')
 const router = require('koa-router')()
@@ -14,6 +13,11 @@ router.post('/upload', function* () {
   let file = form.files.file
   this.body = {file_path: file.path}
   this.content = 'json'
+})
+
+router.get('/', function () {
+  this.body = {x: 1}
+  this.type = 'json'
 })
 
 app.use(function* (next) {

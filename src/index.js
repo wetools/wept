@@ -2,7 +2,6 @@ import Nprogress from 'nprogress'
 import * as util from './util'
 import {onReload} from './notify'
 import Bus from './bus'
-import header from './header'
 import {navigateBack, navigateTo, currentView} from './viewManage'
 import {onBack} from './service'
 import toast from './toast'
@@ -14,7 +13,7 @@ require('./polyfill')
 Nprogress.start()
 util.createFrame('service', '/appservice', true)
 
-header.on('back', () => {
+Bus.on('back', () => {
   let curr = currentView()
   navigateBack()
   if (!curr.external) onBack()
@@ -33,12 +32,6 @@ Bus.on('route', (n, curr) => {
     tabbar.show(curr.url)
   } else {
     tabbar.hide()
-  }
-  header.resetTitle()
-  if (curr.pid != null) {
-    header.backStatus(true)
-  } else {
-    header.backStatus(false)
   }
 })
 

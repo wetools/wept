@@ -1,67 +1,85 @@
-import classes from 'classes'
-import domify from 'domify'
-import event from 'event'
-import headerFn from './header.et'
-import tap from 'tap-event'
-import Emitter from 'emitter'
-import closest from 'closest'
+import merge from 'merge'
+import Bus from './bus'
+import React, {Component} from 'react'
+import ReactDom from 'react-dom'
+import cx from 'classnames'
 
-class Header extends Emitter {
-  constructor() {
-    super()
-    let p = document.querySelector('.head')
+class Header extends Component {
+  constructor(props) {
+    super(props)
     let win = window.__wxConfig__['window']
-    let config = this.config = {
+    this.state = {
       backgroundColor: win.navigationBarBackgroundColor,
       color: win.navigationBarTextStyle,
       title: win.navigationBarTitleText,
+      loading: false,
       back: false
     }
-    this.defaultTitle = win.navigationBarTitleText || window.__wxConfig__.appname
-    let el = this.el = domify(headerFn(config))
-    if (config.color == 'white') {
-      classes(el.querySelector('.head-option-icon')).add('white')
-    }
-    p.appendChild(el)
-    event.bind(el, 'touchstart', tap(this.ontap.bind(this)))
+    let d = this.defaultState = merge.recursive(true, {}, this.state)
+    Bus.on('route', (n, curr) => {
+      let winConfig = window.__wxConfig__['window'].pages[curr.path] || {}
+      let state = {
+        backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
+        color: winConfig.navigationBarTextStyle || d.color,
+        title: winConfig.navigationBarTitleText || d.title,
+        loading: false,
+        back: curr.pid != null
+      }
+      console.log(state)
+      this.setState(state)
+    })
   }
-  backStatus(show = false) {
-    let backEl = this.el.querySelector('.head-back')
-    if (show) {
-      backEl.style.visibility = 'visible'
-    } else {
-      backEl.style.visibility = 'hidden'
-    }
+  reset() {
+    this.setState(this.defaultState)
   }
-  resetTitle() {
-    this.setTitle(this.defaultTitle)
-    this.hideLoading()
+  onBack(e) {
+    e.preventDefault()
+    Bus.emit('back')
+  }
+  onRefresh(e) {
+    e.preventDefault()
+    window.history.replaceState({path: '/'}, '', '/')
+    window.location.reload()
   }
   setTitle(title) {
-    let titleEl = this.el.querySelector('.head-title > span')
-    titleEl.textContent = title
-  }
-  ontap(e) {
-    let el = closest(e.target, '.head-back', this.el)
-    if (el) {
-      e.preventDefault()
-      this.emit('back')
-    }
-    el = closest(e.target, '.head-option', this.el)
-    if (el) {
-      e.preventDefault()
-      window.history.replaceState({path: '/'}, '', '/')
-      window.location.reload()
-    }
+    this.setState({title})
   }
   showLoading() {
-    let el = this.el.querySelector('.head-title-loading')
-    el.style.display = 'inline-block'
+    this.setState({
+      loading: true
+    })
   }
   hideLoading() {
-    let el = this.el.querySelector('.head-title-loading')
-    el.style.display = 'none'
+    this.setState({
+      loading: false
+    })
+  }
+  render() {
+    let state = this.state
+    let iconStyle = {
+      borderLeft: `1px solid ${state.color}`,
+      borderBottom: `1px solid ${state.color}`
+    }
+    let clz = cx('head-option-icon', {
+      'white': state.color == 'white'
+    })
+    return (
+      <div style={{backgroundColor: state.backgroundColor}}>
+        <div onClick={this.onBack} className="head-back" style={{visibility: state.back ? 'visible' : 'hidden' }}>
+          <i className="head-back-icon" style={iconStyle}></i>
+          <span style={{color: state.color}}>返回</span>
+        </div>
+        <h3 className="head-title" style={{color: state.color}}>
+          <i className="head-title-loading" style={{display: state.loading? 'inline-block' : 'none'}}></i>
+          <span>{state.title}</span>
+        </h3>
+        <div className="head-option" onClick={this.onRefresh}>
+          <i className={clz}></i>
+        </div>
+      </div>
+    )
   }
 }
 
-export default new Header()
+let header = React.createElement(Header, null)
+export default ReactDom.render(header, document.querySelector('.head'))
