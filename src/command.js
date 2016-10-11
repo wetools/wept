@@ -11,6 +11,7 @@ import {toAppService} from './service'
 import Compass from './compass'
 import storage from './storage'
 import {once} from './event'
+import Upload from 'upload'
 
 let appData = {} //eslint-disable-line
 let fileIndex = 0
@@ -121,25 +122,22 @@ export function saveFile(data) {
   if (!blob) return onError('saveFile', data, 'file path required')
   let file = fileStore[blob]
   if (!file) return onError('saveFile', data, 'file not found')
-
-  let url = `/upload`
-  let xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        var result = JSON.parse(xhr.responseText)
-        onSuccess('saveFile', data, {
-          savedFilePath: result.file_path
-        })
-      } else {
-        onError('saveFile', data)
-      }
+  let upload = new Upload(file)
+  upload.to('/upload')
+  upload.on('end', xhr => {
+    if (xhr.status == 200) {
+      var result = JSON.parse(xhr.responseText)
+      onSuccess('saveFile', data, {
+        savedFilePath: result.file_path
+      })
+    } else {
+      onError('saveFile', data, `request error ${xhr.status}`)
     }
-  }
-  xhr.open("POST", url, true);
-  xhr.send(blob)
+  })
+  upload.on('error', err => {
+    onError('saveFile', data, err.message)
+  })
 }
-
 
 export function enableCompass() {
   let id = Compass.watch(throttle(head => {

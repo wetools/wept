@@ -27,6 +27,7 @@
     "component-raf": "^1.2.0",
     "component-tap-event": "^1.1.4",
     "component-tween": "^1.2.0",
+    "component-upload": "^0.3.0",
     "debounce": "^1.0.0",
     "domify": "^1.4.0",
     "et-improve": "^0.1.2",
@@ -35,9 +36,10 @@
     "glob": "^7.1.0",
     "growl": "^1.9.2",
     "koa": "^1.2.4",
+    "koa-body": "^1.6.0",
+    "koa-formidable": "^1.0.0",
     "koa-logger": "^1.3.0",
     "koa-router": "^5.4.0",
-    "koa-save-to-file": "0.0.1",
     "koa-send": "^3.2.0",
     "koa-static": "^2.0.0",
     "merge": "^1.2.0",
@@ -67,6 +69,7 @@
     "tween": "component-tween",
     "raf": "component-raf",
     "classes": "component-classes",
-    "file-picker": "component-file-picker"
+    "file-picker": "component-file-picker",
+    "upload": "component-upload"
   }
 }
