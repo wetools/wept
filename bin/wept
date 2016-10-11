@@ -1,12 +1,19 @@
 #!/usr/bin/env node
 
-var cli = require('cli')
-var server = require('../lib/server')
-//var cofs = require('co-fs')
-var options = cli.parse({
+const cli = require('cli')
+const server = require('../lib/server')
+const os = require('os')
+const exec = require('child_process').exec
+//const cofs = require('co-fs')
+const options = cli.parse({
   port: ['p', 'port for server', 'int', 3000]
 })
-var port = options.port
+const port = options.port
+
+if (os.platform() == 'darwin') {
+  exec(`osascript chrome.scpt`, {cwd: __dirname}, () => {
+  })
+}
 
 
 server.listen(port)
