@@ -81,7 +81,7 @@ export function hideNavigationBarLoading() {
 }
 
 export function chooseImage(data) {
-  var URL = (window.URL || window.webkitURL)
+  let URL = (window.URL || window.webkitURL)
   filePicker({ multiple: true, accept: 'image/*' }, files => {
     files = [].slice.call(files)
     let paths = files.map(file => {
@@ -96,7 +96,7 @@ export function chooseImage(data) {
 }
 
 export function chooseVideo(data) {
-  var URL = (window.URL || window.webkitURL)
+  let URL = (window.URL || window.webkitURL)
   filePicker({accept: 'video/*' }, files => {
     let path = URL.createObjectURL(files[0])
     fileStore[path] = files[0]
@@ -125,8 +125,9 @@ export function saveFile(data) {
   let upload = new Upload(file)
   upload.to('/upload')
   upload.on('end', xhr => {
-    if (xhr.status == 200) {
-      var result = JSON.parse(xhr.responseText)
+    console.log(xhr.responseText)
+    if (xhr.status / 100 | 0 == 2) {
+      let result = JSON.parse(xhr.responseText)
       onSuccess('saveFile', data, {
         savedFilePath: result.file_path
       })
@@ -274,7 +275,7 @@ export function stopRecord() {
   record.stopRecord().then(blob => {
     let filename = `audio${fileIndex}`
     fileIndex++
-    var file = new File([blob], filename, {type: 'audio/x-wav', lastModified: Date.now()});
+    let file = new File([blob], filename, {type: 'audio/x-wav', lastModified: Date.now()});
     fileStore[blob] = file
   })
 }
@@ -311,7 +312,7 @@ export function stopVoice() {
 }
 
 window.addEventListener('DOMContentLoaded', function () {
-  let audio = document.getElementById("audio");
+  let audio = document.getElementById("background-audio");
   audio.addEventListener('error', function () {
     toAppService({
       msg: {
@@ -384,6 +385,72 @@ export function operateMusicPlayer(data) {
       break
   }
   onSuccess('operateMusicPlayer', data)
+}
+
+export function uploadFile(data) {
+  let args = data.args
+  if (!args.filePath || !args.url || !args.name) {
+    return onError('uploadFile', data, 'filePath, url and name required')
+  }
+  let file = fileStore[args.filePath]
+  if (!file) return onError('uploadFile', data, `${args.filePath} not found`)
+
+  let headers = args.header || {}
+  let formData = args.formData || {}
+  let xhr = new XMLHttpRequest()
+  xhr.open('POST', '/remoteProxy')
+  xhr.onload = function () {
+    if (xhr.status / 100 | 0 == 2) {
+      onSuccess('uploadFile', data)
+    } else {
+      onError('uploadFile', data, `request error ${xhr.status}`)
+    }
+  }
+  xhr.onerror = function (e) {
+    onError('uploadFile', data, `request error ${e.message}`)
+  }
+  let key
+  for (key in headers) {
+    xhr.setRequestHeader(key, headers[key]);
+  }
+  xhr.setRequestHeader('X-Remote', args.url);
+  let body = new FormData
+  body.append(args.name, file)
+  for (key in formData) {
+    body.append(key, formData[key])
+  }
+  xhr.send(body)
+}
+
+export function downloadFile(data) {
+  let URL = (window.URL || window.webkitURL)
+  let args = data.args
+  if (!args.url) return onError('downloadFile', data, 'url required')
+  let xhr = new XMLHttpRequest()
+  xhr.responseType = 'arraybuffer'
+  let headers = args.header || {}
+  xhr.open('GET', '/remoteProxy', true)
+  xhr.onload = function () {
+    if (xhr.status / 100 | 0 == 2) {
+      let b = new Blob([xhr.response], {type: xhr.getResponseHeader("Content-Type")});
+      let blob = URL.createObjectURL(b)
+      fileStore[blob] = b
+      onSuccess('downloadFile', data, {
+        tempFilePath: blob
+      })
+    } else {
+      onError('downloadFile', data, `request error ${xhr.status}`)
+    }
+  }
+  xhr.onerror = function (e) {
+    onError('downloadFile', data, `request error ${e.message}`)
+  }
+  let key
+  for (key in headers) {
+    xhr.setRequestHeader(key, headers[key]);
+  }
+  xhr.setRequestHeader('X-Remote', args.url);
+  xhr.send(null)
 }
 
 function onError(name, data, message) {

@@ -441,6 +441,8 @@
       chooseContact: !0,
       chooseImage: !0,
       chooseVideo: !0,
+      uploadFile: !0,
+      downloadFile: !0,
       saveFile: !0
     },
     j = {
