@@ -11,9 +11,10 @@ import {toAppService} from './service'
 import Compass from './compass'
 import storage from './storage'
 import {once} from './event'
-import {toBlobUrl} from './util'
 
 let appData = {} //eslint-disable-line
+let fileIndex = 0
+let fileStore = {}
 
 // get current page
 let root_path = window.location.hash.replace('#', '') || window.__root__
@@ -82,14 +83,13 @@ export function chooseImage(data) {
   var URL = (window.URL || window.webkitURL)
   filePicker({ multiple: true, accept: 'image/*' }, files => {
     files = [].slice.call(files)
-    let paths = files.map(file => URL.createObjectURL(file))
-    toAppService({
-      command: "GET_ASSDK_RES",
-      ext: merge.recursive(true, {}, data),
-      msg: {
-        errMsg: "chooseImage:ok",
-        tempFilePaths: paths
-      }
+    let paths = files.map(file => {
+      let blob = URL.createObjectURL(file)
+      fileStore[blob] = file
+      return blob
+    })
+    onSuccess('chooseImage', data, {
+      tempFilePaths: paths
     })
   })
 }
@@ -98,27 +98,46 @@ export function chooseVideo(data) {
   var URL = (window.URL || window.webkitURL)
   filePicker({accept: 'video/*' }, files => {
     let path = URL.createObjectURL(files[0])
+    fileStore[path] = files[0]
     let video = document.createElement('video')
     video.preload = 'metadata'
     video.onloadedmetadata = function () {
       let duration = video.duration
       let size = files[0].size
-      console.log(333)
-      toAppService({
-        command: "GET_ASSDK_RES",
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "chooseVideo:ok",
-          duration,
-          size,
-          height: video.videoHeight,
-          width: video.videoWidth,
-          tempFilePath: path
-        }
+      onSuccess('chooseVideo', data, {
+        duration,
+        size,
+        height: video.videoHeight,
+        width: video.videoWidth,
+        tempFilePath: path
       })
     }
     video.src =  path
   })
+}
+
+export function saveFile(data) {
+  let blob = data.args.tempFilePath
+  if (!blob) return onError('saveFile', data, 'file path required')
+  let file = fileStore[blob]
+  if (!file) return onError('saveFile', data, 'file not found')
+
+  let url = `/upload`
+  let xhr = new XMLHttpRequest()
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var result = JSON.parse(xhr.responseText)
+        onSuccess('saveFile', data, {
+          savedFilePath: result.file_path
+        })
+      } else {
+        onError('saveFile', data)
+      }
+    }
+  }
+  xhr.open("POST", url, true);
+  xhr.send(blob)
 }
 
 
@@ -167,29 +186,19 @@ export function enableAccelerometer() {
 
 export function getNetworkType(data) {
   let type = navigator.connection == null ? 'WIFI' : navigator.connection.type
-  toAppService({
-    command: 'GET_ASSDK_RES',
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: "getNetworkType:ok",
-      networkType: type
-    }
+  onSuccess('getNetworkType', data, {
+    networkType: type
   })
 }
 
 export function getSystemInfo(data) {
-  toAppService({
-    command: 'GET_ASSDK_RES',
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: "getSystemInfo:ok",
-      model: "iPhone6",
-      pixelRatio: 2,
-      windowWidth: 320,
-      windowHeight: 528,
-      language: "zh_CN",
-      version: "6.3.9"
-    }
+  onSuccess('getSystemInfo', data, {
+    model: "iPhone6",
+    pixelRatio: 2,
+    windowWidth: 320,
+    windowHeight: 528,
+    language: "zh_CN",
+    version: "6.3.9"
   })
 }
 
@@ -197,18 +206,15 @@ export function getLocation(data) {
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(position => {
       let coords = position.coords
-      toAppService({
-        command: 'GET_ASSDK_RES',
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "getLocation:ok",
-          longitude: coords.longitude,
-          latitude: coords.latitude
-        }
+      onSuccess('getLocation', data, {
+        longitude: coords.longitude,
+        latitude: coords.latitude
       })
     })
   } else {
-    console.warn('navigator.geolocation not supported')
+    onError('getLocation', data, {
+      message: 'geolocation not supported'
+    })
   }
 }
 
@@ -217,14 +223,9 @@ export function openLocation(data) {
   let url = "http://apis.map.qq.com/tools/poimarker?type=0&marker=coord:" + args.latitude + "," + args.longitude + "&key=JMRBZ-R4HCD-X674O-PXLN4-B7CLH-42BSB&referer=wxdevtools"
   viewManage.openExternal(url)
   Nprogress.done()
-  toAppService({
-    command: 'GET_ASSDK_RES',
-    ext: data,
-    msg: {
-      errMsg: "openLocation:ok",
-      latitude: args.latitude,
-      longitude: args.longitude
-    }
+  onSuccess('openLocation', data, {
+    latitude: args.latitude,
+    longitude: args.longitude
   })
 }
 
@@ -232,80 +233,39 @@ export function setStorage(data) {
   let args = data.args
   storage.set(args.key, args.data)
   if (args.key == null || args.key == '') {
-    return toAppService({
-      command: "GET_ASSDK_RES",
-      ext: merge.recursive(true, {}, data),
-      msg: {
-        errMsg: "setStorage:fail"
-      }
-    })
+    return onError('setStorage', data, 'key required')
   }
-  toAppService({
-    command: "GET_ASSDK_RES",
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: "setStorage:ok"
-    }
-  })
+  onSuccess('setStorage', data)
 }
 
 export function getStorage(data) {
   let args = data.args
   if (args.key == null || args.key == '') {
-    return toAppService({
-      command: "GET_ASSDK_RES",
-      ext: merge.recursive(true, {}, data),
-      msg: {
-        errMsg: "getStorage:fail"
-      }
-    })
+    return onError('getStorage', data, 'key required')
   }
   let res = storage.get(args.key)
   let t = typeof res
   let dataType = t[0].toUpperCase() + t.slice(1)
-  toAppService({
-    command: "GET_ASSDK_RES",
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: "getStorage:ok",
-      data: res,
-      dataType
-    }
+  onSuccess('getStorage', data, {
+    data: res,
+    dataType
   })
 }
 
 export function clearStorage(data) {
   storage.clear()
-  toAppService({
-    command: "GET_ASSDK_RES",
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: "clearStorage:ok"
-    }
-  })
+  onSuccess('clearStorage', data)
 }
 
 export function startRecord(data) {
   record.startRecord({
     success: url => {
-      toAppService({
-        command: "GET_ASSDK_RES",
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "startRecord:ok",
-          tempFilePath: url
-        }
+      onSuccess('startRecord', data, {
+        tempFilePath: url
       })
     },
     fail: err => {
-      toAppService({
-        command: "GET_ASSDK_RES",
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "startRecord:fail",
-          message: err.message
-        }
-      })
+      return onError('startRecord', data, err.message)
     }
   }).catch((e) => {
     console.warn(`Audio record failed: ${e.message}`)
@@ -313,7 +273,12 @@ export function startRecord(data) {
 }
 
 export function stopRecord() {
-  record.stopRecord()
+  record.stopRecord().then(blob => {
+    let filename = `audio${fileIndex}`
+    fileIndex++
+    var file = new File([blob], filename, {type: 'audio/x-wav', lastModified: Date.now()});
+    fileStore[blob] = file
+  })
 }
 
 export function playVoice(data) {
@@ -326,23 +291,11 @@ export function playVoice(data) {
     audio.src = url
     audio.load()
     audio.play()
-    once(audio, 'error', () => {
-      toAppService({
-        command: "GET_ASSDK_RES",
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "playVoice:fail"
-        }
-      })
+    once(audio, 'error', e => {
+      onError('playVoice', data, e.message)
     })
     once(audio, 'ended', () => {
-      toAppService({
-        command: "GET_ASSDK_RES",
-        ext: merge.recursive(true, {}, data),
-        msg: {
-          errMsg: "playVoice:ok"
-        }
-      })
+      onSuccess('playVoice', data)
     })
   }
 }
@@ -385,12 +338,7 @@ export function getMusicPlayerState(data) {
     }
     obj.dataUrl = a.currentSrc
   }
-  obj.errMsg = "getMusicPlayerState:ok"
-  toAppService({
-    command: "GET_ASSDK_RES",
-    ext: merge.recursive(true, {}, data),
-    msg: obj
-  })
+  onSuccess('getMusicPlayerState', data)
 }
 
 export function operateMusicPlayer(data) {
@@ -437,11 +385,29 @@ export function operateMusicPlayer(data) {
       })
       break
   }
-  toAppService({
+  onSuccess('operateMusicPlayer', data)
+}
+
+function onError(name, data, message) {
+  let obj = {
     command: "GET_ASSDK_RES",
     ext: merge.recursive(true, {}, data),
     msg: {
-      errMsg: "operateMusicPlayer:ok"
+      errMsg: `${name}:fail`
     }
-  })
+  }
+  if (message) obj.msg.message = message
+  toAppService(obj)
+}
+
+function onSuccess(name, data, extra = {}) {
+  let obj = {
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: `${name}:ok`
+    }
+  }
+  obj.msg = merge.recursive(true, obj.msg, extra)
+  toAppService(obj)
 }

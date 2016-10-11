@@ -1,6 +1,6 @@
 # Wept (Wechat app page development tool)
 
-WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供更流畅的开发体验。
+WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供更加高效、稳定、友好、无限制的运行环境。
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service
 层和控制层之间的相关通讯逻辑。
@@ -16,12 +16,6 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * 使用系统 notification 更早的提示构建错误
 * 没有官方工具构建时莫名奇妙的 bug
 * 无需网络连接
-
-## 缺点
-
-本工具暂时仅支持部分 SDK 提供的 API，所以比较适合开发页面结构和样式, 后续会完善这一部分与官方工具一致。
-
-另一个不足是没有开发者工具提供的 wxml、data 和 storage 面板，后续会考虑提供 Chrome 插件。
 
 ## 安装 & 使用方法
 
@@ -68,8 +62,9 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## TODO
 
-* 支持页面 pull to refresh
 * 支持针对页面的 json 配置
+* apple script chrome 启动脚本
+* 支持页面 pull to refresh
 * 支持更多的 API
 * wxml，storage，appData 面板支持
 * 可视化代理模式支持

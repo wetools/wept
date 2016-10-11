@@ -78,7 +78,7 @@ export default {
       audioRecorder.exportWAV(blob => {
         var url = (window.URL || window.webkitURL).createObjectURL(blob)
         if (this.success) this.success(url)
-        resolve()
+        resolve(url)
       })
     })
   }
