@@ -336,7 +336,7 @@ export function getMusicPlayerState(data) {
     }
     obj.dataUrl = a.currentSrc
   }
-  onSuccess('getMusicPlayerState', data)
+  onSuccess('getMusicPlayerState', data, obj)
 }
 
 export function operateMusicPlayer(data) {
