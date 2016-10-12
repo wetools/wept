@@ -1,8 +1,8 @@
-import merge from 'merge'
 import Bus from './bus'
 import React, {Component} from 'react'
 import ReactDom from 'react-dom'
 import cx from 'classnames'
+import {currentView} from './viewManage'
 
 class Header extends Component {
   constructor(props) {
@@ -15,22 +15,27 @@ class Header extends Component {
       loading: false,
       back: false
     }
-    let d = this.defaultState = merge.recursive(true, {}, this.state)
-    Bus.on('route', (n, curr) => {
-      let winConfig = window.__wxConfig__['window'].pages[curr.path] || {}
-      let state = {
-        backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
-        color: winConfig.navigationBarTextStyle || d.color,
-        title: winConfig.navigationBarTitleText || d.title,
-        loading: false,
-        back: curr.pid != null
-      }
-      console.log(state)
-      this.setState(state)
-    })
+    Bus.on('route', this.reset.bind(this))
   }
   reset() {
-    this.setState(this.defaultState)
+    let win = window.__wxConfig__['window']
+    let d = {
+      backgroundColor: win.navigationBarBackgroundColor,
+      color: win.navigationBarTextStyle,
+      title: win.navigationBarTitleText,
+      loading: false,
+      back: false
+    }
+    let curr = currentView()
+    let winConfig = win.pages[curr.path] || {}
+    let state = {
+      backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
+      color: winConfig.navigationBarTextStyle || d.color,
+      title: winConfig.navigationBarTitleText || d.title,
+      loading: false,
+      back: curr.pid != null
+    }
+    this.setState(state)
   }
   onBack(e) {
     e.preventDefault()

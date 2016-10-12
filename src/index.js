@@ -7,6 +7,7 @@ import {onBack} from './service'
 import toast from './toast'
 import tabbar from './tabbar'
 import {lifeSycleEvent} from './service'
+import header from './header'
 require('./message')
 require('./polyfill')
 
@@ -48,6 +49,11 @@ socket.onmessage = function (e) {
   } else if (data.type == 'reload'){
     if (!p) {
       redirectToHome()
+    } else if (/\.json$/.test(p)) {
+      let win = window.__wxConfig__['window']
+      win.pages[p.replace(/\.json$/, '')] = data.content
+      header.reset()
+      console.info(`Reset header for ${p.replace(/\.json$/, '')}`)
     } else {
       onReload(p)
     }
