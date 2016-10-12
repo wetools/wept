@@ -15,11 +15,12 @@ class Tabbar extends Component {
     } else {
       this.state = {
         shown: true,
-        hidden: false,
+        hidden: true,
         activeIdx: 0,
         ...tabBar
       }
     }
+    this.scrollable = document.querySelector('.scrollable')
   }
   show(path) {
     if (!this.shown) return
@@ -33,8 +34,10 @@ class Tabbar extends Component {
     })
     if (activeIdx == this.state.activeIdx && this.state.hidden == false) return
     if (activeIdx != null) {
+      this.scrollable.style.bottom = '56px'
       this.setState({ activeIdx, hidden: false })
     } else {
+      this.scrollable.style.bottom = '0px'
       this.setState({ hidden: true })
     }
   }
