@@ -15,7 +15,6 @@
   "author": "chemzqm@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "babel-preset-react": "^6.16.0",
     "chalk": "^1.1.3",
     "chokidar": "^1.6.0",
     "classnames": "^2.2.5",
@@ -35,11 +34,9 @@
     "debounce": "^1.0.0",
     "domify": "^1.4.0",
     "et-improve": "^0.1.2",
-    "executable": "^4.1.0",
     "faye-websocket": "^0.11.0",
     "glob": "^7.1.0",
     "growl": "^1.9.2",
-    "iconv-lite": "^0.4.13",
     "koa": "^1.2.4",
     "koa-body": "^1.6.0",
     "koa-compress": "^1.0.9",
@@ -55,11 +52,10 @@
     "prop-detect": "^1.1.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "throttleit": "^1.0.0",
-    "tmp": "0.0.29",
-    "uuid": "^2.0.3"
+    "throttleit": "^1.0.0"
   },
   "devDependencies": {
+    "babel-preset-react": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-add-module-exports": "^0.2.1",
