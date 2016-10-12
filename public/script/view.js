@@ -4776,3 +4776,13 @@ wx.version = {
   info: "",
   version: 30
 };
+document.addEventListener('touchstart', function (e) {
+})
+document.addEventListener('touchend', function (e) {
+})
+document.addEventListener('touchmove', function (e) {
+})
+document.addEventListener('touchcancel', function (e) {
+})
+document.addEventListener('blur', function (e) {
+})
