@@ -20,20 +20,16 @@ Bus.on('back', () => {
   if (!curr.external) onBack()
 })
 
-tabbar.on('active', url => {
+tabbar.on('active', pagePath => {
   let curr = currentView()
-  if (curr && curr.url == url) return
-  let {path, query} = util.parsePath(url)
-  navigateTo(path, true)
+  if (curr && curr.url == pagePath) return
+  let {path, query} = util.parsePath(pagePath)
+  navigateTo(pagePath, true)
   lifeSycleEvent(path, query, 'switchTab')
 })
 
 Bus.on('route', (n, curr) => {
-  if(util.isTabbar(curr.url)) {
-    tabbar.show(curr.url)
-  } else {
-    tabbar.hide()
-  }
+  tabbar.show(curr.url)
 })
 
 let socket = new WebSocket(`ws://${location.host}`)

@@ -1,70 +1,80 @@
-import domify from 'domify'
-import tap from 'tap-event'
-import event from 'event'
-import closest from 'closest'
+import React, {Component} from 'react'
+import ReactDom from 'react-dom'
 import Emitter from 'emitter'
-import tabFn from './tabbar.et'
 
-class Tabbar extends Emitter {
-  constructor() {
-    super()
-    let list = window.__wxConfig__.tabBar && window.__wxConfig__.tabBar.list
+class Tabbar extends Component {
+  constructor(props) {
+    super(props)
+    let tabBar = window.__wxConfig__.tabBar
+    let list = this.list = tabBar && tabBar.list
     let shown = this.shown = list && list.length > 0
-    this.list = list ? list.map(o => {
-      return {
-        path: o.pagePath,
-        icon: o.iconPath,
-        selectedIcon: o.selectedIconPath,
-        text: o.text
+    if (!shown) {
+      this.state = {
+        shown: false
       }
-    }) : []
-    if (shown) {
-      let o = window.__wxConfig__.tabBar
-      this.style = `background-color: ${o.backgroundColor}; border-color: ${o.borderStyle}; color: rgb(221, 221, 221); visibility: visible;`
-      this.color = o.color
-      this.selectedColor = o.selectedColor
+    } else {
+      this.state = {
+        shown: true,
+        hidden: false,
+        activeIdx: 0,
+        ...tabBar
+      }
     }
-    this.root = document.querySelector('.tabbar-root')
-    if (!shown) this.root.style.display = 'none'
-    if (shown) {
-      event.bind(this.root, 'touchstart', tap(this.ontap.bind(this)))
-    }
-    this.scrollable = document.querySelector('.scrollable')
   }
   show(path) {
     if (!this.shown) return
-    this.root.style.display = 'block';
-    let paths = this.list.map(o => o.path)
-    if (paths.indexOf(path) == -1) throw new Error(`${path} not defined in tabbar list`)
-    let data = {
-      style: this.style,
-      items: this.list.map(item => {
-        let active = item.path == path 
-        return {
-          path: item.path,
-          icon: active ? item.selectedIcon : item.icon, 
-          color: active ? this.selectedColor : this.color,
-          text: item.text
-        }
-      })
+    path = path.replace(/\?(.*)$/, '')
+    path = path.replace(/\.wxml$/, '')
+    let activeIdx
+    this.list.map((item, idx) => {
+      if (item.pagePath == path) {
+        activeIdx = idx
+      }
+    })
+    if (activeIdx == this.state.activeIdx && this.state.hidden == false) return
+    if (activeIdx != null) {
+      this.setState({ activeIdx, hidden: false })
+    } else {
+      this.setState({ hidden: true })
     }
-    if (this.root.firstElementChild) this.root.removeChild(this.root.firstElementChild)
-    let el = domify(tabFn(data))
-    this.root.appendChild(el)
-    this.scrollable.style.bottom = '56px'
   }
-  hide() {
-    this.root.style.display = 'none';
-    this.scrollable.style.bottom = '0'
+  onItemTap(idx) {
+    let item = this.list.find((item, index) => {
+      return idx == index
+    })
+    if (idx == this.state.activeIdx) return
+    this.emit('active', item.pagePath)
   }
-  ontap(e) {
-    e.preventDefault()
-    let itemEl = closest(e.target, '.tabbar-item', this.root)
-    if (itemEl) {
-      let path =  itemEl.dataset.path
-      this.emit('active', path)
-    }
+  render() {
+    let state = this.state
+    let list = this.list
+    let active = state.activeIdx
+    if (!state.shown) return null
+    return (
+    <div className="tabbar" style={{
+      backgroundColor: state.backgroundColor,
+      display: state.hidden?'none':'flex',
+      borderColor: state.borderStyle,
+      height: 56
+    }}>
+      {list.map((item, idx) => {
+        return (
+        <div onClick={() => { this.onItemTap(idx) }} className="tabbar-item" key={idx}>
+          <img className="tabbar-icon"
+            src={active == idx ? item.selectedIconPath : item.iconPath}
+            alt="" />
+          <p className="tabbar-label"
+            style={{color: active == idx ? state.selectedColor : state.color}}>
+            {item.text}
+          </p>
+        </div>
+        )
+      })}
+    </div>
+    )
   }
 }
 
-export default new Tabbar
+Emitter(Tabbar.prototype)
+
+export default ReactDom.render(<Tabbar />, document.querySelector('.tabbar-root'))
