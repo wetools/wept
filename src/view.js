@@ -14,14 +14,14 @@ export default class View extends Emitter {
     this.query = o.query
     let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
-    let url = external ? path : `/app/${path}.wxml`
+    let url = external ? path : `/app/${o.path}.wxml`
     this.el = createFrame(`view-${id}`, url, false, root)
     let gbc = window.__wxConfig__.window.backgroundColor || '#fff'
     this.el.style.backgroundColor = gbc
     let ua = window.navigator.userAgent
     Object.defineProperty(this.el.contentWindow.navigator, 'userAgent', {
       get : function () {
-        return `${ua} webview/${id}`
+        return `${ua} wechatdevtools webview/${id}`
       }
     })
   }
