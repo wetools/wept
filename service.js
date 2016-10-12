@@ -1456,7 +1456,17 @@ var Reporter = function(e) {
   }, function(e, t, n) {
     (function(e) {
       n(1);
-      "undefined" != typeof navigator && ! function() {
+      if ("undefined" != typeof Function) {
+        var t = Function;
+        e = {}, Function.constructor = function() {
+          return arguments[arguments.length - 1] = "console.warn('can not create Function')", t.apply(this, arguments)
+        }, Function.prototype.constructor = function() {
+          return arguments[arguments.length - 1] = "console.warn('can not create Function')", t.apply(this, arguments)
+        }, Function = function() {
+          return "return this" === arguments[arguments.length - 1] ? arguments[arguments.length - 1] = "return global" : arguments[arguments.length - 1] = "console.warn('can not create Function')", t.apply(this, arguments)
+        }
+      }
+      "undefined" != typeof eval && (eval = void 0), "undefined" != typeof navigator && ! function() {
         var e = setTimeout;
         setTimeout = function(t, n) {
           if ("function" == typeof t) return e(t, n)
@@ -1815,49 +1825,6 @@ var Reporter = function(e) {
         }
         if (l++, "Object" !== (0, u.getDataType)(e)) throw (0, u.error)("Page注册错误", __wxRoute + ".js中Page()的参数不是对象: " + JSON.stringify(e)), new r.AppServiceEngineKnownError("Options is not object: " + JSON.stringify(e) + " in " + __wxRoute + ".js");
         (0, u.info)("Register Page: " + n), f[n] = e
-      },
-      window.Reload = function (e) {
-        var pages = __wxConfig.pages;
-        if (pages.indexOf(window.__wxRoute) == -1) return
-        f[window.__wxRoute] = e
-        var keys = Object.keys(p)
-        var isCurr = s.route == window.__wxRoute
-        keys.forEach(function (key) {
-          var o = p[key];
-          key = Number(key)
-          var query = o.__query__
-          // current instance
-          var page = o.page
-          var route = o.route
-          // page created
-          if (route == window.__wxRoute) {
-            isCurr && page.onHide()
-            page.onUnload()
-            // create new page instance
-            var newPage = new a.default(e, key, route)
-            newPage.__query__ = query
-            if (isCurr) s.page = newPage
-            o.page = newPage
-            newPage.onLoad()
-            if (isCurr) newPage.onShow()
-            window.__wxAppData[route] = newPage.data
-            window.__wxAppData[route].__webviewId__ = key
-            u.publish(c.UPDATE_APP_DATA)
-            u.info("Update view with init data")
-            u.info(newPage.data)
-            u.publish("appDataChange", {
-              data: {
-                data: newPage.data
-              },
-              option: {
-                timestamp: Date.now()
-              }
-            })
-            newPage.__webviewReady__ = true
-          }
-        })
-
-        u.info("Reload page: " + window.__wxRoute)
       }, function(e, t, n) {
         var o = void 0;
         f.hasOwnProperty(e) ? o = f[e] : ((0, u.warn)("Page[" + e + "] not found. May be caused by: 1. Forgot to add page route in app.json. 2. Invoking Page() in async task."), o = {}), d.newPageTime = Date.now();

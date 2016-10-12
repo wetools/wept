@@ -1,7 +1,28 @@
-/*global WeixinJSBridge, __wxAppData, __wxConfig*/
+/*global define, __wxAppData, WeixinJSBridge, __wxConfig*/
+// 通讯, storage, reload javscript,
+// 代理 request，
+// onCompassChangem/onAccelerometerChange API
 "use strict";
-!function() {
-  function initMappingID() { }
+var ua = navigator.userAgent
+Object.defineProperty(navigator, 'userAgent', {
+  get : function () {
+    return ua +' appservice webview/10000'
+  }
+})
+
+var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+  return typeof e
+} : function(e) {
+  return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+};
+! function(e, t) {
+  if ("object" === ("undefined" == typeof exports ? "undefined" : _typeof(exports)) && "object" === ("undefined" == typeof module ? "undefined" : _typeof(module))) module.exports = t();
+  else if ("function" == typeof define && define.amd) define([], t);
+  else {
+    var n = t();
+    for (var o in n)("object" === ("undefined" == typeof exports ? "undefined" : _typeof(exports)) ? exports : e)[o] = n[o]
+  }
+}(void 0, function() {
   var storage = window.top.__storage
 
   function toResult(msg, data, command) {
@@ -13,568 +34,782 @@
     return obj
   }
 
-  function e(e) {
-    var o = JSON.parse(JSON.stringify(e));
-    o.to = "backgroundjs", o.comefrom = "webframe", o.command = "COMMAND_FROM_ASJS", o.appid = W, o.appname = C, o.apphash = T, o.webviewID = L, window.top.postMessage(o, "*")
-  }
-
-  function o(e) {
-    e.command = "COMMAND_FROM_ASJS", e.appid = W, e.appname = C, e.apphash = T, e.webviewID = L;
-    var o = "____sdk____" + JSON.stringify(e);
-    var args = e.args
-    delete e.to
-    if (e.sdkName == 'setStorageSync') {
-      if (args.key == null || args.data == null) {
-        a(toResult({
-          errMsg: "setStorage:fail"
-        }, e))
-      } else {
-        storage.set(args.key, args.data)
-        a(toResult({
-          errMsg: "setStorage:ok"
-        }, e))
-      }
-    } else if (e.sdkName == 'getStorageSync'){
-      if (args.key == null || args.key == '') {
-        return a(toResult({
-          errMsg: "getStorage:fail"
-        }), 'GET_ASSDK_RES')
-      }
-      var res = storage.get(args.key)
-      if (res == null) {
-        return a(toResult({
-          errMsg: "getStorage:fail"
-        }), 'GET_ASSDK_RES')
-      }
-      var type = typeof res
-      type = type[0].toUpperCase() + type.slice(1)
-      a(toResult({
-        data: res,
-        dataType: type,
-        errMsg: "getStorage:ok"
-      }, e, 'GET_ASSDK_RES'))
-    } else if (e.sdkName == 'clearStorageSync') {
-      storage.clear()
-      a(toResult({
-        errMsg: "clearStorage:ok"
-      }, e))
-    } else {
-      console.log('Ignored sdk call ' + JSON.stringify(o))
-    }
-    //  n = prompt(o);
-    //n = JSON.parse(n), delete n.to, a(n)
-  }
-
-  function n(e) {
-    e.to = "contentscript", e.comefrom = "webframe", e.webviewID = L, window.top.postMessage(e, "*")
-  }
-
-  function r() {
-    var e = Math.random();
-    return z[e] ? initMappingID() : e
-  }
-
-  function t(n, t, a) {
-    var i = r();
-    z[i] = a;
-    var s = /Sync$/.test(n),
-      c = {
-        sdkName: n,
-        args: t,
-        callbackID: i
+  return function(e) {
+    function t(o) {
+      if (n[o]) return n[o].exports;
+      var r = n[o] = {
+        exports: {},
+        id: o,
+        loaded: !1
       };
-    s ? o(c) : e(c)
-  }
-
-  function a(o) {
-    var n = o.command;
-    delete o.command;
-    var r = o.msg || {},
-      t = o.ext || {};
-    if ("WINDOW_GET_WEBAPP_ERROR" === n) {
-      var a = r.fileName,
-        i = r.errStr;
-      return console.group("%c加载 " + a + " 错误", "color: red; font-size: x-large"), console.error("%c" + i, "color: red; font-size: x-large"), void console.groupEnd()
+      return e[o].call(r.exports, r, r.exports, t), r.loaded = !0, r.exports
     }
-    if ("MSG_FROM_WEBVIEW" === n || "GET_ASSDK_RES" === n) {
-      var s = r.eventName || t.sdkName;
-      J && (console.group(new Date + " GetMsg " + s), console.debug(s, r, t), console.groupEnd()), P.push({
-        type: "GetMsg",
-        eventName: s,
-        data: [s, r, t],
-        timesmap: new Date
-      })
-    }
-    if ("MSG_FROM_WEBVIEW" === n) {
-      var c = r.eventName,
-        u = r.type,
-        p = r.data || {};
-      p.webviewId = r.webviewID, "ON_APPLIFECYCLE_EVENT" === u ? S(c, p) : "ON_MUSIC_EVENT" === u && A(c, p), WeixinJSBridge._subscribe[c] && WeixinJSBridge._subscribe[c](p, p.webviewId)
-    } else if ("GET_ASSDK_RES" === n) {
-      var d = t.callbackID;
-      z[d](r), delete z[d]
-    } else if ("GET_APP_DATA" === n) e({
-      appData: __wxAppData,
-      sdkName: "send_app_data"
-    });
-    else if ("WRITE_APP_DATA" === n)
-      for (var l in r) {
-        var g = r[l],
-          f = g.__webviewId__;
-        WeixinJSBridge.publish("appDataChange", {
-          data: {
-            data: g
-          }
-        }, [f], !0)
-      }
-  }
-
-  function i(e, o) {
-    if (O) return console.warn("请注意 WEPT 请求的是后端代理！"), !0;
-    try {
-      for (var n = G.projectConfig, r = n.Network, t = "webscoket" === o ? r.WsRequestDomain : r.RequestDomain, a = 0; a < t.length; a++)
-        if (0 === e.indexOf(t[a])) return !0
-    } catch (i) {
-      return console.error(i), !1
-    }
-  }
-
-  function s(e, o, n) {
-    if (H++, H > B) return H--, n && n({
-      errMsg: "request:fail;"
-    }), void console.error("%c 最多同时发起 " + B + " 个 wx.request 请求", "color: red; font-size: x-large");
-    var r = o.url,
-      t = o.header || {};
-    if (!i(r)) return H--, n && n({
-      errMsg: "request:fail;"
-    }), void console.error("%c URL 域名不合法，请在 mp 后台配置后重试", "color: red; font-size: x-large");
-    var a, s = new XMLHttpRequest,
-      c = o.method || "POST",
-      u = (o.complete, G.networkTimeout && G.networkTimeout.request);
-    s.open(c, '/remoteProxy', !0), s.onreadystatechange = function() {
-      if (3 == s.readyState, 4 == s.readyState) {
-        s.onreadystatechange = null;
-        var e = s.status;
-        0 == e ? n && n({
-          errMsg: "request:fail"
-        }) : n && n({
-          errMsg: "request:ok",
-          data: s.responseText,
-          statusCode: e
-        }), H--, a && clearTimeout(a)
-      }
-    };
-    s.setRequestHeader('X-Remote', o.url)
-    var p = !1;
-    for (var d in t)
-      if (t.hasOwnProperty(d)) {
-        var l = d.toLowerCase();
-        p = "content-type" == l || p, "cookie" === l ? s.setRequestHeader("_Cookie", t[d]) : s.setRequestHeader(d, t[d])
-      }
-      "POST" != c || p || s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"), s.setRequestHeader("X-Requested-With", "XMLHttpRequest"), "number" == typeof u && (a = setTimeout(function() {
-      s.abort("timeout"), o.complete && o.complete(), o.complete = null, H--, n && n({
-        errMsg: "request:fail"
-      })
-    }, u));
-    var g = "string" == typeof o.data ? o.data : null;
-    try {
-      s.send(g)
-    } catch (f) {
-      H--, n && n({
-        errMsg: "request:fail"
-      })
-    }
-  }
-
-  function c(e, o) {
-    var n = $[e];
-    n && o && n.push(o)
-  }
-
-  function u(e, o) {
-    var n = $[e],
-      r = !0,
-      t = !1,
-      a = void 0;
-    try {
-      for (var i, s = n[Symbol.iterator](); !(r = (i = s.next()).done); r = !0) {
-        var c = i.value;
-        c(o)
-      }
-    } catch (u) {
-      t = !0, a = u
-    } finally {
-      try {
-        !r && s["return"] && s["return"]()
-      } finally {
-        if (t) throw a
+    var n = {};
+    return t.m = e, t.c = n, t.p = "", t(0)
+  }([function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
       }
     }
-  }
-
-  function p(e, o, n) {
-    var r = o.url,
-      t = o.header;
-    if (!i(r, "webscoket")) return n && n({
-      errMsg: "closeSocket:fail"
-    }), void console.error("%c URL 域名不合法，请在 mp 后台配置后，重启项目继续测试", "color: red; font-size: x-large");
-    K = new WebSocket(r);
-    for (var a in t) t.hasOwnProperty(a);
-    K.onopen = function() {
-      u("open")
-    }, K.onmessage = function(e) {
-      u("message", {
-        data: e.data
-      })
-    }, K.onclose = function(e) {
-      u("close", e)
-    }, K.onerror = function(e) {
-      u("error", e)
-    }, n && n({
-      errMsg: "connectSocket:ok"
-    })
-  }
-
-  function d(e, o, n) {
-    K ? (K.close(), K = null, n && n({
-      errMsg: "closeSocket:ok"
-    })) : n && n({
-      errMsg: "closeSocket:fail"
-    })
-  }
-
-  function l(e, o, n) {
-    var r = o.data;
-    if (K) try {
-      K.send(r), n && n({
-        errMsg: "sendSocketMessage:ok"
-      })
-    } catch (t) {
-      n && n({
-        errMsg: "sendSocketMessage:fail," + t.message
-      })
-    } else n && n({
-      errMsg: "sendSocketMessage:fail"
-    })
-  }
-
-  function g(e, o) {
-    c("open", o)
-  }
-
-  function f(e, o) {
-    c("message", o)
-  }
-
-  function v(e, o) {
-    c("error", o)
-  }
-
-  function w(e, o) {
-    c("close", o)
-  }
-
-  function m(e, o) {
-    var n = Y[e];
-    n && o && n.push(o)
-  }
-
-  function S(e, o) {
-    var n = Y[e],
-      r = !0,
-      t = !1,
-      a = void 0;
-    try {
-      for (var i, s = n[Symbol.iterator](); !(r = (i = s.next()).done); r = !0) {
-        var c = i.value;
-        c(o)
-      }
-    } catch (u) {
-      t = !0, a = u
-    } finally {
-      try {
-        !r && s["return"] && s["return"]()
-      } finally {
-        if (t) throw a
+    var r = n(1),
+      i = o(r),
+      s = n(13),
+      a = o(s);
+    (0, a["default"])(), window.MutationObserver = window.WebKitMutationObserver = window.File = void 0, window.WeixinJSBridge = i["default"]
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
       }
     }
-  }
 
-  function h(e, o) {
-    Y.onAppLaunch || (o && o({}), Y.onAppLaunch = !0)
-  }
-
-  function _(e, o) {
-    m("onAppTerminate", o)
-  }
-
-  function b(e, o) {
-    m("onAppRoute", o)
-  }
-
-  function ac(e, o) {
-    m("onAccelerometerChange", o)
-  }
-
-  function cc(e, o) {
-    m("onCompassChange", o)
-  }
-
-  function y(e, o) {
-    m("onAppEnterBackground", o)
-  }
-
-  function M(e, o) {
-    Y.onAppShow || (o && o({}), Y.onAppShow = !0), m("onAppEnterForeground", o)
-  }
-
-  function k(e, o) {
-    var n = Q[e];
-    n && o && n.push(o)
-  }
-
-  function A(e, o) {
-    var n = Q[e],
-      r = !0,
-      t = !1,
-      a = void 0;
-    try {
-      for (var i, s = n[Symbol.iterator](); !(r = (i = s.next()).done); r = !0) {
-        var c = i.value;
-        c(o)
+    function r(e) {
+      var t = e.command,
+        n = e.msg || {},
+        o = e.ext || {};
+      if ("WINDOW_GET_WEBAPP_ERROR" === t) {
+        var r = n.fileName,
+          i = n.errStr;
+        return console.group("%c加载 " + r + " 错误", "color: red; font-size: x-large"), console.error("%c" + i, "color: red; font-size: x-large"), void console.groupEnd()
       }
-    } catch (u) {
-      t = !0, a = u
-    } finally {
-      try {
-        !r && s["return"] && s["return"]()
-      } finally {
-        if (t) throw a
-      }
-    }
-  }
-
-  function D(e, o) {
-    k("onMusicPlay", o)
-  }
-
-  function x(e, o) {
-    k("onMusicPause", o)
-  }
-
-  function N(e, o) {
-    k("onMusicEnd", o)
-  }
-
-  function E(e, o) {
-    k("onMusicError", o)
-  }
-
-  function I(e, o, n) {
-    n && n({
-      errMsg: "openAddress:ok",
-      userName: "张三",
-      addressPostalCode: "510000",
-      provinceFirstStageName: "广东省",
-      addressCitySecondStageName: "广州市",
-      addressCountiesThirdStageName: "天河区",
-      addressDetailInfo: "某巷某号",
-      nationalCode: "510630"
-    })
-  }
-  window.MutationObserver = window.WebKitMutationObserver = window.File = void 0;
-  var T = __wxConfig.apphash,
-    W = __wxConfig.appid,
-    C = __wxConfig.appname,
-    O = __wxConfig.isTourist,
-    R = O ? Object.assign(__wxConfig.userInfo) : {};
-  delete __wxConfig.userInfo;
-  var B, J = !1,
-    P = [],
-    L = 100000,
-    F = [],
-    z = {},
-    G = Object.assign({
-      domain: [""],
-      networkTimeout: {
-        request: 3e4,
-        connectSocket: 3e4,
-        uploadFile: 3e4,
-        downloadFile: 3e4
-      }
-    }, __wxConfig),
-    H = 0,
-    V = __wxConfig.appserviceConfig.AppserviceMaxDataSize;
-  try {
-    B = __wxConfig.projectConfig.Setting.MaxRequestConcurrent
-  } catch (X) {
-    console.error(X), B = 5
-  }
-  var U = {
-      login: !0,
-      authorize: !0,
-      operateWXData: !0,
-      getStorage: !0,
-      setStorage: !0,
-      clearStorage: !0,
-      startRecord: !0,
-      stopRecord: !0,
-      playVoice: !0,
-      pauseVoice: !0,
-      stopVioce: !0,
-      getStorageSync: !0,
-      setStorageSync: !0,
-      clearStorageSync: !0,
-      getMusicPlayerState: !0,
-      operateMusicPlayer: !0,
-      navigateTo: !0,
-      redirectTo: !0,
-      navigateBack: !0,
-      setNavigationBarTitle: !0,
-      showNavigationBarLoading: !0,
-      hideNavigationBarLoading: !0,
-      enableAccelerometer: !0,
-      enableCompass: !0,
-      getLocation: !0,
-      openLocation: !0,
-      getNetworkType: !0,
-      getSystemInfo: !0,
-      chooseContact: !0,
-      chooseImage: !0,
-      chooseVideo: !0,
-      uploadFile: !0,
-      downloadFile: !0,
-      saveFile: !0
-    },
-    j = {
-      login: !0,
-      authorize: !0,
-      operateWXData: !0
-    };
-  window._____sendMsgToNW = e, window.addEventListener("message", function(e) {
-    var o = e.data,
-      n = o.to;
-    if ("appservice" === n) return delete n.appservice, "complete" !== document.readyState ? void F.push(o) : void a(o)
-  }), window.WeixinJSBridge = {};
-  var K = null,
-    $ = {
-      open: [],
-      message: [],
-      error: [],
-      close: []
-    },
-    Y = {
-      onAppLaunch: !1,
-      onAppShow: !1,
-      onAccelerometerChange: [],
-      onCompassChange: [],
-      onAppTerminate: [],
-      onAppRoute: [],
-      onAppEnterBackground: [],
-      onAppEnterForeground: []
-    },
-    Q = {
-      onMusicPlay: [],
-      onMusicPause: [],
-      onMusicEnd: [],
-      onMusicError: []
-    };
-  WeixinJSBridge._subscribe = {}, WeixinJSBridge.subscribe = function(e, o) {
-    J && (console.group(new Date + " WeixinJSBridge subscribe"), console.debug(e, o), console.groupEnd()), P.push({
-      type: "subscribe",
-      eventName: e,
-      data: arguments,
-      timesmap: new Date
-    }), WeixinJSBridge._subscribe[e] = o
-  }, WeixinJSBridge.publish = function(o, n, r, t) {
-    if (J && (console.group(new Date + " WeixinJSBridge publish " + o), console.debug(o, n, r, t), console.groupEnd()), n && 0 !== o.indexOf("canvas")) {
-      var a = JSON.stringify(n),
-        i = a.length;
-      if (i > V) return void console.error("%c " + o + " 数据传输长度为 " + i + " 已经超过最大长度 " + V, "color: red; font-size: x-large")
-    }
-    P.push({
-      type: "publish",
-      eventName: o,
-      data: arguments,
-      timesmap: new Date
-    }), "appDataChange" !== o && "pageInitData" !== o && "__updateAppData" !== o || t || e({
-      appData: __wxAppData,
-      sdkName: "send_app_data"
-    }), e({
-      eventName: o,
-      data: n,
-      sdkName: "publish",
-      webviewIds: r
-    })
-  }, WeixinJSBridge.invoke = function(e, o, n) {
-    if (O && j[e]) {
-      console.warn("请注意无 AppID 关联下，调用 wx." + e + " 是受限的, API 的返回是工具的模拟返回");
-        void setTimeout(function() {
-        "operateWXData" === e ? n({
-          errMsg: "operateWXData:ok",
-          data: {
-            data: JSON.stringify({
-              nickName: R.nickName,
-              avatarUrl: R.headUrl,
-              gender: "male" === R.sex ? 1 : 2,
-              province: R.province,
-              city: R.city,
-              country: R.country
-            })
-          }
-        }) : "login" === e ? n({
-          errMsg: "login:ok",
-          code: "the code is a mock one"
-        }) : "authorize" === e && n({
-          errMsg: "authorize:fail"
+      if ("MSG_FROM_WEBVIEW" === t || "GET_ASSDK_RES" === t) {
+        var a = n.eventName || o.sdkName;
+        s["default"].debugLog(new Date + " GetMsg " + a, [a, n, o]), s["default"].debugInfo({
+          type: "GetMsg",
+          eventName: a,
+          data: [a, n, o],
+          timesmap: new Date
         })
+      }
+      if ("MSG_FROM_WEBVIEW" === t) {
+        var u = n.eventName,
+          l = (n.type, n.data || {});
+        d["default"].emit("triggerOnEvent", u, l, n.webviewID), d["default"].emit("triggerSubscribeEvent", u, l, n.webviewID)
+      } else if ("GET_APP_DATA" === t) f["default"].sendMsgToNW({
+        appData: __wxAppData,
+        sdkName: "send_app_data"
+      });
+      else if ("WRITE_APP_DATA" === t)
+        for (var c in n) {
+          var p = n[c],
+            v = p.__webviewId__;
+          (0, _["default"])("appDataChange", {
+            data: {
+              data: p
+            }
+          }, [v], !0)
+        }
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var i = n(2),
+      s = o(i),
+      a = n(4),
+      u = (o(a), n(3)),
+      f = o(u),
+      l = n(5),
+      d = o(l),
+      c = n(7),
+      p = o(c),
+      v = n(8),
+      g = o(v),
+      h = n(9),
+      _ = o(h),
+      m = n(11),
+      w = o(m);
+    f["default"].registerCallback(r), t["default"] = {
+      invoke: w["default"],
+      on: p["default"],
+      subscribe: g["default"],
+      publish: _["default"]
+    }
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var r = n(3),
+      i = o(r),
+      s = !1,
+      a = [];
+    window.showDebugInfo = function(e, t) {
+      var n = a.filter(function(n) {
+        var o = !e || (Array.isArray(e) ? e.includes(n.type) : n.type === e),
+          r = !t || (Array.isArray(t) ? t.includes(n.eventName) : n.eventName === t);
+        if (o && r) return n
+      });
+      console.group("showDebugInfo"), n.forEach(function(e) {
+        console.group(e.timesmap + " WeixinJSBridge " + e.type + " " + e.eventName), console.debug.apply(window, e.data), console.groupEnd()
+      }), console.groupEnd(), s = !0
+    }, window.closeDebug = function() {
+      console.clear(), s = !1
+    }, window.showDebugInfoTable = function() {
+      console.table(a)
+    }, window.help = function() {
+      console.table([{
+        fun: "showDebugInfo",
+        "arg[0]": "type -- String || Array; publish on subscribe invoke GetMsg",
+        "arg[1]": "eventName -- String || Array;",
+        example: 'showDebugInfo() showDebugInfo("publish") showDebugInfo(["publish", "invoke"], "onAppRoute")',
+        openToolsLog: "open tools logs"
+      }, {
+        fun: "closeDebug"
+      }, {
+        fun: "showDebugInfoTable"
+      }, {
+        fun: "openToolsLog"
+      }, {
+        fun: "openVendor"
+      }])
+    }, window.openToolsLog = function() {
+      i["default"].sendMsgToNW({
+        sdkName: "__open-tools-log"
       })
-    } else {
-      P.push({
-        type: "invoke",
+    }, window.openVendor = function() {
+      i["default"].sendMsgToNW({
+        sdkName: "__open-tools-vendor"
+      })
+    };
+    var u = function() {
+        return s
+      },
+      f = function(e, t) {
+        s && (console.group(e), console.debug.apply(void 0, t), console.groupEnd(e))
+      },
+      l = function(e) {
+        a.push(e)
+      };
+    t["default"] = {
+      debugLog: f,
+      debugInfo: l,
+      isDev: u
+    }
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var r = n(2),
+      i = (o(r), __wxConfig.apphash),
+      s = __wxConfig.appid,
+      a = __wxConfig.appname,
+      u = navigator.userAgent,
+      f = parseInt(u.match(/webview\/(\d*)/)[1]),
+      l = [],
+      d = [],
+      c = function() {
+        for (var e in d) d[e].apply(this, arguments)
+      },
+      p = function(e) {
+        d.push(e)
+      },
+      v = function(e) {
+        var t = JSON.parse(JSON.stringify(e));
+        t.to = "backgroundjs", t.comefrom = "webframe", t.command = "COMMAND_FROM_ASJS", t.appid = s, t.appname = a, t.apphash = i, t.webviewID = f, window.top.postMessage(t, "*")
+      },
+      g = function(e) {
+        e.command = "COMMAND_FROM_ASJS", e.appid = s, e.appname = a, e.apphash = i, e.webviewID = f;
+        var t = "____sdk____" + JSON.stringify(e);
+        var args = e.args;
+        delete e.to
+        if (e.sdkName == 'setStorageSync') {
+          if (args.key == null || args.data == null) {
+            c(toResult({
+              errMsg: "setStorage:fail"
+            }, e))
+          } else {
+            storage.set(args.key, args.data)
+            c(toResult({
+              errMsg: "setStorage:ok"
+            }, e))
+          }
+        } else if (e.sdkName == 'getStorageSync'){
+          if (args.key == null || args.key == '') {
+            return c(toResult({
+              errMsg: "getStorage:fail"
+            }), 'GET_ASSDK_RES')
+          }
+          var res = storage.get(args.key)
+          if (res == null) {
+            return c(toResult({
+              errMsg: "getStorage:fail"
+            }), 'GET_ASSDK_RES')
+          }
+          var type = typeof res
+          type = type[0].toUpperCase() + type.slice(1)
+          c(toResult({
+            data: res,
+            dataType: type,
+            errMsg: "getStorage:ok"
+          }, e, 'GET_ASSDK_RES'))
+        } else if (e.sdkName == 'clearStorageSync') {
+          storage.clear()
+          c(toResult({
+            errMsg: "clearStorage:ok"
+          }, e))
+        } else {
+          console.log('Ignored sdk call ' + JSON.stringify(o))
+        }
+        //  n = prompt(t);
+        //n = JSON.parse(n), delete n.to, c(n)
+      };
+    window._____sendMsgToNW = v;
+    var h = function(e) {
+        e.to = "contentscript", e.comefrom = "webframe", e.webviewID = f, window.top.postMessage(e, "*")
+      },
+      _ = function(e, t, n) {
+        var o = /Sync$/.test(e),
+          r = {
+            sdkName: e,
+            args: t,
+            callbackID: n
+          };
+        o ? g(r) : v(r)
+      };
+    window.addEventListener("message", function(e) {
+      var t = e.data,
+        n = t.to;
+      if ("appservice" === n) return delete n.appservice, "complete" !== document.readyState ? void l.push(t) : void c(t)
+    }), window.addEventListener("load", function() {
+      l.forEach(function(e) {
+        c(e)
+      }), l = []
+    }), h({
+      command: "SHAKE_HANDS"
+    }), t["default"] = {
+      brigeToNW: _,
+      sendMsgToNW: v,
+      registerCallback: p
+    }
+  }, function(e, t) {
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var n = function() {
+        return __wxConfig.isTourist
+      },
+      o = n() ? Object.assign(__wxConfig.userInfo) : {};
+    delete __wxConfig.userInfo;
+    var r = {
+        login: function(e, t, n) {
+          n({
+            errMsg: "login:ok",
+            code: "the code is a mock one"
+          })
+        },
+        authorize: function(e, t, n) {
+          n({
+            errMsg: "authorize:fail"
+          })
+        },
+        operateWXData: function(e, t, n) {
+          n({
+            errMsg: "operateWXData:ok",
+            data: {
+              data: JSON.stringify({
+                nickName: o.nickName,
+                avatarUrl: o.headUrl,
+                gender: "male" === o.sex ? 1 : 2,
+                province: o.province,
+                city: o.city,
+                country: o.country
+              })
+            }
+          })
+        }
+      },
+      i = function(e) {
+        var t = this,
+          o = arguments;
+        return !(!n() || !r.hasOwnProperty(e)) && (console.warn("请注意无 AppID 关联下，调用 wx." + e + " 是受限的, API 的返回是工具的模拟返回"), setTimeout(function() {
+          r[e].apply(t, o)
+        }), !0)
+      };
+    t["default"] = {
+      isTourist: n,
+      fake: r,
+      check: i
+    }
+  }, function(e, t, n) {
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var o = n(6).EventEmitter;
+    t["default"] = new o
+  }, function(e, t) {
+    function n() {
+      this._events = this._events || {}, this._maxListeners = this._maxListeners || void 0
+    }
+
+    function o(e) {
+      return "function" == typeof e
+    }
+
+    function r(e) {
+      return "number" == typeof e
+    }
+
+    function i(e) {
+      return "object" === ("undefined" == typeof e ? "undefined" : _typeof(e)) && null !== e
+    }
+
+    function s(e) {
+      return void 0 === e
+    }
+    e.exports = n, n.EventEmitter = n, n.prototype._events = void 0, n.prototype._maxListeners = void 0, n.defaultMaxListeners = 10, n.prototype.setMaxListeners = function(e) {
+      if (!r(e) || e < 0 || isNaN(e)) throw TypeError("n must be a positive number");
+      return this._maxListeners = e, this
+    }, n.prototype.emit = function(e) {
+      var t, n, r, a, u, f;
+      if (this._events || (this._events = {}), "error" === e && (!this._events.error || i(this._events.error) && !this._events.error.length)) {
+        if (t = arguments[1], t instanceof Error) throw t;
+        var l = new Error('Uncaught, unspecified "error" event. (' + t + ")");
+        throw l.context = t, l
+      }
+      if (n = this._events[e], s(n)) return !1;
+      if (o(n)) switch (arguments.length) {
+        case 1:
+          n.call(this);
+          break;
+        case 2:
+          n.call(this, arguments[1]);
+          break;
+        case 3:
+          n.call(this, arguments[1], arguments[2]);
+          break;
+        default:
+          a = Array.prototype.slice.call(arguments, 1), n.apply(this, a)
+      } else if (i(n))
+        for (a = Array.prototype.slice.call(arguments, 1), f = n.slice(), r = f.length, u = 0; u < r; u++) f[u].apply(this, a);
+      return !0
+    }, n.prototype.addListener = function(e, t) {
+      var r;
+      if (!o(t)) throw TypeError("listener must be a function");
+      return this._events || (this._events = {}), this._events.newListener && this.emit("newListener", e, o(t.listener) ? t.listener : t), this._events[e] ? i(this._events[e]) ? this._events[e].push(t) : this._events[e] = [this._events[e], t] : this._events[e] = t, i(this._events[e]) && !this._events[e].warned && (r = s(this._maxListeners) ? n.defaultMaxListeners : this._maxListeners, r && r > 0 && this._events[e].length > r && (this._events[e].warned = !0, console.error("(node) warning: possible EventEmitter memory leak detected. %d listeners added. Use emitter.setMaxListeners() to increase limit.", this._events[e].length), "function" == typeof console.trace && console.trace())), this
+    }, n.prototype.on = n.prototype.addListener, n.prototype.once = function(e, t) {
+      function n() {
+        this.removeListener(e, n), r || (r = !0, t.apply(this, arguments))
+      }
+      if (!o(t)) throw TypeError("listener must be a function");
+      var r = !1;
+      return n.listener = t, this.on(e, n), this
+    }, n.prototype.removeListener = function(e, t) {
+      var n, r, s, a;
+      if (!o(t)) throw TypeError("listener must be a function");
+      if (!this._events || !this._events[e]) return this;
+      if (n = this._events[e], s = n.length, r = -1, n === t || o(n.listener) && n.listener === t) delete this._events[e], this._events.removeListener && this.emit("removeListener", e, t);
+      else if (i(n)) {
+        for (a = s; a-- > 0;)
+          if (n[a] === t || n[a].listener && n[a].listener === t) {
+            r = a;
+            break
+          }
+        if (r < 0) return this;
+        1 === n.length ? (n.length = 0, delete this._events[e]) : n.splice(r, 1), this._events.removeListener && this.emit("removeListener", e, t)
+      }
+      return this
+    }, n.prototype.removeAllListeners = function(e) {
+      var t, n;
+      if (!this._events) return this;
+      if (!this._events.removeListener) return 0 === arguments.length ? this._events = {} : this._events[e] && delete this._events[e], this;
+      if (0 === arguments.length) {
+        for (t in this._events) "removeListener" !== t && this.removeAllListeners(t);
+        return this.removeAllListeners("removeListener"), this._events = {}, this
+      }
+      if (n = this._events[e], o(n)) this.removeListener(e, n);
+      else if (n)
+        for (; n.length;) this.removeListener(e, n[n.length - 1]);
+      return delete this._events[e], this
+    }, n.prototype.listeners = function(e) {
+      var t;
+      return t = this._events && this._events[e] ? o(this._events[e]) ? [this._events[e]] : this._events[e].slice() : []
+    }, n.prototype.listenerCount = function(e) {
+      if (this._events) {
+        var t = this._events[e];
+        if (o(t)) return 1;
+        if (t) return t.length
+      }
+      return 0
+    }, n.listenerCount = function(e, t) {
+      return e.listenerCount(t)
+    }
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r(e, t) {
+      s["default"].debugLog(new Date + " WeixinJSBridge on " + e, arguments), s["default"].debugInfo({
+        type: "on",
         eventName: e,
         data: arguments,
         timesmap: new Date
-      })
-      U[e] ? void t(e, o, function(o) {
-        if (o.errMsg.indexOf("ok") > -1 && ("navigateTo" === e || "redirectTo" === e)) {
-          var r = o.url || "",
-            t = r.match(/(([^\?]*)(\?([^\/]*))?)$/),
-            a = "",
-            i = {};
-          if (t) {
-            a = t[2] || "";
-            for (var s = (t[4] || "").split("&"), c = 0; c < s.length; ++c) {
-              var u = s[c].split("=");
-              2 == u.length && (i[u[0]] = u[1])
-            }
+      }), "onAppEnterForeground" === e && (l.onAppShow || (t && t({}), l.onAppShow = !0)), f.hasOwnProperty(e) && t && f[e].push(t)
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = r;
+    var i = n(2),
+      s = o(i),
+      a = n(5),
+      u = o(a),
+      f = {
+        onSocketOpen: [],
+        onSocketError: [],
+        onSocketMessage: [],
+        onSocketClose: [],
+        onAppTerminate: [],
+        onAppRoute: [],
+        onAppRouteDone: [],
+        onAppEnterBackground: [],
+        onAppEnterForeground: [],
+        onMusicPlay: [],
+        onCompassChange: [],
+        onAccelerometerChange: [],
+        onMusicPause: [],
+        onMusicEnd: [],
+        onMusicError: [],
+        onPullDownRefresh: []
+      },
+      l = {
+        onAppShow: !1
+      };
+    u["default"].on("triggerOnEvent", function(e, t, n) {
+      if (f.hasOwnProperty(e)) {
+        var o = f[e],
+          r = !0,
+          i = !1,
+          s = void 0;
+        try {
+          for (var a, u = o[Symbol.iterator](); !(r = (a = u.next()).done); r = !0) {
+            var l = a.value;
+            l(t, n)
           }
-          var p = e;
-          S("onAppRoute", {
-            path: a,
-            query: i,
-            openType: p,
-            webviewId: o.webviewId
+        } catch (d) {
+          i = !0, s = d
+        } finally {
+          try {
+            !r && u["return"] && u["return"]()
+          } finally {
+            if (i) throw s
+          }
+        }
+      }
+    })
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r(e, t) {
+      s["default"].debugLog(new Date + " WeixinJSBridge subscribe", arguments), s["default"].debugInfo({
+        type: "subscribe",
+        eventName: e,
+        data: arguments,
+        timesmap: new Date
+      }), f[e] = t
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = r;
+    var i = n(2),
+      s = o(i),
+      a = n(5),
+      u = o(a),
+      f = {};
+    u["default"].on("triggerSubscribeEvent", function(e, t, n) {
+      f.hasOwnProperty(e) && f[e](t, n)
+    })
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r(e, t, n, o) {
+      if (s["default"].debugLog(new Date + " WeixinJSBridge publish " + e, arguments), t && 0 !== e.indexOf("canvas")) {
+        var r = JSON.stringify(t),
+          i = r.length;
+        if (i > f.AppserviceMaxDataSize) return void console.error("%c " + e + " 数据传输长度为 " + i + " 已经超过最大长度 " + f.AppserviceMaxDataSize, "color: red; font-size: x-large")
+      }
+      s["default"].debugInfo({
+        type: "publish",
+        eventName: e,
+        data: arguments,
+        timesmap: new Date
+      }), "appDataChange" !== e && "pageInitData" !== e && "__updateAppData" !== e || o || u["default"].sendMsgToNW({
+        appData: __wxAppData,
+        sdkName: "send_app_data"
+      }), u["default"].sendMsgToNW({
+        eventName: e,
+        data: t,
+        webviewIds: n,
+        sdkName: "publish"
+      })
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = r;
+    var i = n(2),
+      s = o(i),
+      a = n(3),
+      u = o(a),
+      f = n(10)
+  }, function(e, t) {
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var n = t.appconfig = Object.assign({
+        domain: [""],
+        networkTimeout: {
+          request: 3e4,
+          connectSocket: 3e4,
+          uploadFile: 3e4,
+          downloadFile: 3e4
+        }
+      }, __wxConfig),
+      o = t.projectConfig = n.projectConfig || {};
+    t.MaxRequestConcurrent = o.Setting && o.Setting.MaxRequestConcurrent || 5, t.NetworkConfig = o && o.Network || {}, t.AppserviceMaxDataSize = __wxConfig.appserviceConfig.AppserviceMaxDataSize
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r() {
+      var e = Math.random();
+      return _[e] ? r() : e
+    }
+
+    function i(e) {
+      var t = e.command,
+        n = e.msg || {},
+        o = e.ext || {};
+      if ("GET_ASSDK_RES" === t) {
+        var r = o.callbackID;
+        _[r](n), delete _[r]
+      }
+    }
+
+    function s(e, t, n) {
+      if (u["default"].debugLog(new Date + " WeixinJSBridge invoke " + e, arguments), !l["default"].check.apply(this, arguments))
+        if (u["default"].debugInfo({
+            type: "invoke",
+            eventName: e,
+            data: arguments,
+            timesmap: new Date
+          }), m.hasOwnProperty(e)) m[e].apply(this, arguments);
+        else {
+          var o = r(),
+            i = function(t) {
+              if (t.errMsg.indexOf("ok") > -1 && ("navigateTo" === e || "redirectTo" === e)) {
+                var o = t.url || "",
+                  r = o.match(/(([^\?]*)(\?([^\/]*))?)$/),
+                  i = "",
+                  s = {};
+                if (r) {
+                  i = r[2] || "";
+                  for (var a = (r[4] || "").split("&"), u = 0; u < a.length; ++u) {
+                    var f = a[u].split("=");
+                    2 == f.length && (s[f[0]] = f[1])
+                  }
+                }
+                var l = e;
+                c["default"].emit("triggerOnEvent", "onAppRoute", {
+                  path: i,
+                  query: s,
+                  openType: l,
+                  webviewId: t.webviewId
+                })
+              }
+              n && n(t)
+            };
+          _[o] = i, v["default"].brigeToNW(e, t, o)
+        }
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = s;
+    var a = n(2),
+      u = o(a),
+      f = n(4),
+      l = o(f),
+      d = n(5),
+      c = o(d),
+      p = n(3),
+      v = o(p),
+      g = n(12),
+      h = o(g),
+      _ = {};
+    v["default"].registerCallback(i);
+    var m = Object.assign({
+      openAddress: function(e, t, n) {
+        n && n({
+          errMsg: "openAddress:ok",
+          userName: "张三",
+          addressPostalCode: "510000",
+          provinceFirstStageName: "广东省",
+          addressCitySecondStageName: "广州市",
+          addressCountiesThirdStageName: "天河区",
+          addressDetailInfo: "某巷某号",
+          nationalCode: "510630"
+        })
+      },
+      chooseContact: function(e, t, n) {
+        n && n({
+          errMsg: "chooseContact:ok",
+          phoneNumber: "18688888888",
+          firstName: "lin",
+          middleName: "none",
+          lastName: "chao"
+        })
+      },
+      reportKeyValue: function() {},
+      reportIDKey: function() {}
+    }, h["default"])
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r(e, t) {
+      if (u["default"].isTourist()) return console.warn("请注意 WEPT 会使用后台转发请求")
+      return true
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var i = n(5),
+      s = o(i),
+      a = n(4),
+      u = o(a),
+      f = n(10),
+      l = null,
+      d = 0,
+      c = function(e, t, n) {
+        if (d++, d > f.MaxRequestConcurrent) return d--, console.error("%c 最多同时发起 " + f.MaxRequestConcurrent + " 个 wx.request 请求", "color: red; font-size: x-large"), void(n && n({
+          errMsg: "request:fail;"
+        }));
+        var o = t.url,
+          i = t.header || {};
+        if (!r(o)) return d--, console.error("%c URL 域名不合法，请在 mp 后台配置后重试", "color: red; font-size: x-large"), void(n && n({
+          errMsg: "request:fail;"
+        }));
+        var s, a = new XMLHttpRequest,
+          u = t.method || "POST",
+          l = (t.complete, f.appconfig.networkTimeout && f.appconfig.networkTimeout.request);
+        a.open(u, '/remoteProxy', !0), a.onreadystatechange = function() {
+          if (3 == a.readyState, 4 == a.readyState) {
+            a.onreadystatechange = null;
+            var e = a.status;
+            0 == e || (n && n({
+              errMsg: "request:ok",
+              data: a.responseText,
+              statusCode: e
+            }), d--, s && clearTimeout(s))
+          }
+        };
+        a.setRequestHeader('X-Remote', t.url)
+        var c = !1;
+        for (var p in i)
+          if (i.hasOwnProperty(p)) {
+            var v = p.toLowerCase();
+            c = "content-type" == v || c, "cookie" === v ? a.setRequestHeader("_Cookie", i[p]) : a.setRequestHeader(p, i[p])
+          }
+          "POST" != u || c || a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"), a.setRequestHeader("X-Requested-With", "XMLHttpRequest"), "number" == typeof l && (s = setTimeout(function() {
+          a.abort("timeout"), t.complete && t.complete(), t.complete = null, d--, n && n({
+            errMsg: "request:fail"
+          })
+        }, l));
+        var g = "string" == typeof t.data ? t.data : null;
+        try {
+          a.send(g)
+        } catch (h) {
+          d--, n && n({
+            errMsg: "request:fail"
           })
         }
-        n && n(o)
-      }) : void("request" == e ? s(e, o, n) : "connectSocket" == e ? p(e, o, n) : "closeSocket" == e ? d(e, o, n) : "sendSocketMessage" == e ? l(e, o, n) : "openAddress" == e && I(e, o, n))
+      },
+      p = function(e, t, n) {
+        var o = t.url,
+          i = t.header;
+        if (!r(o, "webscoket")) return n && n({
+          errMsg: "connectSocket:fail"
+        }), void console.error("%c URL 域名不合法，请在 mp 后台配置后，重启项目继续测试", "color: red; font-size: x-large");
+        l = new WebSocket(o);
+        for (var a in i) i.hasOwnProperty(a);
+        l.onopen = function(e) {
+          s["default"].emit("triggerOnEvent", "onSocketOpen", e)
+        }, l.onmessage = function(e) {
+          s["default"].emit("triggerOnEvent", "onSocketMessage", {
+            data: e.data
+          })
+        }, l.onclose = function(e) {
+          s["default"].emit("triggerOnEvent", "onSocketClose", e)
+        }, l.onerror = function(e) {
+          s["default"].emit("triggerOnEvent", "onSocketError", e)
+        }, n && n({
+          errMsg: "connectSocket:ok"
+        })
+      },
+      v = function(e, t, n) {
+        l ? (l.close(), l = null, n && n({
+          errMsg: "closeSocket:ok"
+        })) : n && n({
+          errMsg: "closeSocket:fail"
+        })
+      },
+      g = function(e, t, n) {
+        var o = t.data;
+        if (l) try {
+          l.send(o), n && n({
+            errMsg: "sendSocketMessage:ok"
+          })
+        } catch (r) {
+          n && n({
+            errMsg: "sendSocketMessage:fail," + r.message
+          })
+        } else n && n({
+          errMsg: "sendSocketMessage:fail"
+        })
+      };
+    t["default"] = {
+      request: c,
+      connectSocket: p,
+      sendSocketMessage: g,
+      closeSocket: v
     }
-  }, WeixinJSBridge.on = function(e, o) {
-    J && (console.group(new Date + " WeixinJSBridge on " + e), console.debug(e, o), console.groupEnd()), P.push({
-      type: "on",
-      eventName: e,
-      data: arguments,
-      timesmap: new Date
-    }), "onSocketOpen" == e ? g(e, o) : "onSocketError" == e ? v(e, o) : "onSocketMessage" == e ? f(e, o) : "onSocketClose" == e ? w(e, o) : "onAppLaunch" == e ? h(e, o) : "onAppTerminate" == e ? _(e, o) : "onAppRoute" == e ? b(e, o) : "onAppEnterBackground" == e ? y(e, o) : "onAppEnterForeground" == e ? M(e, o) : "onMusicPlay" == e ? D(e, o) : "onMusicPause" == e ? x(e, o) : "onMusicEnd" == e ? N(e, o) : "onMusicError" == e ? E(e, o) : "onAccelerometerChange" == e ? ac(e, o) : "onCompassChange" == e && cc(e, o)
-  }, n({
-    command: "SHAKE_HANDS"
-  }), window.addEventListener("load", function() {
-    F.forEach(function(e) {
-      a(e)
-    }), F = []
-  })
-
+  }, function(e, t) {
+    function n(e) {
+      var t = ["Pormise", "chrome", "Caches", "screen"];
+      t.forEach(function(e) {
+        window[e] = void 0
+      })
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = n
+  }])
+});
+!function () {
   WeixinJSBridge.subscribe('reload', function (data) {
     var xhr = new XMLHttpRequest()
     var p = data.path
@@ -583,8 +818,7 @@
         if (xhr.status === 200) {
           var text = xhr.responseText
           var path = p.replace(/\.js$/, '')
-          var func = new Function('window.__wxRoute="' + path + '";\n' +
-          text)
+          var func = new Function('window.__wxRoute="' + path + '";\n' + text)
           func()
         }
       }
@@ -592,5 +826,4 @@
     xhr.open('GET', '/generateJavascript?path=' + encodeURIComponent(p))
     xhr.send()
   })
-}();
-
+}()
