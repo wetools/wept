@@ -9,8 +9,8 @@
     "test": "test"
   },
   "scripts": {
-    "postinstall": "webpack",
-    "prepublish": "webpack --config webpack.prod.js"
+    "postinstall": "./node_modules/bin/webpack",
+    "prepublish": "./node_modules/bin/webpack --config webpack.prod.js"
   },
   "author": "chemzqm@gmail.com",
   "license": "MIT",
