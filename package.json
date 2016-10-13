@@ -1,6 +1,6 @@
 {
   "name": "wept",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "weapp page development tool",
   "main": "index.js",
   "bin": "./bin/wept",
