@@ -1,4 +1,4 @@
-import {currentView} from './viewManage'
+import {currentView} from '../viewManage'
 
 export default function (data) {
   let msg = data.msg
