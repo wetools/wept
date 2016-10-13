@@ -22,6 +22,9 @@ let root_path = window.location.hash.replace('#', '') || window.__root__
 
 if (!root_path) throw new Error('path not found')
 
+export function getPublicLibVersion() {
+}
+
 // publish event to views
 export function publish(data) {
   let all_ids = viewManage.getViewIds()
