@@ -13,6 +13,9 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * [微信小程序架构分析（中）](https://zhuanlan.zhihu.com/p/22765476)
 * [微信小程序架构分析（下）](https://zhuanlan.zhihu.com/p/22932309)
 
+
+[更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
+
 ## 主要特性
 
 * 支持 wxml, wxss, javascript 和页面 json 自动重加载
