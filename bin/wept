@@ -1,21 +1,23 @@
 #!/usr/bin/env node
 
-const cli = require('cli')
 const server = require('../lib/server')
 const os = require('os')
 const exec = require('child_process').exec
-//const cofs = require('co-fs')
-const options = cli.parse({
-  port: ['p', 'port for server', 'int', 3000]
-})
-const port = options.port
+const program = require('commander')
+const json = require('../package.json')
+
+program.version(json.version)
+  .option('-p, --port <n>', 'Port of server', parseInt)
+
+program.parse(process.argv)
+
+const port = program.port || 3000
+
 
 if (os.platform() == 'darwin') {
   exec(`osascript chrome.scpt ${port}`, {cwd: __dirname}, () => {
   })
 }
-
-
 server.listen(port)
 
 console.log(`listening on port ${port}`);
