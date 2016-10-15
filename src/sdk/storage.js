@@ -41,6 +41,7 @@ let storage = {
   clear: function () {
     if (window.localStorage == null) return console.error('localStorage not supported')
     localStorage.removeItem(directory)
+    localStorage.removeItem(directory + '_type')
   }
 }
 

@@ -8,6 +8,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js$/, exclude: /(node_modules|dest)/, loader: 'babel-loader' },
+      { test: /\.html/, loader: 'html-loader' },
       { test: /\.et/, loader: 'ei-loader' },
       { test: /\.json$/, loader: 'json' }
     ]

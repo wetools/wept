@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 import ReactDom from 'react-dom'
 import cx from 'classnames'
 import {currentView} from './viewManage'
+import actionSheet from 'actionsheet'
+import storage from './sdk/storage'
 
 class Header extends Component {
   constructor(props) {
@@ -41,10 +43,36 @@ class Header extends Component {
     e.preventDefault()
     Bus.emit('back')
   }
-  onRefresh(e) {
+  onOptions(e) {
     e.preventDefault()
-    window.history.replaceState({path: '/'}, '', '/')
-    window.location.reload()
+    actionSheet({
+      refresh: {
+        text: '刷新',
+        callback: function () {
+          window.history.replaceState({path: '/'}, '', '/')
+          window.location.reload()
+        }
+      },
+      clear: {
+        text: '清除数据缓存',
+        callback: function () {
+          if (window.localStorage != null) {
+            storage.clear()
+          }
+        }
+      },
+      feedback: {
+        text: '问题反馈',
+        callback: function () {
+          window.location.href = 'https://github.com/chemzqm/wept/issues'
+        }
+      },
+      cancel: {
+        text: '取消'
+      }
+    }).then(() => {
+      this.sheetShown = true
+    })
   }
   setTitle(title) {
     this.setState({title})
@@ -78,7 +106,7 @@ class Header extends Component {
           <i className="head-title-loading" style={{display: state.loading? 'inline-block' : 'none'}}></i>
           <span>{state.title}</span>
         </h3>
-        <div className="head-option" onClick={this.onRefresh}>
+        <div className="head-option" onClick={this.onOptions.bind(this)}>
           <i className={clz}></i>
         </div>
       </div>
