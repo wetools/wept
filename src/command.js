@@ -12,6 +12,7 @@ import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import {once} from './event'
 import Upload from 'upload'
+import Preview from './preview'
 
 let appData = {} //eslint-disable-line
 let fileIndex = 0
@@ -28,6 +29,17 @@ export function getPublicLibVersion() {
 
 export function systemLog() {
   //ignore
+}
+
+export function previewImage(data) {
+  console.log(data)
+  let args = data.args
+  let urls = args.urls
+  let current = args.current
+  let preview = new Preview(urls, {})
+  preview.show()
+  preview.active(current)
+  onSuccess('previewImage', data)
 }
 
 export function PULLDOWN_REFRESH(data) {

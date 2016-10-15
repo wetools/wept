@@ -277,3 +277,112 @@ body {
   border-top: 1px solid rgba(0,0,0,0.2);
 }
 
+#images-preview {
+  background-color: #000;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 9999999;
+}
+#images-preview::before,
+#images-preview::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  height: 5px;
+  content: '';
+  z-index: 99999;
+}
+#images-preview::before {
+  top: 0;
+}
+#images-preview::after {
+  bottom: 0;
+}
+.imgs-preview-holder {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  z-index: 9999;
+}
+.imgs-preview-dots {
+  position: fixed;
+  bottom: 1em;
+  left: 0;
+  right: 0;
+  height: 10px;
+  text-align: center;
+  z-index: 9999999;
+}
+.imgs-preview-dots ul{
+  display: table;
+  margin: 0 auto;
+  padding: 0;
+}
+.imgs-preview-dots li{
+  float: left;
+  width: 8px;
+  height: 8px;
+  display: table-cell;
+  margin: 0 4px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.3);
+}
+.imgs-preview-dots li.active{
+  background-color: #fff;
+}
+#images-preview > div {
+  position: relative;
+  float: left;
+  height: 100%;
+  padding: 0 5px;
+}
+#images-preview .wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 400px;
+  top: 50%;
+  margin-top: -200px;
+  background-size: cover;
+}
+#images-preview .mask {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+#images-preview .mask::before {
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.3);
+}
+#images-preview .spin {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -16px;
+  margin-left: -16px;
+  z-index: 9999;
+}
+#images-preview .image {
+  display: none;
+  width: 100%;
+  height: auto;
+}
+

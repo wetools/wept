@@ -73,8 +73,6 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## TODO
 
-* 支持图片预览
-* 支持页面 pull to refresh
 * wxml，storage，appData 面板支持
 
 ## 感谢
