@@ -232,7 +232,7 @@ export function openLocation(data) {
 
 export function setStorage(data) {
   let args = data.args
-  storage.set(args.key, args.data)
+  storage.set(args.key, args.data, args.dataType)
   if (args.key == null || args.key == '') {
     return onError('setStorage', data, 'key required')
   }
@@ -245,11 +245,9 @@ export function getStorage(data) {
     return onError('getStorage', data, 'key required')
   }
   let res = storage.get(args.key)
-  let t = typeof res
-  let dataType = t[0].toUpperCase() + t.slice(1)
   onSuccess('getStorage', data, {
-    data: res,
-    dataType
+    data: res.data,
+    dataType: res.dataType
   })
 }
 

@@ -228,7 +228,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
               errMsg: "setStorage:fail"
             }, e))
           } else {
-            storage.set(args.key, args.data)
+            storage.set(args.key, args.data, args.dataType)
             c(toResult({
               errMsg: "setStorage:ok"
             }, e))
@@ -240,16 +240,9 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
             }), 'GET_ASSDK_RES')
           }
           var res = storage.get(args.key)
-          if (res == null) {
-            return c(toResult({
-              errMsg: "getStorage:fail"
-            }), 'GET_ASSDK_RES')
-          }
-          var type = typeof res
-          type = type[0].toUpperCase() + type.slice(1)
           c(toResult({
-            data: res,
-            dataType: type,
+            data: res.data,
+            dataType: res.dataType,
             errMsg: "getStorage:ok"
           }, e, 'GET_ASSDK_RES'))
         } else if (e.sdkName == 'clearStorageSync') {
