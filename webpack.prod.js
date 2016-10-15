@@ -1,6 +1,10 @@
 var webpack = require('webpack')
+var config = require('./webpack.config')
 
-let plugins = []
+let plugins = config.plugins = []
+
+config.devtool = 'hidden-source-map'
+
 plugins.push(new webpack.optimize.UglifyJsPlugin({
   compress: {
     warnings: false
@@ -15,19 +19,4 @@ plugins.push(new webpack.DefinePlugin({
   }
 }))
 
-module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'build.js',
-    path: 'public/script'
-  },
-  devtool: 'hidden-soure-map',
-  module: {
-    loaders: [
-      { test: /\.js$/, exclude: /(node_modules|dest)/, loader: 'babel-loader' },
-      { test: /\.et/, loader: 'ei-loader' },
-      { test: /\.json$/, loader: 'json' }
-    ]
-  },
-  plugins: plugins
-}
+module.exports = config
