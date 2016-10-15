@@ -24,6 +24,8 @@ window.addEventListener('message', function (e) {
     } else {
       console.warn(`Method ${sdkName} not implemented for command!`)
     }
+  } else if (cmd == 'PULLDOWN_REFRESH') {
+    command['PULLDOWN_REFRESH'](data)
   } else {
     console.warn(`Command ${cmd} not recognized!`)
   }

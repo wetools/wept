@@ -23,6 +23,30 @@ let root_path = window.location.hash.replace('#', '') || window.__root__
 if (!root_path) throw new Error('path not found')
 
 export function getPublicLibVersion() {
+  //ignore
+}
+
+export function systemLog() {
+  //ignore
+}
+
+export function PULLDOWN_REFRESH(data) {
+  toAppService({
+    msg: {
+      data: {},
+      eventName: "onPullDownRefresh",
+      webviewID: data.webviewID
+    }
+  })
+}
+
+export function stopPullDownRefresh(data) {
+  let curr = viewManage.currentView()
+  if (curr) {
+    curr.postMessage({
+      command: "STOP_PULL_DOWN_REFRESH"
+    })
+  }
 }
 
 // publish event to views

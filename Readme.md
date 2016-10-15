@@ -50,7 +50,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * ✓ 设置界面标题
 * ✓ 标题栏加载动画
 * ✓ 页面跳转
-* ✗ 下拉刷新
+* ✓ 下拉刷新 onPullDownRefresh & stopPullDownRefresh
 * ✓ 创建动画
 * ✓ 创建 Canvas 绘画
 * ✓ 获取手机网络状态：默认返回 `WIFI`

@@ -16,14 +16,33 @@ export default class View extends Emitter {
     let root = document.querySelector('.scrollable')
     let url = external ? path : `/app/${o.path}.wxml`
     this.el = createFrame(`view-${id}`, url, false, root)
-    let gbc = window.__wxConfig__.window.backgroundColor || '#fff'
-    this.el.style.backgroundColor = gbc
     let ua = window.navigator.userAgent
     Object.defineProperty(this.el.contentWindow.navigator, 'userAgent', {
       get : function () {
         return `${ua} wechatdevtools webview/${id}`
       }
     })
+    let self = this
+    Object.defineProperty(this.el.contentWindow, '__wxConfig', {
+      get: function () {
+        return self.getConfig()
+      }
+    })
+  }
+  getConfig() {
+    let win = window.__wxConfig__.window
+    let obj = {
+      backgroundTextStyle: win.backgroundTextStyle || 'dark',
+      backgroundColor: win.backgroundColor || '#fff',
+      enablePullDownRefresh: win.enablePullDownRefresh || false
+    }
+    let winConfig = win.pages[this.path] || {}
+    Object.keys(obj).forEach(function (key) {
+      if (winConfig.hasOwnProperty(key)) {
+        obj[key] = winConfig[key]
+      }
+    })
+    return { window: obj }
   }
   hide() {
     this.el.style.display = 'none'
@@ -41,6 +60,7 @@ export default class View extends Emitter {
       webviewID: this.id,
       id: Math.random()
     }, data)
+    obj.msg = data.msg || {}
     this.el.contentWindow.postMessage(obj, '*')
   }
   reload(path) {

@@ -5,6 +5,7 @@ import cx from 'classnames'
 import {currentView} from './viewManage'
 import actionSheet from 'actionsheet'
 import storage from './sdk/storage'
+import toast from './toast'
 
 class Header extends Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class Header extends Component {
         callback: function () {
           if (window.localStorage != null) {
             storage.clear()
+            toast('数据缓存已清除', {type: 'success'})
           }
         }
       },

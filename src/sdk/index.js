@@ -2,10 +2,14 @@ import {currentView} from '../viewManage'
 
 export default function (data) {
   let msg = data.msg
-  if (msg && msg.sdkName == 'onKeyboardComplete') {
-    showConsole(msg.sdkName, 'REGISTER_SDK')
-  } else {
-    console.warn(`Ignored EXEC_JSSDK ${JSON.stringify(data.msg)}`)
+  if (msg) {
+    let n = msg.sdkName
+    if (n == 'onKeyboardComplete') {
+    } else if (n == 'getPublicLibVersion') {
+      //do nothing
+    } else {
+      console.warn(`Ignored EXEC_JSSDK ${JSON.stringify(data.msg)}`)
+    }
   }
 }
 

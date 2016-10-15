@@ -24,7 +24,7 @@
         });
         else {
           var a = WeixinJSCore.invokeHandler(t, n, i);
-          if ("undefined" != typeof a && "function" == typeof r[i]) {
+          if ("undefined" != typeof a && "function" == typeof r[i] && "" !== a) {
             try {
               a = JSON.parse(a)
             } catch (e) {
@@ -89,8 +89,6 @@ var Reporter = function(e) {
     var n = {};
     return t.m = e, t.c = n, t.p = "", t(0)
   }([function(e, t, n) {
-    "use strict";
-
     function o(e) {
       "undefined" != typeof WeixinJSBridge ? e() : document.addEventListener("WeixinJSBridgeReady", e, !1)
     }
@@ -167,19 +165,6 @@ var Reporter = function(e) {
       } catch (e) {}
     });
     var T = {
-        speedReport: function(e) {
-          var t = e.direction,
-            n = e.data,
-            o = e.timeMark;
-          if (!(Date.now() - _ < b)) {
-            var r = 0,
-              i = 0;
-            1 != t && 2 != t || (r = JSON.stringify(n || {}).length, i = o.nativeTime || 0), T.reportKeyValue({
-              key: "Speed",
-              value: t + "," + o.startTime + "," + i + "," + i + "," + o.endTime + "," + r
-            })
-          }
-        },
         reportKeyValue: function(e) {
           var t = e.key,
             n = e.value;
@@ -220,7 +205,6 @@ var Reporter = function(e) {
       T.submit()
     }), e.exports = O
   }, function(e, t) {
-    "use strict";
     Object.defineProperty(t, "__esModule", {
       value: !0
     });
@@ -466,9 +450,7 @@ var Reporter = function(e) {
             return "function" == typeof e.fail && e.fail(t), void("function" == typeof e.complete && e.complete(t))
           }
           var n = (0, p.getDataType)(e.header);
-          e.header = e.header || {}, "Undefined" !== n && "Object" !== n && (console.warn("wx.request: header is " + n + ", expect Object."), e.header = {}), e.header = Object.keys(e.header).reduce(function(t, n) {
-            return t[n.toLowerCase()] = e.header[n], t
-          }, {});
+          "Undefined" !== n && "Object" !== n && (console.warn("wx.request: header is " + n + ", expect Object."), e.header = {});
           var o = e.header || {},
             r = e.method || "GET",
             i = void 0;
@@ -711,6 +693,9 @@ var Reporter = function(e) {
       chooseContact: function(e) {
         (0, s.invokeMethod)("chooseContact", e)
       },
+      makePhoneCall: function(e) {
+        (0, s.invokeMethod)("makePhoneCall", e)
+      },
       onAppRoute: function(e, t) {
         y.push(e)
       },
@@ -770,17 +755,6 @@ var Reporter = function(e) {
             data: n,
             eventName: o,
             webviewId: r
-          })
-        })
-      },
-      onNativeEvent: function(e) {
-        ["onCanvasTouchStart", "onCanvasTouchMove", "onCanvasTouchEnd"].forEach(function(t) {
-          (0, s.onMethod)(t, function(n, o) {
-            e({
-              data: n,
-              eventName: t,
-              webviewId: o
-            })
           })
         })
       },
@@ -858,7 +832,24 @@ var Reporter = function(e) {
         cursor: o,
         inputId: e.inputId
       }, [t])
-    })), (0, s.onMethod)("onAccelerometerChange", i(function() {
+    })), ["onCanvasTouchStart", "onCanvasTouchMove", "onCanvasTouchEnd", "onCanvasTouchCancel"].forEach(function(e) {
+      (0, s.onMethod)(e, i(function(t) {
+        var n = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
+          o = t.touches,
+          r = t.data;
+        r && (r = JSON.parse(r), r[e] && "function" == typeof b && b({
+          data: {
+            touches: o,
+            type: e.slice(8).toLowerCase(),
+            target: r.target,
+            currentTarget: r.target,
+            timestamp: Date.now()
+          },
+          eventName: r[e],
+          webviewId: n
+        }))
+      }))
+    }), (0, s.onMethod)("onAccelerometerChange", i(function() {
       var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
       arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       A.forEach(function(t) {
@@ -901,15 +892,13 @@ var Reporter = function(e) {
           i = arguments.length <= 2 || void 0 === arguments[2] ? {} : arguments[2],
           a = r && r.timestamp || 0,
           u = Date.now();
-        "function" == typeof t && t(o, n), Reporter.speedReport({
-          direction: 1,
-          data: o || {},
-          timeMark: {
-            startTime: a,
-            endTime: u,
-            nativeTime: i.nativeTime || 0
-          }
-        })
+        if ("function" == typeof t && t(o, n), u - a > 20) {
+          var c = JSON.stringify(o || {}).length;
+          Reporter.reportKeyValue({
+            key: "Speed",
+            value: "1," + a + "," + i.nativeTime + "," + i.nativeTime + "," + u + "," + c
+          })
+        }
       }, WeixinJSBridge.subscribe.apply(WeixinJSBridge, e)
     }
 
@@ -1456,7 +1445,9 @@ var Reporter = function(e) {
   }, function(e, t, n) {
     (function(e) {
       n(1);
-      "undefined" != typeof navigator && ! function() {
+      if ("undefined" != typeof Function) {
+      }
+      "undefined" != typeof eval, "undefined" != typeof navigator && ! function() {
         var e = setTimeout;
         setTimeout = function(t, n) {
           if ("function" == typeof t) return e(t, n)
@@ -2478,7 +2469,7 @@ var Reporter = function(e) {
     return i.exports
   }
 }(), wx.version = {
-  updateTime: "2016.10.10 19:57:19",
+  updateTime: "2016.10.11 19:52:52",
   info: "",
   version: 30
 };
