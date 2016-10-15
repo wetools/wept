@@ -13,6 +13,7 @@ import storage from './sdk/storage'
 import {once} from './event'
 import Upload from 'upload'
 import Preview from './preview'
+import confirm from './confirm'
 
 let appData = {} //eslint-disable-line
 let fileIndex = 0
@@ -29,6 +30,14 @@ export function getPublicLibVersion() {
 
 export function systemLog() {
   //ignore
+}
+
+export function requestPayment(data) {
+  confirm('确认支付吗？').then(() => {
+    onSuccess('requestPayment', data)
+  }, () => {
+    onError('requestPayment', data)
+  })
 }
 
 export function previewImage(data) {
