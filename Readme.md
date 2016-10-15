@@ -13,7 +13,6 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * [微信小程序架构分析（中）](https://zhuanlan.zhihu.com/p/22765476)
 * [微信小程序架构分析（下）](https://zhuanlan.zhihu.com/p/22932309)
 
-
 [更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
 
 ## 主要特性
@@ -25,6 +24,8 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * Mac 上启动后执行 apple script 打开 Chrome 到当前页面
 * 可使用 Chrome 移动页面调试，可在移动端体验
 * 无需网络连接
+
+![one](https://cloud.githubusercontent.com/assets/251450/19413094/f46273d6-9356-11e6-9216-06ef2e2e3888.gif)
 
 ## 安装 & 使用方法
 
