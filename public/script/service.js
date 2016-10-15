@@ -1845,6 +1845,7 @@ var Reporter = function(e) {
               }
             })
             newPage.__webviewReady__ = true
+            newPage.onReady()
           }
         })
 
