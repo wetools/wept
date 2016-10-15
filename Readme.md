@@ -17,7 +17,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## 主要特性
 
-* 支持 wxml, wxss, javascript 和页面 json 自动重加载
+* 支持 wxml, wxss, javascript 和页面 json 自动热更新（不刷新页面）
 * 使用系统 notification 更早的提示构建和请求错误
 * 使用后台转发 XMLHttpRequest 请求，无需配置 CORS
 * 没有官方工具构建时莫名奇妙的 bug
