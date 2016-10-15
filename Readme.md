@@ -7,11 +7,17 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 项目已支持几乎所有小程序 API，并且可在 Mac 和 Win7 上稳定运行。
 
+详细原理介绍参考：
+
+* [微信小程序架构分析（上）](https://zhuanlan.zhihu.com/p/22754296)
+* [微信小程序架构分析（中）](https://zhuanlan.zhihu.com/p/22765476)
+* [微信小程序架构分析（下）](https://zhuanlan.zhihu.com/p/22932309)
+
 ## 主要特性
 
 * 支持 wxml, wxss, javascript 和页面 json 自动重加载
 * 使用系统 notification 更早的提示构建和请求错误
-* 使用后台转发请求，无需配置 CORS
+* 使用后台转发 XMLHttpRequest 请求，无需配置 CORS
 * 没有官方工具构建时莫名奇妙的 bug
 * Mac 上启动后执行 apple script 打开 Chrome 到当前页面
 * 可使用 Chrome 移动页面调试，可在移动端体验
