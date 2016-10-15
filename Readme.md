@@ -42,6 +42,8 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## API 接口实现状态
 
+WPET 会尽最大努力兼容小程序所有接口，如果你发现哪个接口有问题，请提 [issue](https://github.com/chemzqm/wept/issues)
+
 * ✓ app.json window 设置
 * ✓ app.json tabbar 设置
 * ✓ 微信登录：目前返回同官方工具无 appid 状态一致，为模拟返回
