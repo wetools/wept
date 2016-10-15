@@ -79,7 +79,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           o = [];
         e.forEach(function(e) {
           (n.defaultPurview[e] || n.purviewFormGetA8key[e] || n.purviewFromPreVerify[e]) && (0 === o.length ? i.push(o) : 6 === o.length && (o = [], i.push(o)), o.push((0, m.getSdkDisplayName)(e)))
-        }), console.group(new Date + " ÂΩìÂâçÈ°µÈù¢ÈÄöËøá wx.config Ëé∑ÂèñÂà∞ÁöÑ JSSDK ÊùÉÈôêÂ¶Ç‰∏ã"), console.table(i), console.groupEnd()
+        }), console.group(new Date + ""), console.table(i), console.groupEnd()
       }(), E[e] && E[e].fn ? E[e].fn(n) : A.registerMethod[e] && r(A.registerMethod[e])
     }
 
@@ -158,6 +158,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       if ("object" === ("undefined" == typeof n ? "undefined" : l(n))) {
         var i = n.command,
           r = n.ext;
+        if ("CUSTOM" === i) { return u(t) }
         if ("webframe" === n.to && i && f.webviewID === n.webviewID && "INIT_DEVTOOLS_SUCCESS" !== i) {
           if ("MSG_FROM_APPSERVICE" === i) return void u(t);
           if ("COMMAND_GET_TITLE" === i) {
