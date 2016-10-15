@@ -32,7 +32,6 @@ export function systemLog() {
 }
 
 export function previewImage(data) {
-  console.log(data)
   let args = data.args
   let urls = args.urls
   let current = args.current
