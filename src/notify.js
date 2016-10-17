@@ -18,6 +18,7 @@ export function onReload (path) {
     })
   }
   if (ext == 'js') {
+    if (isGlobal) return window.location.reload()
     reload(path)
   }
 }
