@@ -1,3 +1,7 @@
+# 0.2.4
+
+* 改进了 wx.getSystemInfo API 的返回，尽可能返回真实数据
+
 # 0.2.3
 
 * 修复 wxml 无法热更新 bug
