@@ -1635,7 +1635,6 @@ var Reporter = function(e) {
     }
 
     function r() {
-      console.log(h);
       for (var e in h)
         if (0 == e.indexOf(d + "canvas")) {
           h[e];
