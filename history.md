@@ -1,3 +1,9 @@
+# 0.2.5
+
+* 修复 wx.request 报错：域名不合法
+* 非页面模块 javscript 修改后自动刷新整个页面，而不是没响应
+* 使用 babel 转换后端代码兼容 es5，支持 node 低版本
+
 # 0.2.4
 
 * 改进了 wx.getSystemInfo API 的返回，尽可能返回真实数据
