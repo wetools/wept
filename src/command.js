@@ -15,9 +15,18 @@ import Upload from 'upload'
 import Preview from './preview'
 import confirm from './confirm'
 
+const doc = document.documentElement
+
+
 let appData = {} //eslint-disable-line
 let fileIndex = 0
 let fileStore = {}
+
+// fix incorrect height when keyboard is up
+let height = 0
+document.addEventListener('DOMContentLoaded', function(e) { 
+  height = Math.max(doc.clientHeight, window.innerHeight || 0)
+})
 
 // get current page
 let root_path = window.location.hash.replace('#', '') || window.__root__
@@ -238,11 +247,11 @@ export function getNetworkType(data) {
 
 export function getSystemInfo(data) {
   onSuccess('getSystemInfo', data, {
-    model: "iPhone6",
-    pixelRatio: 2,
-    windowWidth: 320,
-    windowHeight: 528,
-    language: "zh_CN",
+    model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
+    pixelRatio: window.devicePixelRatio || 1,
+    windowWidth: Math.max(doc.clientWidth, window.innerWidth || 0),
+    windowHeight: Math.max(height, Math.max(doc.clientHeight, window.innerHeight || 0)),
+    language: window.navigator.userLanguage || window.navigator.language,
     version: "6.3.9"
   })
 }
