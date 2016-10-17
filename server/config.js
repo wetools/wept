@@ -5,7 +5,7 @@ if (!fs.existsSync('./app.json')) throw new Error('app.json not found')
 
 let default_config = {
   "directory": process.cwd(),
-  "debug": true,
+  "debug": false,
   "appname": "debug",
   "window":{
     "backgroundTextStyle":"light",
