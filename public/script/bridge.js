@@ -710,7 +710,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
           errMsg: "request:fail;"
         }));
         var s, a = new XMLHttpRequest,
-          u = t.method || "POST",
+          u = t.method || "GET",
           l = (t.complete, f.appconfig.networkTimeout && f.appconfig.networkTimeout.request);
         a.open(u, '/remoteProxy', !0), a.onreadystatechange = function() {
           if (3 == a.readyState, 4 == a.readyState) {

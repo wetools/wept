@@ -1,5 +1,5 @@
 
 babel:
-	@babel server --out-dir lib
+	@babel server --watch --out-dir lib
 
 .PHONY: babel

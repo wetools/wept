@@ -1,5 +1,6 @@
 'use strict'
 var coRequest = require('co-request')
+var parseUrl = require('url').parse
 
 var request = coRequest.defaults({ jar: true })
 var options = {}
@@ -11,13 +12,18 @@ module.exports = function* (context) {
   var parsedBody = getParsedBody(context)
   delete context.header['x-remote']
 
+  var urlObj = parseUrl(url)
+  var port = urlObj.port || urlObj.protocol == 'https:' ? 443 : null
   var opt = {
     url: url,
+    host: urlObj.host,
     headers: context.header,
     encoding: null,
     method: context.method,
-    body: parsedBody
+    body: parsedBody,
+    port: port
   }
+  opt.headers.host = urlObj.host
 
 
   if (options.requestOptions) {
@@ -47,7 +53,6 @@ module.exports = function* (context) {
     }
     context.set(name, res.headers[name])
   }
-
   context.body = res.body
 }
 
