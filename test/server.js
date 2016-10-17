@@ -3,6 +3,7 @@ const http = require('http')
 const logger = require('koa-logger')
 const formidable = require('koa-formidable')
 const router = require('koa-router')()
+const body = require('koa-better-body')
 const app = koa()
 
 router.post('/upload', function* () {
@@ -15,7 +16,14 @@ router.post('/upload', function* () {
   this.content = 'json'
 })
 
-router.get('/', function () {
+router.get('/', function* () {
+  this.body = {x: 1}
+  this.type = 'json'
+})
+
+router.post('/post', body(), function* () {
+  console.log(this.request.fields)
+
   this.body = {x: 1}
   this.type = 'json'
 })
