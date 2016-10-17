@@ -1,5 +1,9 @@
 # Wept (Wechat app page development tool)
 
+[![NPM version](https://img.shields.io/npm/v/wept.svg?style=flat-square)](https://www.npmjs.com/package/wept)
+[![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
+[![Downloads](https://img.shields.io/npm/dm/wept.svg)](https://img.shields.io/npm/dm/wept.svg)
+
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service
@@ -20,7 +24,6 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * 支持 wxml, wxss, javascript 和页面 json 自动热更新（不刷新页面）
 * 使用系统 notification 更早的提示构建和请求错误
 * 使用后台转发 XMLHttpRequest 请求，无需配置 CORS
-* 没有官方工具构建时莫名奇妙的 bug
 * 支持全部公开 API 接口，部分为模拟返回
 * 可使用 Chrome 移动页面调试，可在移动端体验
 * 无需网络连接
@@ -30,8 +33,11 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 ## 安装 & 使用方法
 
 下载安装 [nodejs](https://nodejs.org), 请确保 node 版本 `> 6.0`， 执行：
-
+    
+    # 可能需要 sudo
     npm install wept -g
+
+如安装较慢，可使用 [cnpm](http://npm.taobao.org/)
 
 到小程序项目根目录下执行命令：
 
@@ -74,10 +80,6 @@ WEPT 会尽最大努力兼容小程序所有接口，如果你发现哪个接口
 * ✓ 使用原生地图查看位置
 * ✓ storage 同步 API
 * ✓ storage 异步 API
-
-## TODO
-
-* wxml，storage，appData 面板支持
 
 ## 感谢
 
