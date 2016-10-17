@@ -19,28 +19,20 @@ module.exports = function* (context) {
   let timeout = conf.networkTimeout ? conf.networkTimeout.request : 30000
   timeout = timeout || 30000
   headers['host'] =urlObj.hostname
-  var opt = {
+  let opt = {
     path: urlObj.path,
     protocol: urlObj.protocol,
     host: urlObj.hostname,
     hostname: urlObj.hostname,
     port: port,
     method: context.method.toUpperCase(),
-    headers: headers,
-    timeout: timeout
+    headers,
+    timeout,
   }
 
   let body = context.request.body
   let req = requestClient.request(opt)
-  let res
-
-  if (body) {
-    req.write(body)
-    req.end()
-    res = yield getResponse(req)
-  } else {
-    res = yield pipeRequest(context.req, req)
-  }
+  let res = yield pipeRequest(context.req, req)
   for (var name in res.headers) {
       // http://stackoverflow.com/questions/35525715/http-get-parse-error-code-hpe-unexpected-content-length
     if (name === 'transfer-encoding') {

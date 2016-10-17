@@ -22,9 +22,8 @@ router.get('/', function* () {
 })
 
 router.post('/post', body(), function* () {
-  console.log(this.request.fields)
 
-  this.body = {x: 1}
+  this.body = this.request.fields
   this.type = 'json'
 })
 
