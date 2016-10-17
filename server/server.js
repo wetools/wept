@@ -26,6 +26,7 @@ app.use(function* (next) {
   let path = this.request.path
   if (/^\/remoteProxy$/.test(path)) {
     yield proxy(this)
+    //this.body = this.request.body
   } else {
     yield next
   }
@@ -44,6 +45,7 @@ function *notifyError(next) {
   try {
     yield next
   } catch(e) {
+    console.log(e)
     console.error(e.stack)
     let img = path.resolve(__dirname, '../public/images/error.png')
     growl(e.message, {image: img})

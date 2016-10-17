@@ -1,79 +1,86 @@
 'use strict'
-var coRequest = require('co-request')
 var parseUrl = require('url').parse
-
-var request = coRequest.defaults({ jar: true })
-var options = {}
+const http = require('http')
+const https = require('https')
+const assign = require('object-assign')
+const fs = require('fs')
+const config = require('./config')
 
 module.exports = function* (context) {
-  var url = context.request.header['x-remote']
+  let url = context.request.header['x-remote']
   if (!url) throw new Error('header X-Remote required')
-
-  var parsedBody = getParsedBody(context)
-  delete context.header['x-remote']
-
-  var urlObj = parseUrl(url)
-  var port = urlObj.port || urlObj.protocol == 'https:' ? 443 : null
+  let headers = assign({}, context.header)
+  let conf = yield config()
+  delete headers['x-remote']
+  delete headers['host']
+  let urlObj = parseUrl(url)
+  var port = urlObj.port || (urlObj.protocol == 'https:' ? 443 : 80)
+  let requestClient = /^https/.test(urlObj.protocol) ? https : http
+  let timeout = conf.networkTimeout ? conf.networkTimeout.request : 30000
+  timeout = timeout || 30000
+  headers['host'] =urlObj.hostname
   var opt = {
-    url: url,
-    host: urlObj.host,
-    headers: context.header,
-    encoding: null,
-    method: context.method,
-    body: parsedBody,
-    port: port
-  }
-  opt.headers.host = urlObj.host
-
-
-  if (options.requestOptions) {
-    if (typeof options.requestOptions === 'function') {
-      opt = options.requestOptions(context.request, opt)
-    } else {
-      Object.keys(options.requestOptions).forEach(function (option) { opt[option] = options.requestOptions[option]; })
-    }
+    path: urlObj.path,
+    protocol: urlObj.protocol,
+    host: urlObj.hostname,
+    hostname: urlObj.hostname,
+    port: port,
+    method: context.method.toUpperCase(),
+    headers: headers,
+    timeout: timeout
   }
 
-  var requestThunk = request(opt)
-  var res
+  let body = context.request.body
+  let req = requestClient.request(opt)
+  let res
 
-  if (parsedBody) {
-    res = yield requestThunk
+  if (body) {
+    req.write(body)
+    req.end()
+    res = yield getResponse(req)
   } else {
-    // Is there a better way?
-    // https://github.com/leukhin/co-request/issues/11
-    res = yield pipeRequest(context.req, requestThunk)
+    res = yield pipeRequest(context.req, req)
   }
-
-  context.status = res.statusCode
   for (var name in res.headers) {
-    // http://stackoverflow.com/questions/35525715/http-get-parse-error-code-hpe-unexpected-content-length
+      // http://stackoverflow.com/questions/35525715/http-get-parse-error-code-hpe-unexpected-content-length
     if (name === 'transfer-encoding') {
-      continue
+      continue;
     }
-    context.set(name, res.headers[name])
+    context.set(name, res.headers[name]);
   }
-  context.body = res.body
+  context.status = res.statusCode
+  context.body = res
 }
 
-function getParsedBody(ctx){
-  var body = ctx.request.body
-  if (body === undefined || body === null){
-    return undefined
+function pipeRequest(readable, request) {
+  return function (cb) {
+    readable.on('data', buf => {
+      request.write(buf)
+    })
+    readable.on('end', buf => {
+      request.end(buf)
+    })
+    readable.on('error', err => {
+      console.error(err.stack)
+      request.end()
+      cb(err)
+    })
+    request.on('error', err => {
+      cb(err)
+    })
+    request.on('response', res => {
+      cb(null, res)
+    })
   }
-  var contentType = ctx.request.header['content-type']
-  if (!Buffer.isBuffer(body) && typeof body !== 'string'){
-    if (contentType && contentType.indexOf('json') !== -1){
-      body = JSON.stringify(body)
-    } else {
-      body = body + ''
-    }
-  }
-  return body
 }
 
-function pipeRequest(readable, requestThunk){
-  return function(cb){
-    readable.pipe(requestThunk(cb))
+function getResponse(request) {
+  return function (cb) {
+    request.on('error', err => {
+      cb(err)
+    })
+    request.on('response', res => {
+      cb(null, res)
+    })
   }
 }
