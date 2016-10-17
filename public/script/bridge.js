@@ -684,7 +684,10 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     }
 
     function r(e, t) {
-      if (u["default"].isTourist()) return console.warn("请注意 WEPT 会使用后台转发请求")
+      if (u["default"].isTourist()) {
+        console.warn("请注意 WEPT 会使用后台转发请求")
+        return true
+      }
       return true
     }
     Object.defineProperty(t, "__esModule", {
