@@ -1,6 +1,6 @@
 {
   "name": "wept",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "weapp page development tool",
   "main": "index.js",
   "bin": "./bin/wept",
@@ -43,6 +43,7 @@
     "glob": "^7.1.0",
     "growl": "^1.9.2",
     "koa": "^1.2.4",
+    "koa-better-body": "^3.0.2",
     "koa-body": "^1.6.0",
     "koa-compress": "^1.0.9",
     "koa-formidable": "^1.0.0",
