@@ -12,8 +12,8 @@ import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import {once} from './event'
 import Upload from 'upload'
-import Preview from './preview'
-import confirm from './confirm'
+import Preview from './component/preview'
+import confirm from './component/confirm'
 
 const doc = document.documentElement
 
@@ -121,6 +121,7 @@ export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
 export function send_app_data(data) {
   appData = data.appData
   // TODO edit for appData
+  //console.log(appData)
 }
 
 export function setNavigationBarTitle(data) {

@@ -1,6 +1,6 @@
 import query from 'query'
 import domify from 'domify'
-import {once} from './event'
+import event from 'event'
 import classes from 'classes'
 
 export default function Confirm(message) {
@@ -17,8 +17,9 @@ export default function Confirm(message) {
   `
   let el = domify(tmpl)
   document.body.appendChild(el)
-
+  let removed = false
   function dismiss() {
+    removed = true
     classes(el).remove('is-visible')
     setTimeout(() => {
       el.parentNode.removeChild(el)
@@ -26,12 +27,14 @@ export default function Confirm(message) {
   }
 
   return new Promise(function (resolve, reject) {
-    once(query('.yes', el), 'click', e => {
+    event.bind(query('.yes', el), 'click', e => {
+      if (removed) return
       e.preventDefault()
       dismiss()
       resolve()
     })
-    once(query('.no', el), 'click', e => {
+    event.bind(query('.no', el), 'click', e => {
+      if (removed) return
       e.preventDefault()
       dismiss()
       reject(new Error('canceled'))

@@ -5,7 +5,7 @@ import cx from 'classnames'
 import {currentView} from './viewManage'
 import actionSheet from 'actionsheet'
 import storage from './sdk/storage'
-import toast from './toast'
+import toast from './component/toast'
 
 class Header extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
+import merge from 'merge'
 import Nprogress from 'nprogress'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
-import merge from 'merge'
 
 export default class View extends Emitter {
   constructor(path) {

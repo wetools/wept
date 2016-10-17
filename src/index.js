@@ -4,12 +4,11 @@ import {onReload} from './notify'
 import Bus from './bus'
 import {navigateBack, navigateTo, currentView} from './viewManage'
 import {onBack} from './service'
-import toast from './toast'
+import toast from './component/toast'
 import tabbar from './tabbar'
 import {lifeSycleEvent} from './service'
 import header from './header'
 require('./message')
-require('./polyfill')
 
 Nprogress.start()
 util.createFrame('service', '/appservice', true)
