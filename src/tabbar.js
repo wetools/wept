@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import ReactDom from 'react-dom'
 import Emitter from 'emitter'
+import {currentView} from './viewManage'
 
 class Tabbar extends Component {
   constructor(props) {
     super(props)
     let tabBar = window.__wxConfig__.tabBar
-    let list = this.list = tabBar && tabBar.list
+    let list = tabBar && tabBar.list
     let shown = this.shown = list && list.length > 0
     if (!shown) {
       this.state = {
@@ -14,6 +15,7 @@ class Tabbar extends Component {
       }
     } else {
       this.state = {
+        list: list,
         shown: true,
         hidden: true,
         activeIdx: 0,
@@ -22,27 +24,39 @@ class Tabbar extends Component {
     }
     this.scrollable = document.querySelector('.scrollable')
   }
+  reset() {
+    let tabBar = window.__wxConfig__.tabBar
+    let list = this.list = tabBar && tabBar.list
+    let shown = this.shown = list && list.length > 0
+    if (!shown) {
+      this.setState({
+        shown: false
+      })
+    } else {
+      this.show(currentView().path)
+    }
+  }
   show(path) {
-    if (!this.shown) return
+    if (!this.shown || !path) return
     path = path.replace(/\?(.*)$/, '')
     path = path.replace(/\.wxml$/, '')
     let activeIdx
-    this.list.map((item, idx) => {
+    let tabBar = window.__wxConfig__.tabBar
+    tabBar.list.map((item, idx) => {
       if (item.pagePath == path) {
         activeIdx = idx
       }
     })
-    if (activeIdx == this.state.activeIdx && this.state.hidden == false) return
     if (activeIdx != null) {
       this.scrollable.style.bottom = '56px'
-      this.setState({ activeIdx, hidden: false })
+      this.setState({ activeIdx, hidden: false, list: tabBar.list })
     } else {
       this.scrollable.style.bottom = '0px'
-      this.setState({ hidden: true })
+      this.setState({ hidden: true, list: tabBar.list})
     }
   }
   onItemTap(idx) {
-    let item = this.list.find((item, index) => {
+    let item = this.state.list.find((item, index) => {
       return idx == index
     })
     if (idx == this.state.activeIdx) return
@@ -50,7 +64,7 @@ class Tabbar extends Component {
   }
   render() {
     let state = this.state
-    let list = this.list
+    let list = state.list
     let active = state.activeIdx
     if (!state.shown) return null
     return (

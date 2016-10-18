@@ -1,13 +1,12 @@
 import Nprogress from 'nprogress'
 import * as util from './util'
-import {onReload} from './notify'
+import {onReloadJson, onReloadJavascript, notifyView} from './notify'
 import Bus from './bus'
 import {navigateBack, navigateTo, currentView} from './viewManage'
 import {onBack} from './service'
 import toast from './component/toast'
 import tabbar from './tabbar'
 import {lifeSycleEvent} from './service'
-import header from './header'
 require('./message')
 
 Nprogress.start()
@@ -39,18 +38,22 @@ socket.onopen = function () {
 socket.onmessage = function (e) {
   let data = JSON.parse(e.data)
   let p = data.path
+  let pages = window.__wxConfig__.pages
   if (data.type == 'error') {
     toast(data.msg || '未知错误', {type: 'error'})
   } else if (data.type == 'reload'){
     if (!p) {
       redirectToHome()
-    } else if (/\.json$/.test(p)) {
-      let win = window.__wxConfig__['window']
-      win.pages[p.replace(/\.json$/, '')] = data.content
-      header.reset()
-      console.info(`Reset header for ${p.replace(/\.json$/, '')}`)
     } else {
-      onReload(p)
+      let isGlobal = pages.indexOf(p.replace(/\.(\w+)$/, '')) == -1
+      if (/\.json$/.test(p)) {
+        onReloadJson(p, isGlobal, data.content)
+      } else if (/\.wxss$/.test(p) || /\.wxml$/.test(p)) {
+        notifyView(p, isGlobal)
+      } else if (/\.js$/.test(p)) {
+        onReloadJavascript(p, isGlobal)
+      }
+      // ignore unknow filetype
     }
   }
 }

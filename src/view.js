@@ -55,6 +55,7 @@ export default class View extends Emitter {
     this.el.parentNode.removeChild(this.el)
   }
   postMessage(data) {
+    if (!this.el) return
     let obj = merge.recursive(true, {
       to: 'webframe',
       webviewID: this.id,
