@@ -40,7 +40,9 @@ ${err.message}
     }
   })
 
-  chokidar.watch(path.resolve(__dirname, '../public/script/build.js')).on('change', path => {
-    socket.send({type: 'reload'})
-  })
+  if (!/wept$/.test(process.argv[1])) {
+    chokidar.watch(path.resolve(__dirname, '../public/script/build.js')).on('change', path => {
+      socket.send({type: 'reload'})
+    })
+  }
 }
