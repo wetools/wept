@@ -185,11 +185,11 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 56px;
   z-index: 99999;
 }
 .tabbar {
   display: flex;
+  height: 56px;
   background-color: #f7f7fa;
   border-top: 1px solid;
 }
