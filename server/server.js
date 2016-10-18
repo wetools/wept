@@ -70,8 +70,8 @@ function *staticFallback(next) {
 }
 
 if (!module.parent) {
-  server.listen(3000)
-  console.log(`listening on port 3000`);
+  server.listen(3001)
+  console.log(`listening on port 3001`);
 } else {
   module.exports = server
 }
