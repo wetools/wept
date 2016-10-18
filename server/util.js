@@ -109,3 +109,7 @@ exports.groupFiles= function (files, config) {
   })
   return [utils, routes]
 }
+
+exports.normalizePath = function (p) {
+  return p.replace(/\\/g, '/')
+}

@@ -1848,7 +1848,7 @@ var Reporter = function(e) {
           }
         })
 
-        u.info("Reload page: " + window.__wxRoute)
+        console.info("Reload page: " + window.__wxRoute)
       }, function(e, t, n) {
         var o = void 0;
         f.hasOwnProperty(e) ? o = f[e] : ((0, u.warn)("Page[" + e + "] not found. May be caused by: 1. Forgot to add page route in app.json. 2. Invoking Page() in async task."), o = {}), d.newPageTime = Date.now();

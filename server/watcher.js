@@ -4,9 +4,11 @@ const parser = require('./parser')
 const chalk = require('chalk')
 const path = require('path')
 const fs = require('fs')
+const util = require('./util')
 
 module.exports = function (socket, opts = {}) {
   chokidar.watch('.', {ignored: /[\/\\]\./}).on('change', path => {
+    path = util.normalizePath(path)
     if (path == 'app.json') {
       socket.send({type: 'reload'})
     } else if(/\.json$/.test(path)){
@@ -29,7 +31,7 @@ module.exports = function (socket, opts = {}) {
       socket.send({type: 'reload', path: path})
       parser(path).then((str) => {
         if (opts.debug) console.log(str)
-        console.log(chalk.green(` ✓ ${path} rebuild`))
+        console.log(chalk.green(` ✓ ${path} rebuild success`))
       }, err => {
         console.log(chalk.red(` ✗ ${path} rebuild)
 ${err.message}
