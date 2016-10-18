@@ -1,19 +1,17 @@
 #!/usr/bin/env node
-
-var server = require('../lib/server')
 var os = require('os')
 var exec = require('child_process').exec
 var program = require('commander')
 var json = require('../package.json')
 
 program.version(json.version)
-  .option('-p, --port <n>', 'Port of server', parseInt)
+  .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
 
 program.parse(process.argv)
 
 var port = program.port || 3000
 
-
+var server = require('../lib/server')
 if (os.platform() == 'darwin') {
   exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
    //ignore error 
