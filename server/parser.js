@@ -15,7 +15,9 @@ function parseImports(file, cb) {
     if (err) return cb(err)
     let srcs = util.parseImports(content)
     let root = path.dirname(file)
-    srcs = srcs.map(src => path.join(root, src))
+    srcs = srcs.map(src => {
+      return util.normalizePath(path.join(root, src))
+    })
     srcs.push(file)
     return cb(null, srcs.map(src => `./${src}`))
   })

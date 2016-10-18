@@ -4,6 +4,7 @@ const et = require('et-improve')
 const fs = require('fs')
 const glob = require('glob')
 const Parallel = require('node-parallel')
+const isWin = /^win/.test(process.platform);
 
 exports.globJSfiles = function () {
   return new Promise(function (resolve, reject) {
@@ -111,5 +112,6 @@ exports.groupFiles= function (files, config) {
 }
 
 exports.normalizePath = function (p) {
-  return p.replace(/\\/g, '/')
+  if (isWin) return p.replace(/\\/g, '/')
+  return p
 }
