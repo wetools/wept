@@ -45,7 +45,17 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 使用 Chrome 访问 `http://localhost:3000` 打开开发者工具后启用移动页面调试模式（Mac 下快捷键为 `⌘ ⇧ M`）
 
-使用 `wept -h` 命令查看更多选项
+使用 `wept -h` 命令查看更多选项。
+
+## 更新 WEPT
+
+首先命令行下执行
+
+    npm outdated -g --depth=0
+
+检查是否有更新，如果有的话执行 `install` 命令：
+
+    npm install wept -g
 
 ## API 接口实现状态
 
