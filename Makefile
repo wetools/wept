@@ -1,5 +1,7 @@
 
-babel:
-	@babel server --watch --out-dir lib
+prepublish:
+	@webpack --config webpack.prod.js
+	@babel lib --out-dir build
+	@rm build/*.map
 
-.PHONY: babel
+.PHONY: prepublish

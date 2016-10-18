@@ -11,7 +11,7 @@ program.parse(process.argv)
 
 var port = program.port || 3000
 
-var server = require('../lib/server')
+var server = require('../build/server')
 if (os.platform() == 'darwin') {
   exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
    //ignore error 

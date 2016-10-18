@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "prepublish": "webpack --config webpack.prod.js"
+    "prepublish": "make prepublish"
   },
   "author": "chemzqm@gmail.com",
   "license": "MIT",
@@ -73,9 +73,14 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "ei-loader": "^0.1.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^2.1.1",
+    "gulp-util": "^3.0.7",
     "html-loader": "^0.4.4",
     "json-loader": "^0.5.4",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-stream": "^3.2.0"
   },
   "browser": {
     "emitter": "component-emitter",
