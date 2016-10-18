@@ -55,7 +55,7 @@ module.exports = function (full_path) {
         let isModule = full_path != 'app.js' && obj.pages.indexOf(full_path.replace(/\.js$/, '')) == -1
         fs.readFile(full_path, 'utf8', (err, data) => {
           if (err) return reject(err)
-          let str = `define("${full_path}", function(require, module){let window={Math:Math}/*兼容babel*/,location,document,navigator,self,localStorage,history,Caches;\n${data}\n});`
+          let str = `define("${full_path}", function(require,module,exports,window,document,frames,self,location,navigator,localStorage,history,Caches,screen,alert,confirm,prompt,XMLHttpRequest,WebSocket){\n${data}\n});`
           str = isModule ? str : str + `require("${full_path}")`
           return resolve(str)
         })
