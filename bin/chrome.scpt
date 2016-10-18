@@ -19,7 +19,7 @@ on run port
           set active tab index of the_window to num
           set findtab to true
           tell the_tab
-            reload
+            execute javascript "location.href='" & full_path & "'"
           end tell
         end if
       end repeat

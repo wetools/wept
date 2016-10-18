@@ -15,7 +15,7 @@ var port = program.port || 3000
 
 
 if (os.platform() == 'darwin') {
-  exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () {
+  exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
    //ignore error 
   })
 }
