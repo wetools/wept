@@ -50,7 +50,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         command: t,
         ext: i
       };
-      o.comefrom = "webframe", o.webviewID = f.webviewID, o = JSON.parse(JSON.stringify(o)), window.top.postMessage(o, "*")
+      o.comefrom = "webframe", o.webviewID = f.webviewID, o = JSON.parse(JSON.stringify(o)), window.parent.postMessage(o, "*")
     }
 
     function r(e) {
@@ -331,7 +331,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         command: n,
         ext: i
       };
-      o = JSON.parse(JSON.stringify(o)), window.top.postMessage(o, "*")
+      o = JSON.parse(JSON.stringify(o)), window.parent.postMessage(o, "*")
     }
 
     function i() {
