@@ -2,7 +2,7 @@
   "name": "wept",
   "version": "0.2.9",
   "description": "weapp page development tool",
-  "main": "index.js",
+  "main": "build/server.js",
   "bin": "./bin/wept",
   "directories": {
     "example": "example",
