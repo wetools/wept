@@ -10,7 +10,6 @@ import {lifeSycleEvent} from './service'
 require('./message')
 
 Nprogress.start()
-util.createFrame('service', '/appservice', true)
 
 Bus.on('back', () => {
   let curr = currentView()

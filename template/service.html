@@ -12,14 +12,7 @@
   </script>
   <script src="/script/bridge.js?v={{= _.version}}" type="text/javascript"></script>
   <script src="/script/service.js?v={{= _.version}}" type="text/javascript"></script>
-  {{each _.utils as util}}
-  <script src="/app/{{= util}}" type="text/javascript"></script>
-  {{/}}
-  <script src="/app/app.js" type="text/javascript"></script>
-  {{each _.routes as route}}
-  <script> var __wxRoute = '{{= route | noext}}', __wxRouteBegin = true;</script>
-  <script src="/app/{{= route}}" type="text/javascript"></script>
-  {{/}}
+  <script src="/service.js"></script>
 </head>
 <body>
   <script>

@@ -23,7 +23,6 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     for (var o in n)("object" === ("undefined" == typeof exports ? "undefined" : _typeof(exports)) ? exports : e)[o] = n[o]
   }
 }(void 0, function() {
-  var storage = window.parent.__storage
 
   function toResult(msg, data, command) {
     let obj = {
@@ -218,6 +217,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         t.to = "backgroundjs", t.comefrom = "webframe", t.command = "COMMAND_FROM_ASJS", t.appid = s, t.appname = a, t.apphash = i, t.webviewID = f, window.parent.postMessage(t, "*")
       },
       g = function(e) {
+        var storage = window.parent.__storage
         e.command = "COMMAND_FROM_ASJS", e.appid = s, e.appname = a, e.apphash = i, e.webviewID = f;
         var t = "____sdk____" + JSON.stringify(e);
         var args = e.args;
@@ -814,8 +814,8 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         if (xhr.status === 200) {
           var text = xhr.responseText
           var path = p.replace(/\.js$/, '')
-          var func = new Function('window.__wxRoute="' + path + '";\n' + text)
-          func()
+          var code = 'window.__wxRoute="' + path + '";' + text
+          eval(code)
         }
       }
     }
