@@ -3,13 +3,33 @@ var os = require('os')
 var exec = require('child_process').exec
 var program = require('commander')
 var json = require('../package.json')
+var fs = require('fs')
 
 program.version(json.version)
+  .usage('[app root]')
   .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
 
 program.parse(process.argv)
 
 var port = program.port || 3000
+
+var folder = program.args[0]
+if (folder) {
+  var stats
+  try {
+    stats = fs.statSync(folder)
+  } catch(e) {}
+  if (!stats || !stats.isDirectory()) {
+    console.log('指定目录不存在或者不是目录，请检查')
+    process.exit()
+  }
+  try {
+    process.chdir(folder)
+  } catch(err) {
+    console.log('切换目录失败: ' + err);
+  }
+}
+
 
 var server = require('../build/server')
 if (os.platform() == 'darwin') {
