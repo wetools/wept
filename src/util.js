@@ -5,15 +5,6 @@ export function uid () {
   return id++
 }
 
-export function loadCss(href) {
-  let doc = document
-  let ss = doc.createElement( "link" )
-  ss.rel = "stylesheet"
-  ss.href = href
-  ss.media = "all"
-  document.head.appendChild(ss)
-}
-
 export function createFrame(id, src, hidden, parent = document.body) {
   let el = document.createElement('iframe')
   el.setAttribute('src', src)
@@ -28,17 +19,6 @@ export function createFrame(id, src, hidden, parent = document.body) {
   }
   parent.appendChild(el)
   return el
-}
-
-export function reloadCss(href) {
-  let links = document.getElementsByTagName("link");
-  for (let i = 0, l = links.length; i < l; i++) {
-    let link = links[i];
-
-    if (link.getAttribute("href").indexOf(href) !== 0) {
-      link.href = link.href.replace(/(\?id=\d+)?$/, "?id=" + Date.now())
-    }
-  }
 }
 
 export function parsePath(path) {
@@ -58,6 +38,13 @@ export function isTabbar(url) {
 
 export function reload() {
   let home = `${location.protocol}//${location.host}`
-  if (typeof location.replace !== 'function') throw new Error('location.replace not supported')
+  if (typeof location.replace !== 'function') return window.location.reload()
   location.replace(home)
+}
+
+export function redirectTo(url) {
+  let home = `${location.protocol}//${location.host}`
+  if (typeof history.replaceState == 'function') {
+    history.replaceState({}, '', `${home}?!${url}`)
+  }
 }
