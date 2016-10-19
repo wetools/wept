@@ -5,7 +5,7 @@ var program = require('commander')
 var json = require('../package.json')
 var fs = require('fs')
 
-program.version(json.version)
+program.version(json.version + ' 101400')
   .usage('[app root]')
   .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
 
