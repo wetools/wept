@@ -43,7 +43,7 @@ socket.onmessage = function (e) {
     toast(data.msg || '未知错误', {type: 'error'})
   } else if (data.type == 'reload'){
     if (!p) {
-      redirectToHome()
+      util.reload()
     } else {
       let isGlobal = pages.indexOf(p.replace(/\.(\w+)$/, '')) == -1
       if (/\.json$/.test(p)) {
@@ -67,6 +67,3 @@ window.addEventListener('unload', function () {
   socket.close()
 })
 
-function redirectToHome() {
-  window.location.reload()
-}

@@ -55,3 +55,9 @@ export function isTabbar(url) {
   let pages = list.map(o => o.pagePath)
   return pages.indexOf(url) !== -1
 }
+
+export function reload() {
+  let home = `${location.protocol}//${location.host}`
+  if (typeof location.replace !== 'function') throw new Error('location.replace not supported')
+  location.replace(home)
+}
