@@ -12,7 +12,8 @@ process.on('uncaughtException', function(err) {
   process.exit()
 })
 
-program.version(json.version)
+program.version(json.version + ' 101400')
+  .usage('[app root]')
   .usage('[app root]')
   .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
 

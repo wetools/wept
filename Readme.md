@@ -95,6 +95,10 @@ WEPT 会尽最大努力兼容小程序所有接口，如果你发现哪个接口
 
 [匠物](https://www.jiangwoo.com/) 对于本工具开发给予的大力支持❤️
 
+* [lizzyliuye](https://github.com/lizzyliuye) 帮忙测试反馈
+* [davedavehong](https://github.com/davedavehong) 反馈 windows 上的严重 bug
+* [f111fei](https://github.com/f111fei) 贡献 PR
+
 ## LICENSE
 
 Copyright 2016 chemzqm@gmail.com

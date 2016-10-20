@@ -6,6 +6,7 @@ import {currentView} from './viewManage'
 import actionSheet from 'actionsheet'
 import storage from './sdk/storage'
 import toast from './component/toast'
+import * as util from './util'
 
 class Header extends Component {
   constructor(props) {
@@ -50,8 +51,7 @@ class Header extends Component {
       refresh: {
         text: '刷新',
         callback: function () {
-          window.history.replaceState({path: '/'}, '', '/')
-          window.location.reload()
+          util.reload()
         }
       },
       clear: {

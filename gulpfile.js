@@ -15,6 +15,17 @@ gulp.task('babel', function () {
   .pipe(gulp.dest('build'))
 })
 
+// build client javascript
+gulp.task('webpack', function () {
+  config.debug = true
+  config.cache = true
+  delete config.output.path
+
+  return gulp.src('src/index.js')
+    .pipe(webpack(config))
+    .pipe(gulp.dest('public/script'))
+})
+
 gulp.task('watch', function () {
   gulp.watch('lib/*.js')
     .on('change', function (file) {
@@ -36,5 +47,6 @@ gulp.task('watch', function () {
     .pipe(gulp.dest('public/script'))
 })
 
-gulp.task('default', ['babel', 'watch'])
+gulp.task('build', ['babel', 'webpack'])
 
+gulp.task('default', ['babel', 'watch'])

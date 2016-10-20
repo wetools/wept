@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 })
 
 // get current page
-let root_path = window.location.hash.replace('#', '') || window.__root__
+let root_path = window.location.search.replace(/^\?\!/, '') || window.__root__
 
 if (!root_path) throw new Error('path not found')
 

@@ -1,4 +1,4 @@
-import {isTabbar} from './util'
+import * as util from './util'
 import Bus from './bus'
 import View from './view'
 
@@ -7,7 +7,7 @@ let views = {}
 let tabViews = {}
 
 function onRoute() {
-  window.location.hash = curr.url
+  util.redirectTo(curr.url)
   Bus.emit('route', getViewIds().length, curr)
 }
 
@@ -31,7 +31,7 @@ export function navigateTo(path) {
     curr = exists
     exists.show()
   } else {
-    let isTabView = isTabbar(path)
+    let isTabView = util.isTabbar(path)
     let pid = curr ? curr.id : null
     let v = curr = new View(path)
     curr.pid = isTabView ? null : pid

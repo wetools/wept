@@ -3,6 +3,7 @@ import {reload} from './service'
 import header from './header'
 import assign from 'object-assign'
 import tabbar from './tabbar'
+import * as util from './util'
 
 const jsondiffpatch = require('jsondiffpatch').create({
   cloneDiffValues: false
@@ -23,7 +24,8 @@ export function onReloadJson(p, isGlobal, content) {
       let delta = jsondiffpatch.diff(curr, content)
       if (delta.pages || delta.debug || delta.networkTimeout ||
           delta.window.backgroundColor || delta.window.enablePullDownRefresh) {
-            return window.location.reload()
+            // have to reload
+            return util.reload()
       }
       assign(win, {
         navigationBarTextStyle: content.window.navigationBarTextStyle,
@@ -44,7 +46,7 @@ export function onReloadJson(p, isGlobal, content) {
 }
 
 export function onReloadJavascript(path, isGlobal) {
-  if (isGlobal) return window.location.reload()
+  if (isGlobal) return util.reload()
   reload(path)
 }
 

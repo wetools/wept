@@ -1,7 +1,5 @@
 let directory = window.__wxConfig__.directory
 
-if (window.localStorage) {
-}
 
 function getType(key) {
   let str= localStorage.getItem(directory + '_type')
