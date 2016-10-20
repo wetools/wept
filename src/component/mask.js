@@ -34,7 +34,6 @@ module.exports = {
   },
   hide: function () {
     this.overlay.style.backgroundColor = 'rgba(0,0,0,0.0)'
-    console.log('hide')
     setTimeout(() => {
       this.stop()
       body.removeChild(this.overlay)
