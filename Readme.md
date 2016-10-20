@@ -52,13 +52,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## 更新 WEPT
 
-首先命令行下执行
-
-    npm outdated -g --depth=0
-
-检查是否有更新，如果有的话执行 `install` 命令：
-
-    npm install wept -g
+    npm install wept@latest -g
 
 ## 感谢
 
