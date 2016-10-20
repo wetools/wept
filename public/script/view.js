@@ -1,3 +1,10 @@
+// disable console.log
+Object.defineProperty(console, 'log', {
+  get: function () {
+    return function(){}
+  }
+})
+
 function _toConsumableArray(e) {
   if (Array.isArray(e)) {
     for (var t = 0, n = Array(e.length); t < e.length; t++) n[t] = e[t];

@@ -1,4 +1,4 @@
-# Wept (Wechat app page development tool)
+# WEPT (Wechat app page development tool)
 
 [![NPM version](https://img.shields.io/npm/v/wept.svg?style=flat-square)](https://www.npmjs.com/package/wept)
 [![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
