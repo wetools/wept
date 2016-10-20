@@ -1,6 +1,8 @@
 import Nprogress from 'nprogress'
 import filePicker from 'file-picker'
 import merge from 'merge'
+import Upload from 'upload'
+import Serial from 'node-serial'
 import Bus from './bus'
 import * as viewManage from './viewManage'
 import {onNavigate, onLaunch} from './service'
@@ -11,9 +13,11 @@ import record from './sdk/record'
 import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import {once} from './event'
-import Upload from 'upload'
 import Preview from './component/preview'
 import confirm from './component/confirm'
+import toast from './component/toast'
+import mask from './component/mask'
+import {getRedirectData, validPath} from './util'
 
 const doc = document.documentElement
 
@@ -28,10 +32,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
   height = Math.max(doc.clientHeight, window.innerHeight || 0)
 })
 
-// get current page
-let root_path = window.location.search.replace(/^\?\!/, '') || window.__root__
-
-if (!root_path) throw new Error('path not found')
 
 export function getPublicLibVersion() {
   //ignore
@@ -114,8 +114,46 @@ export function navigateBack(data) {
 
 export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
   Bus.emit('APP_SERVICE_COMPLETE')
-  viewManage.navigateTo(root_path)
-  onLaunch(root_path)
+  // get current page
+  let str = sessionStorage.getItem('routes') || window.__root__
+  let routes = str.split('|')
+  let first = routes.shift()
+  let valid = validPath(first)
+  // make sure root is valid page
+  let root =  valid ? first : window.__root__
+  viewManage.navigateTo(root)
+  onLaunch(root)
+  if (!valid) return
+  if (routes.length) {
+    mask.show()
+    let cid = viewManage.currentView().id
+    Bus.once('ready', id => {
+      if (id !== cid) return mask.hide()
+      let serial = new Serial()
+      serial.timeout(10000)
+      for (let route of routes) {
+        // check if in pages
+        valid = validPath(route)
+        if (!valid) {
+          console.warn(`无法在 pages 配置中找到 ${route}，停止路由`)
+          break;
+        }
+        serial.add(cb => {
+          let data = getRedirectData(`/${route}`, viewManage.currentView().id)
+          toAppService(data)
+          Bus.once('ready', () => cb())
+        })
+      }
+      serial.done(err => {
+        mask.hide()
+        if (err) {
+          console.error(err.stack)
+          toast(err.message, {type: 'error'})
+          return
+        }
+      })
+    })
+  }
 }
 
 export function send_app_data(data) {
