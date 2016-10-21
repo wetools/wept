@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "prepublish": "make prepublish"
+    "prepublish": "gulp prepublish"
   },
   "author": "chemzqm@gmail.com",
   "license": "MIT",

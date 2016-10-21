@@ -5,6 +5,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const gutil = require('gulp-util')
 const config = require('./webpack.config')
 const exec = require('child_process').exec
+const prodConfig = require('./webpack.prod')
 
 // build server javascript
 gulp.task('babel', function () {
@@ -13,6 +14,15 @@ gulp.task('babel', function () {
   .pipe(babel())
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest('build'))
+})
+
+gulp.task('webpack:prod', function () {
+  prodConfig.debug = false
+  delete prodConfig.output.path
+
+  return gulp.src('src/index.js')
+    .pipe(webpack(prodConfig))
+    .pipe(gulp.dest('public/script'))
 })
 
 // build client javascript
@@ -46,6 +56,8 @@ gulp.task('watch', function () {
     .pipe(webpack(config))
     .pipe(gulp.dest('public/script'))
 })
+
+gulp.task('prepublish', ['babel', 'webpack:prod'])
 
 gulp.task('build', ['babel', 'webpack'])
 
