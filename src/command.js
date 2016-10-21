@@ -112,11 +112,22 @@ export function navigateBack(data) {
   onNavigate(data)
 }
 
+function getRoutes() {
+  let root = window.__root__
+  let path = location.hash.replace(/^#!/, '')
+  if (sessionStorage == null) return path ? [path] : [root]
+  let str = sessionStorage.getItem('routes')
+  if (!str) return path ? [path] : [root]
+  let routes = str.split('|')
+  if (routes.indexOf(path) !== routes.length - 1) {
+    return [path]
+  }
+  return routes
+}
+
 export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
   Bus.emit('APP_SERVICE_COMPLETE')
-  // get current page
-  let str = sessionStorage.getItem('routes') || window.__root__
-  let routes = str.split('|')
+  let routes = getRoutes()
   let first = routes.shift()
   let valid = validPath(first)
   // make sure root is valid page
