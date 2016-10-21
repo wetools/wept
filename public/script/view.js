@@ -4,6 +4,11 @@ Object.defineProperty(console, 'log', {
     return function(){}
   }
 })
+Object.defineProperty(console, 'info', {
+  get: function () {
+    return function(){}
+  }
+})
 
 function _toConsumableArray(e) {
   if (Array.isArray(e)) {
