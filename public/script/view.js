@@ -4796,5 +4796,7 @@ document.addEventListener('touchmove', function (e) {
 })
 document.addEventListener('touchcancel', function (e) {
 })
+document.addEventListener('focus', function (e) {
+})
 document.addEventListener('blur', function (e) {
 })
