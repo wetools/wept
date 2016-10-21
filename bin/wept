@@ -4,13 +4,20 @@ var exec = require('child_process').exec
 var program = require('commander')
 var json = require('../package.json')
 var fs = require('fs')
+var open = require('open')
 
 program.version(json.version + ' 101400')
   .usage('[app root]')
-  .option('-o, --open', 'Open Chrome with for debugg, only works for MacOS')
-  .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
+  .option('-o, --open', '使用 Chrome 打开小程序，仅对 Mac 有效')
+  .option('-l, --list', '使用默认浏览器打开更新历史')
+  .option('-p, --port <n>', '指定服务端口，默认 3000', parseInt)
 
 program.parse(process.argv)
+
+if (program.list) {
+  open('https://github.com/chemzqm/wept/blob/master/history.md')
+  process.exit()
+}
 
 var port = program.port || 3000
 
@@ -41,4 +48,3 @@ if (os.platform() == 'darwin' && program.open) {
 server.listen(port)
 
 console.log('listening on port ' + port);
-

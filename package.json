@@ -59,6 +59,7 @@
     "node-serial": "^0.1.1",
     "nprogress": "^0.2.0",
     "object-assign": "^4.1.0",
+    "open": "0.0.5",
     "pinch-zoom": "^0.3.8",
     "prop-detect": "^1.1.0",
     "quick-local-ip": "^1.0.7",
