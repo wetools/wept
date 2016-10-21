@@ -5,6 +5,7 @@ var program = require('commander')
 var json = require('../package.json')
 var fs = require('fs')
 var open = require('open')
+var chalk = require('chalk')
 
 program.version(json.version + ' 101400')
   .usage('[app root]')
@@ -38,6 +39,10 @@ if (folder) {
   }
 }
 
+if (!fs.existsSync('./app.json')) {
+  console.log(chalk.red('无法找到 app.json 文件，请检查'))
+  process.exit()
+}
 
 var server = require('../build/server')
 if (os.platform() == 'darwin' && program.open) {
