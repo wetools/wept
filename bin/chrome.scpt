@@ -8,6 +8,7 @@ on run port
   end if
   set findtab to false
   tell application "Google Chrome"
+    activate
     set window_list to every window
     repeat with the_window in window_list
       set tab_list to every tab in the_window
@@ -26,6 +27,9 @@ on run port
     end repeat
     if not findtab then
       open location full_path
+      tell application "System Events"
+        key code {55, 58, 34}
+      end tell
     end if
   end tell
 end run

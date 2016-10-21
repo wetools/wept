@@ -1,5 +1,8 @@
 var webpack = require('webpack')
 var config = require('./webpack.config')
+var merge = require('merge')
+
+config = merge.recursive(true, {}, config)
 
 var plugins = config.plugins = []
 

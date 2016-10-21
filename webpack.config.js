@@ -4,7 +4,7 @@ module.exports = {
     filename: 'build.js',
     path: 'public/script'
   },
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   module: {
     loaders: [
       { test: /\.js$/, exclude: /(node_modules|dest)/, loader: 'babel-loader' },
