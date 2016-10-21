@@ -2,8 +2,15 @@
 var os = require('os')
 var exec = require('child_process').exec
 var program = require('commander')
+var wept = require('../index')
 var json = require('../package.json')
 var fs = require('fs')
+var chalk = require('chalk')
+
+process.on('uncaughtException', function(err) {
+  console.log(chalk.red(err.stack))
+  process.exit()
+})
 
 program.version(json.version + ' 101400')
   .usage('[app root]')
@@ -15,30 +22,15 @@ program.parse(process.argv)
 var port = program.port || 3000
 
 var folder = program.args[0]
-if (folder) {
-  var stats
-  try {
-    stats = fs.statSync(folder)
-  } catch(e) {}
-  if (!stats || !stats.isDirectory()) {
-    console.log('指定目录不存在或者不是目录，请检查')
-    process.exit()
-  }
-  try {
-    process.chdir(folder)
-  } catch(err) {
-    console.log('切换目录失败: ' + err);
-  }
+if (!folder) {
+  folder = process.cwd()
 }
 
-
-var server = require('../build/server')
 if (os.platform() == 'darwin' && program.open) {
   exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
    //ignore error 
   })
 }
-server.listen(port)
 
-console.log('listening on port ' + port);
+wept(folder, program)
 
