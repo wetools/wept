@@ -3,6 +3,7 @@ var os = require('os')
 var exec = require('child_process').exec
 var program = require('commander')
 var json = require('../package.json')
+var updateNotifier = require('update-notifier')
 var fs = require('fs')
 var open = require('open')
 var chalk = require('chalk')
@@ -14,6 +15,8 @@ program.version(json.version + ' 101400')
   .option('-p, --port <n>', '指定服务端口，默认 3000', parseInt)
 
 program.parse(process.argv)
+
+updateNotifier({pkg: json}).notify()
 
 if (program.list) {
   open('https://github.com/chemzqm/wept/blob/master/history.md')
