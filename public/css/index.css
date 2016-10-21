@@ -289,6 +289,7 @@ body {
   text-align: center;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 .actionsheet-item:active,
 .actionsheet-item:hover {
@@ -534,6 +535,17 @@ xpopup
   -ms-transform: translateY(0);
   -o-transform: translateY(0);
   transform: translateY(0);
+}
+
+.qr-overlay .qr-head {
+  text-align: center;
+  margin: 1em 0;
+  color: #fff;
+  font-size: 20px;
+}
+.qr-overlay .qr-body img {
+  display: block;
+  margin: 2em auto;
 }
 
 /* mobile*/

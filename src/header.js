@@ -1,12 +1,15 @@
 import Bus from './bus'
+import cx from 'classnames'
 import React, {Component} from 'react'
 import ReactDom from 'react-dom'
-import cx from 'classnames'
-import {currentView} from './viewManage'
 import actionSheet from 'actionsheet'
+import {currentView} from './viewManage'
+import qrcode from './component/qrcode'
 import storage from './sdk/storage'
 import toast from './component/toast'
 import * as util from './util'
+
+let isWechat = /MicroMessenger/i.test(navigator.userAgent)
 
 class Header extends Component {
   constructor(props) {
@@ -54,6 +57,13 @@ class Header extends Component {
           window.sessionStorage.removeItem('routes')
           util.reload()
         }
+      },
+      qrcode: {
+        text: '手机访问',
+        callback: function () {
+          qrcode.show()
+        },
+        hide: isWechat
       },
       clear: {
         text: '清除数据缓存',
