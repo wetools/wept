@@ -1,3 +1,7 @@
+# 0.3.3
+
+* 移动前端依赖到 devDependencies
+
 # 0.3.2
 
 * 使用 updateNotifier 提示用户升级
