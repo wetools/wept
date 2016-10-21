@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 var config = require('./webpack.config')
 
-let plugins = config.plugins = []
+var plugins = config.plugins = []
 
 config.devtool = 'hidden-source-map'
 

@@ -14,7 +14,7 @@ process.on('uncaughtException', function(err) {
 
 program.version(json.version + ' 101400')
   .usage('[app root]')
-  .usage('[app root]')
+  .option('-o, --open', 'Open Chrome with for debugg, only works for MacOS')
   .option('-p, --port <n>', 'Set port of server, default 3000', parseInt)
 
 program.parse(process.argv)
@@ -26,7 +26,7 @@ if (!folder) {
   folder = process.cwd()
 }
 
-if (os.platform() == 'darwin') {
+if (os.platform() == 'darwin' && program.open) {
   exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
    //ignore error 
   })

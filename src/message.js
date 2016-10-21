@@ -1,3 +1,4 @@
+import Bus from './bus'
 import Nprogress from 'nprogress'
 import * as command from './command'
 import {toAppService} from './service'
@@ -14,6 +15,7 @@ window.addEventListener('message', function (e) {
   } else if (cmd == 'TO_APP_SERVICE') {
     delete data.command
     if (msg && msg.eventName == 'DOMContentLoaded') {
+      Bus.emit('ready', data.webviewID)
       Nprogress.done()
     }
     toAppService(data)

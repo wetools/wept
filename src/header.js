@@ -49,8 +49,9 @@ class Header extends Component {
     e.preventDefault()
     actionSheet({
       refresh: {
-        text: '刷新',
+        text: '回主页',
         callback: function () {
+          window.sessionStorage.removeItem('routes')
           util.reload()
         }
       },

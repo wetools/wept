@@ -1,15 +1,16 @@
-# Wept (Wechat app page development tool)
+# WEPT (Wechat app page development tool)
 
 [![NPM version](https://img.shields.io/npm/v/wept.svg?style=flat-square)](https://www.npmjs.com/package/wept)
 [![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
-[![Downloads](https://img.shields.io/npm/dm/wept.svg)](https://img.shields.io/npm/dm/wept.svg)
+[![Downloads](https://img.shields.io/npm/dm/wept.svg?style=flat-square)](https://img.shields.io/npm/dm/wept.svg)
 
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service
 层和控制层之间的相关通讯逻辑。
 
-项目已支持所有小程序 API (部分为模拟实现)，已测试可在 Mac 和 Win7 上正常使用。
+目前已支持 [所有小程序 API](https://github.com/chemzqm/wept/wiki/API-%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%8A%B6%E6%80%81)，
+支持 Mac 和 Win7 上正常使用。
 
 详细原理介绍参考：
 
@@ -18,6 +19,8 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 * [微信小程序架构分析（下）](https://zhuanlan.zhihu.com/p/22932309)
 
 [更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
+
+[小程序开发小 tips](https://github.com/chemzqm/wept/wiki/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%8F-tips)
 
 ## 主要特性
 
@@ -49,47 +52,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## 更新 WEPT
 
-首先命令行下执行
-
-    npm outdated -g --depth=0
-
-检查是否有更新，如果有的话执行 `install` 命令：
-
-    npm install wept -g
-
-## API 接口实现状态
-
-WEPT 会尽最大努力兼容小程序所有接口，如果你发现哪个接口有问题，请提 [issue](https://github.com/chemzqm/wept/issues)
-
-* ✓ app.json window 设置
-* ✓ app.json tabbar 设置
-* ✓ 页面针对 window 的 json 设置
-* ✓ 微信登录：目前返回同官方工具无 appid 状态一致，为模拟返回
-* ✓ 获取用户信息接口：返回测试用数据
-* ✓ 发起支付：没做任何判定的模拟接口
-* ✓ 设置界面标题
-* ✓ 标题栏加载动画
-* ✓ 页面跳转
-* ✓ 下拉刷新 onPullDownRefresh & stopPullDownRefresh
-* ✓ 创建动画
-* ✓ 创建 Canvas 绘画
-* ✓ 获取手机网络状态：默认返回 `WIFI`
-* ✓ 获取手机系统信息：除 version 和 model 字段外，其它从浏览器解析
-* ✓ 监听重力感应数据：支持 Safari mobile 等移动浏览器调试
-* ✓ 监听罗盘数据：支持 Safari mobile 等移动浏览器调试
-* ✓ request 请求接口
-* ✓ websocket 接口
-* ✓ 上传、下载文件：临时文件路径为 blob url，可以传给下载和预览接口
-* ✓ 保存文件
-* ✓ 选择/预览图片
-* ✓ 选择视频
-* ✓ 录音 API
-* ✓ 音频播放控制
-* ✓ 背景音乐控制
-* ✓ 获取当前位置
-* ✓ 使用原生地图查看位置
-* ✓ storage 同步 API
-* ✓ storage 异步 API
+    npm install wept@latest -g
 
 ## 感谢
 

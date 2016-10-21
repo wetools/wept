@@ -9,6 +9,18 @@ let tabViews = {}
 function onRoute() {
   util.redirectTo(curr.url)
   Bus.emit('route', getViewIds().length, curr)
+  let arr = []
+  let view = curr
+  while (view) {
+    arr.push(view.url)
+    if (view.pid != null) {
+      view = getViewById(view.pid)
+    } else {
+      view = null
+    }
+  }
+  let str = arr.reverse().join('|')
+  sessionStorage.setItem('routes', str)
 }
 
 export function redirectTo(path) {
