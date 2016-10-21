@@ -90,6 +90,9 @@ class Header extends Component {
       loading: false
     })
   }
+  onHome() {
+    util.reload()
+  }
   render() {
     let state = this.state
     let iconStyle = {
@@ -99,11 +102,18 @@ class Header extends Component {
     let clz = cx('head-option-icon', {
       'white': state.color == 'white'
     })
+    let homeClz = cx('head-home-icon', {
+      'white': state.color == 'white'
+    })
+
     return (
       <div style={{backgroundColor: state.backgroundColor}}>
-        <div onClick={this.onBack} className="head-back" style={{visibility: state.back ? 'visible' : 'hidden' }}>
+        <div onClick={this.onBack} className="head-back" style={{display: state.back ? 'flex' : 'none' }}>
           <i className="head-back-icon" style={iconStyle}></i>
           <span style={{color: state.color}}>返回</span>
+        </div>
+        <div onClick={this.onHome} className="head-home" style={{display: state.back ? 'none' : 'flex' }}>
+          <i className={homeClz}></i>
         </div>
         <h3 className="head-title" style={{color: state.color}}>
           <i className="head-title-loading" style={{display: state.loading? 'inline-block' : 'none'}}></i>
