@@ -35,7 +35,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## 安装 & 使用方法
 
-下载安装 [nodejs](https://nodejs.org), 请确保 node 版本 `> 1.0`， 执行：
+下载安装 [nodejs](https://nodejs.org) __windows 用户请确保[添加 npm 环境变量](http://jingyan.baidu.com/article/2d5afd69e243cc85a2e28efa.html)__，执行：
     
     # 可能需要 sudo
     npm install wept -g
