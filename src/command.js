@@ -187,6 +187,28 @@ export function WRITE_APP_DATA(data) {
   })
 }
 
+export function GET_APP_STORAGE(data) {
+  let res = storage.getAll()
+  window.postMessage({
+    to: data.comefrom,
+    msg: {
+      storage: res
+    },
+    command: 'SET_APP_STORAGE'
+  }, '*')
+}
+
+storage.on('change', () => {
+  let res = storage.getAll()
+  window.postMessage({
+    to: 'devtools-storage',
+    msg: {
+      storage: res
+    },
+    command: 'SET_APP_STORAGE'
+  }, '*')
+})
+
 export function send_app_data(data) {
   appData = data.appData
   window.postMessage({
