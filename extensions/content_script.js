@@ -20,6 +20,7 @@ var port = chrome.runtime.connect("", {
   name: "webview"
 })
 
+// message from devtools
 port.onMessage.addListener(function(e) {
   var o = e.to;
   if (e.to == 'contentscript' && e.command == 'SHAKE_HANDS') {
@@ -34,8 +35,10 @@ port.onMessage.addListener(function(e) {
   }
 })
 
+// message from webpage
 window.addEventListener('message', function (e) {
   var o = e.data;
+  if (typeof o !== 'object' || o === null || !o.to) return
   if (o.to == 'contentscript' && o.command == 'SHAKE_HANDS') {
     // app connected
     postMessageInit = true
