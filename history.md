@@ -1,3 +1,7 @@
+# 0.3.5
+
+* 支持 storage 面板 Chrome 开发者工具扩展
+
 # 0.3.4
 
 * 支持 appData 面板 Chrome 开发者工具扩展
