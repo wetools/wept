@@ -8,6 +8,10 @@ const SERVICE_ID = 100000
 
 Bus.once('APP_SERVICE_COMPLETE', () => {
   serviceReady = true
+  window.postMessage({
+    to: 'devtools',
+    sdkName: 'APP_SERVICE_COMPLETE'
+  }, '*')
 })
 
 function message(obj) {

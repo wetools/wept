@@ -168,10 +168,34 @@ export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
   }
 }
 
+export function GET_APP_DATA(data) {
+  window.postMessage({
+    to: data.comefrom,
+    comefrom: 'backgroundjs',
+    msg: {
+      appData: appData
+    },
+    command: 'SEND_APP_DATA',
+  }, '*')
+}
+
+export function WRITE_APP_DATA(data) {
+  appData = data.data
+  toAppService({
+    command: 'WRITE_APP_DATA',
+    msg: appData
+  })
+}
+
 export function send_app_data(data) {
   appData = data.appData
-  // TODO edit for appData
-  //console.log(appData)
+  window.postMessage({
+    to: 'devtools-appdata',
+    msg: {
+      appData: appData
+    },
+    command: 'SEND_APP_DATA'
+  }, '*')
 }
 
 export function setNavigationBarTitle(data) {

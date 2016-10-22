@@ -9,6 +9,13 @@ import tabbar from './tabbar'
 import {lifeSycleEvent} from './service'
 require('./message')
 
+let ua = navigator.userAgent
+Object.defineProperty(navigator, 'userAgent', {
+  get : function () {
+    return ua + ' weapp'
+  }
+})
+
 Nprogress.start()
 
 Bus.on('back', () => {

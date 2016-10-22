@@ -1,0 +1,21 @@
+{
+  "name": "wechat devtools extension",
+  "version": "0.1",
+  "description": "Extends the Developer Tools, adding appdata",
+  "devtools_page": "devtools.html",
+  "permissions": [
+    "background",
+    "tabs",
+    "activeTab",
+    "http://localhost/"
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [{
+    "matches": ["http://localhost/*"],
+    "js": ["content_script.js"]
+  }],
+  "manifest_version": 2
+}

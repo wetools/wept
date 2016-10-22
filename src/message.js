@@ -9,7 +9,7 @@ window.addEventListener('message', function (e) {
   let cmd = data.command
   let msg = data.msg
   // no need for contentscript
-  if (data.to == 'contentscript') return
+  if (data.to == null || data.to == 'contentscript' || /^devtools/.test(data.to)) return
   if (data.command == 'EXEC_JSSDK') {
     sdk(data)
   } else if (cmd == 'TO_APP_SERVICE') {
