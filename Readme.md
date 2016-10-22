@@ -6,10 +6,8 @@
 
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
-项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service
-层和控制层之间的相关通讯逻辑。
+项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
 
-目前已支持 [所有小程序 API](https://github.com/chemzqm/wept/wiki/API-%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%8A%B6%E6%80%81)，
 支持 Mac 和 Win7 上正常使用。
 
 详细原理介绍参考：
@@ -20,18 +18,17 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 [更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
 
-* 2016-10-22 加入 appData Chrome 插件，位于 extensions 目录下，测试中
+* 2016-10-22 加入 appData & storage panel Chrome 插件，位于 extensions 目录下，测试中
 
 [小程序开发小 tips](https://github.com/chemzqm/wept/wiki/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%8F-tips)
 
 ## 主要特性
 
-* 支持 wxml, wxss, javascript 和页面 json 自动热更新（不刷新页面）
-* 使用系统 notification 更早的提示构建和请求错误
+* 支持 wxml, wxss, javascript 和 json 保存后热更新
+* 支持系统 notification 更早提示构建和请求错误
 * 使用后台转发 XMLHttpRequest 请求，无需配置 CORS
-* 支持全部公开 API 接口，部分为模拟返回
+* 支持 [所有小程序公开 API](https://github.com/chemzqm/wept/wiki/API-%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%8A%B6%E6%80%81)
 * 可使用 Chrome 移动页面调试，可在移动端体验
-* 无需网络连接
 
 ![one](https://cloud.githubusercontent.com/assets/251450/19413094/f46273d6-9356-11e6-9216-06ef2e2e3888.gif)
 
