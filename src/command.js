@@ -198,6 +198,17 @@ export function GET_APP_STORAGE(data) {
   }, '*')
 }
 
+export function DELETE_APP_STORAGE(data) {
+  if (!data.data || !data.data.key) return console.error('key not found')
+  storage.remove(data.data.key)
+}
+
+export function SET_APP_STORAGE(data) {
+  let d = data.data
+  if (!d || !d.key || !d.type)  return console.error('wrong arguments')
+  storage.set(d.key, d.value, d.type)
+}
+
 storage.on('change', () => {
   let res = storage.getAll()
   window.postMessage({

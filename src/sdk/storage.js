@@ -38,6 +38,18 @@ let storage = {
       dataType: getType(key)
     }
   },
+  remove: function (key) {
+    if (window.localStorage == null) return console.error('localStorage not supported')
+    let str = localStorage.getItem(directory)
+    if (!str) return
+    let obj =JSON.parse(str)
+    delete obj[key]
+    localStorage.setItem(directory, JSON.stringify(obj))
+    let types = getTypes()
+    delete types[key]
+    localStorage.setItem(directory + '_type', JSON.stringify(types))
+    this.emit('change')
+  },
   clear: function () {
     if (window.localStorage == null) return console.error('localStorage not supported')
     localStorage.removeItem(directory)
