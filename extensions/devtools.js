@@ -1,12 +1,14 @@
 /*global chrome*/
 "use strict"
 
-chrome.devtools.inspectedWindow.eval(`window.__wxConfig__`, (res, isErr) => {
-  if (isErr) return
-  if (res.appid && res.directory) {
-    init()
-  }
-})
+setTimeout(function () {
+  chrome.devtools.inspectedWindow.eval(`window.__wxConfig__`, (res, isErr) => {
+    if (isErr) return
+    if (res.appid && res.directory) {
+      init()
+    }
+  })
+}, 1000)
 
 function init() {
   // 添加appdata pannel
