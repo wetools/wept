@@ -1,3 +1,7 @@
+# 0.3.8
+
+* 构建时忽略 `node_modules` 下文件
+
 # 0.3.7
 
 * 修复无法解析 wxml include 的 bug
