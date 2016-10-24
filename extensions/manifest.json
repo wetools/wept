@@ -3,6 +3,10 @@
   "version": "0.1",
   "description": "Extends the Developer Tools, adding appdata",
   "devtools_page": "devtools.html",
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "permissions": [
     "background",
     "tabs",

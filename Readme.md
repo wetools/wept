@@ -18,9 +18,9 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 [更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
 
-* 2016-10-22 加入 appData & storage panel Chrome 插件，位于 extensions 目录下，测试中
-
 [小程序开发小 tips](https://github.com/chemzqm/wept/wiki/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%8F-tips)
+
+[Chrome 开发者工具插件下载](https://chrome.google.com/webstore/detail/wechat-devtools-extension/cmpjfobofbhbghjodehbohchlghacmll)
 
 ## 主要特性
 
