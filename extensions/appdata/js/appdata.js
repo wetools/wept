@@ -29,7 +29,6 @@
     } else if ("SEND_APP_DATA" === t) {
       if (editor) {
         editor.set(e.msg.appData)
-        editor.expandAll()
       } else {
         editor = new JSONEditor(root, option, e.msg.appData)
       }
