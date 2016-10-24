@@ -1,3 +1,8 @@
+# 0.3.6
+
+* 重做 storage 面板功能，支持修改
+* 修复 babel-runtime 模块找不到
+
 # 0.3.5
 
 * 支持 storage 面板 Chrome 开发者工具扩展
