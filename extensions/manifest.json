@@ -19,7 +19,8 @@
   },
   "content_scripts": [{
     "matches": ["http://localhost/*"],
-    "js": ["content_script.js"]
+    "js": ["content_script.js"],
+    "run_at": "document_start"
   }],
   "manifest_version": 2
 }
