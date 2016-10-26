@@ -7,7 +7,7 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "upermissions": [
+  "permissions": [
     "background",
     "tabs",
     "activeTab",
