@@ -4,6 +4,8 @@
 [![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
 [![Downloads](https://img.shields.io/npm/dm/wept.svg?style=flat-square)](https://img.shields.io/npm/dm/wept.svg)
 
+**官方工具 102700 已支持自动刷新，推荐使用, 本工具更新暂停**
+
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
@@ -19,6 +21,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 [更新日志](https://github.com/chemzqm/wept/blob/master/history.md)
 
 [小程序开发小 tips](https://github.com/chemzqm/wept/wiki/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%8F-tips)
+
 
 ## 主要特性
 
