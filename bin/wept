@@ -8,7 +8,7 @@ var fs = require('fs')
 var open = require('open')
 var chalk = require('chalk')
 
-program.version(json.version + ' 101400')
+program.version(json.version + ' 103100')
   .usage('[app root]')
   .option('-o, --open', '使用 Chrome 打开小程序，仅对 Mac 有效')
   .option('-l, --list', '使用默认浏览器打开更新历史')

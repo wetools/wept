@@ -1,4 +1,3 @@
-/*global define, initMappingID*/
 "use strict";
 var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
   return typeof e
@@ -6,10 +5,13 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
   return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
 };
 ! function(e, n) {
-  n()
+  if ("object" === ("undefined" == typeof exports ? "undefined" : _typeof2(exports)) && "object" === ("undefined" == typeof module ? "undefined" : _typeof2(module))) module.exports = n();
+  else if ("function" == typeof define && define.amd) define([], n);
+  else {
+    var t = n();
+    for (var i in t)("object" === ("undefined" == typeof exports ? "undefined" : _typeof2(exports)) ? exports : e)[i] = t[i]
+  }
 }(void 0, function() {
-  var __wxConfig = window.__wxConfig
-
   return function(e) {
     function n(i) {
       if (t[i]) return t[i].exports;
@@ -32,10 +34,10 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       r = i(o),
       a = t(9),
       d = i(a),
-      u = navigator.userAgent,
-      s = true,
-      c = false;
-    s ? (0, r["default"])() : c && (0, d["default"])()
+      s = navigator.userAgent,
+      u = s.indexOf("wechatdevtools") > 0,
+      c = s.indexOf("devtoolsedit") > 0;
+    u ? (0, r["default"])() : c && (0, d["default"])()
   }, function(e, n, t) {
     function i(e) {
       return e && e.__esModule ? e : {
@@ -50,7 +52,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         command: t,
         ext: i
       };
-      o.comefrom = "webframe", o.webviewID = f.webviewID, o = JSON.parse(JSON.stringify(o)), window.parent.postMessage(o, "*")
+      o.comefrom = "webframe", o.webviewID = A.webviewID, o = JSON.parse(JSON.stringify(o)), window.parent.postMessage(o, "*")
     }
 
     function r(e) {
@@ -65,22 +67,22 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           url: location.href,
           title: document.title,
           desc: document.title,
-          img_url: document.images.length ? document.images[0].src : A.DEFAULT_SHARE_IMG_URL,
+          img_url: document.images.length ? document.images[0].src : f.DEFAULT_SHARE_IMG_URL,
           link: void 0
         };
-      o("backgroundjs", i, I, r)
+      o("backgroundjs", i, v, r)
     }
 
     function a(e, n, t) {
-      console.group(new Date + " wx." + (0, m.getSdkDisplayName)(e) + " end"), console.debug(n), console.groupEnd(), "preVerifyJSAPI" === e && ! function() {
+      p.isWeapp || (console.group(new Date + " wx." + (0, p.getSdkDisplayName)(e) + " end"), console.debug((0, p.getSdkArgs)(e, n)), console.groupEnd()), "preVerifyJSAPI" === e && ! function() {
         var e = t.args.verifyJsApiList || [],
           n = t.sdkResExt,
           i = [],
           o = [];
         e.forEach(function(e) {
-          (n.defaultPurview[e] || n.purviewFormGetA8key[e] || n.purviewFromPreVerify[e]) && (0 === o.length ? i.push(o) : 6 === o.length && (o = [], i.push(o)), o.push((0, m.getSdkDisplayName)(e)))
-        }), console.group(new Date + ""), console.table(i), console.groupEnd()
-      }(), E[e] && E[e].fn ? E[e].fn(n) : A.registerMethod[e] && r(A.registerMethod[e])
+          (n.defaultPurview[e] || n.purviewFormGetA8key[e] || n.purviewFromPreVerify[e]) && (0 === o.length ? i.push(o) : 6 === o.length && (o = [], i.push(o)), o.push((0, p.getSdkDisplayName)(e)))
+        }), p.isWeapp || (console.group(new Date + " 当前页面通过 wx.config 获取到的 JSSDK 权限如下"), console.table(i), console.groupEnd())
+      }(), E[e] && E[e].fn ? E[e].fn(n) : f.registerMethod[e] && r(f.registerMethod[e])
     }
 
     function d(e, n, t) {
@@ -89,24 +91,24 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       })
     }
 
-    function u(e) {
+    function s(e) {
       var n = (e.data, e.eventName);
-      b._subscribe[n] && b._subscribe[n](e.data)
+      M._subscribe[n] && M._subscribe[n](e.data)
     }
 
-    function s() {
-      window.WeixinJSBridge = b;
+    function u() {
+      window.WeixinJSBridge = M;
       var e = document.createEvent("UIEvent");
-      e.initEvent("WeixinJSBridgeReady", !1, !1), document.dispatchEvent(e), h["default"].register(function() {
+      e.initEvent("WeixinJSBridgeReady", !1, !1), document.dispatchEvent(e), I["default"].register(function() {
         var e = {},
           n = {};
         o("backgroundjs", e, "PULLDOWN_REFRESH", n)
-      }), o("contentscript", {}, M)
+      }), o("contentscript", {}, w)
     }
 
     function c() {
-      "complete" === document.readyState ? s() : window.addEventListener("load", function(e) {
-        s()
+      "complete" === document.readyState ? u() : window.addEventListener("load", function(e) {
+        u()
       })
     }
     Object.defineProperty(n, "__esModule", {
@@ -118,58 +120,74 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : "undefined" == typeof e ? "undefined" : _typeof2(e)
     };
     n["default"] = c;
-    var A = t(2),
-      f = t(3),
-      m = t(4),
-      p = t(5),
-      g = i(p),
-      y = t(6),
-      h = i(y),
-      I = "EXEC_JSSDK",
-      v = "TO_APP_SERVICE",
-      M = "SHAKE_HANDS",
-      w = "COMMAND_GET_TITLE";
-    (0, g["default"])(f.isAndroid ? "Android" : "iPhone");
-    var b = {},
-      E = b._debugCache = {},
-      D = b._subscribe = {};
-    b.invoke = function(e, n, t) {
-      A.NotInvokeSdk[e] || /^__sys/.test(e) || (E[e] = {
+    var f = t(2),
+      A = t(3),
+      p = t(4),
+      m = t(5),
+      y = i(m),
+      g = t(6),
+      I = i(g),
+      v = "EXEC_JSSDK",
+      h = "TO_APP_SERVICE",
+      w = "SHAKE_HANDS",
+      b = "COMMAND_GET_TITLE";
+    (0, y["default"])(A.isAndroid ? "Android" : "iPhone");
+    var M = {},
+      E = M._debugCache = {},
+      S = M._subscribe = {};
+    M.invoke = function(e, n, t) {
+      f.NotInvokeSdk[e] || /^__sys/.test(e) || (E[e] = {
         fn: t
-      }, r(e, n))
-    }, b.on = function(e, n) {
+      }, p.isWeapp || (console.group(new Date + " wx." + (0, p.getSdkDisplayName)(e) + " begin"), console.debug((0, p.getSdkArgs)(e, n)), console.groupEnd()), r(e, n))
+    }, M.on = function(e, n) {
       E[e] = {
         fn: n
       }, r(e, {}, !0)
-    }, b.call = function() {
-    }, b.log = function(e) {
+    }, M.call = function() {
+      console.error("WeixinJSBridge.call 不被支持，请参考 http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html 进行正确调用")
+    }, M.log = function(e) {
       console.log(e)
-    }, b.publish = function(e, n) {
+    }, M.publish = function(e, n) {
       var t = {
         eventName: e,
         data: n
       };
-      o("backgroundjs", t, v)
-    }, b.subscribe = function(e, n) {
-      D[e] = n
+      o("backgroundjs", t, h)
+    }, M.subscribe = function(e, n) {
+      S[e] = n
     }, window.addEventListener("message", function(e) {
-      var n = e.data,
-        t = n.msg;
-      if ("object" === ("undefined" == typeof n ? "undefined" : l(n))) {
-        var i = n.command,
-          r = n.ext;
-        if ("CUSTOM" === i) { return u(t) }
-        if ("webframe" === n.to && i && f.webviewID === n.webviewID && "INIT_DEVTOOLS_SUCCESS" !== i) {
-          if ("MSG_FROM_APPSERVICE" === i) return void u(t);
-          if ("COMMAND_GET_TITLE" === i) {
-            var a = {
-              title: document.title
-            };
-            return void o("backgroundjs", a, w)
+      var n = e.data;
+      if (n && "object" === ("undefined" == typeof n ? "undefined" : l(n))) {
+        if (n && ("geolocation" === n.module || "locationPicker" === n.module)) {
+          var t = n;
+          return "geolocation" == n.module && (t = {
+            module: "locationPicker",
+            latlng: {
+              lat: n.lat,
+              lng: n.lng
+            },
+            poiaddress: "" + n.province + n.city,
+            poiname: n.addr,
+            cityname: n.city
+          }), void alert("map handle:" + JSON.stringify(t))
+        }
+        var i = n.msg;
+        if (i) {
+          var r = n.command,
+            a = n.ext;
+          if ("CUSTOM" === r) { return s(i) }
+          if ("webframe" === n.to && r && A.webviewID === n.webviewID && "INIT_DEVTOOLS_SUCCESS" !== r) {
+            if ("MSG_FROM_APPSERVICE" === r) return void s(i);
+            if ("COMMAND_GET_TITLE" === r) {
+              var u = {
+                title: document.title
+              };
+              return void o("backgroundjs", u, b)
+            }
+            var c = i.sdkName,
+              f = i.res || {};
+            A.isAndroid && ("checkJsApi" === c ? f.checkResult = JSON.stringify(f.checkResult) : "chooseImage" === c && (f.localIds = JSON.stringify(f.localIds))), "GET_JSSDK_RES" !== r && "INVOKE_SDK" !== r || d(c, f, a), "STOP_PULL_DOWN_REFRESH" === r && I["default"].reset()
           }
-          var s = t.sdkName,
-            c = t.res || {};
-          f.isAndroid && ("checkJsApi" === s ? c.checkResult = JSON.stringify(c.checkResult) : "chooseImage" === s && (c.localIds = JSON.stringify(c.localIds))), "GET_JSSDK_RES" !== i && "INVOKE_SDK" !== i || d(s, c, r), "STOP_PULL_DOWN_REFRESH" === i && h["default"].reset()
         }
       }
     })
@@ -184,13 +202,26 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         systemLog: !0
       },
       i = {
+        appId: !0,
+        verifyAppId: !0,
+        verifyNonceStr: !0,
+        verifySignType: !0,
+        verifySignature: !0,
+        verifyTimestamp: !0,
+        origin: !0,
+        webviewId: !0,
+        __isFromOn__: !0,
+        __domain__: !0,
+        __url__: !0
+      },
+      o = {
         "menu:share:timeline": "shareTimeline",
         "menu:share:appmessage": "sendAppMessage",
         "menu:share:qq": "shareQQ",
         "menu:share:weiboApp": "shareWeiboApp",
         "menu:share:QZone": "shareQZone"
       },
-      o = {
+      r = {
         shareTimeline: "menu:share:timeline",
         sendAppMessage: "menu:share:appmessage",
         shareQQ: "menu:share:qq",
@@ -198,7 +229,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         shareQZone: "menu:share:QZone",
         config: "preVerifyJSAPI"
       },
-      r = {
+      a = {
         shareTimeline: "onMenuShareTimeline",
         sendAppMessage: "onMenuShareAppMessage",
         shareQQ: "onMenuShareQQ",
@@ -215,10 +246,12 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         openProductViewWithPid: "openProductSpecificView",
         batchAddCard: "addCard",
         batchViewCard: "openCard",
-        getBrandWCPayRequest: "chooseWXPay"
+        getBrandWCPayRequest: "chooseWXPay",
+        showPickerView: "showPickerView",
+        showDatePickerView: "showDatePickerView"
       },
-      a = "http://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRt8Qia4lv7k3M9J1SKqKCImxJCt7j9rHYicKDI45jRPBxdzdyREWnk0ia0N5TMnMfth7SdxtzMvVgXg/0";
-    n.NotInvokeSdk = t, n.registerMethod = i, n.methodTrans = o, n.DEFAULT_SHARE_IMG_URL = a, n.sdkDisplayName = r
+      d = "http://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRt8Qia4lv7k3M9J1SKqKCImxJCt7j9rHYicKDI45jRPBxdzdyREWnk0ia0N5TMnMfth7SdxtzMvVgXg/0";
+    n.NotInvokeSdk = t, n.registerMethod = o, n.methodTrans = r, n.DEFAULT_SHARE_IMG_URL = d, n.sdkDisplayName = a, n.doNotDisplayArgsConfig = i
   }, function(e, n) {
     Object.defineProperty(n, "__esModule", {
       value: !0
@@ -227,8 +260,9 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       i = t.match(/webview\/(\d*)/),
       o = i ? parseInt(t.match(/webview\/(\d*)/)[1]) : 0,
       r = t.indexOf("Android") !== -1,
-      a = t.indexOf("iPhone") !== -1;
-    n.isAndroid = r, n.isiPhone = a, n.webviewID = o
+      a = t.indexOf("iPhone") !== -1,
+      d = t.indexOf("weapp") !== -1;
+    n.isAndroid = r, n.isiPhone = a, n.webviewID = o, n.isWeapp = d
   }, function(e, n, t) {
     function i(e) {
       return r.sdkDisplayName[e] || e
@@ -237,15 +271,19 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     function o(e) {
       var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
         t = JSON.parse(JSON.stringify(n));
-      return delete t.verifyAppId, "preVerifyJSAPI" === e && (t.jsApiList = t.verifyJsApiList || [], t.jsApiList.forEach(function(e, n) {
+      if (delete t.verifyAppId, "preVerifyJSAPI" === e) t.jsApiList = t.verifyJsApiList || [], t.jsApiList.forEach(function(e, n) {
         t.jsApiList[n] = i(e)
-      }), delete t.verifyJsApiList, t.nonceStr = t.verifyNonceStr, delete t.verifyNonceStr, t.signature = t.verifySignature, delete t.verifySignature, t.timestamp = t.verifyTimestamp, delete t.verifyTimestamp, delete t.verifySignType), t
+      }), delete t.verifyJsApiList, t.verifyNonceStr && (t.nonceStr = t.verifyNonceStr), delete t.verifyNonceStr, t.verifySignature && (t.signature = t.verifySignature), delete t.verifySignature, t.verifyTimestamp && (t.timestamp = t.verifyTimestamp), delete t.verifyTimestamp, delete t.verifySignType;
+      else
+        for (var o in n) r.doNotDisplayArgsConfig[o] && delete t[o];
+      return t
     }
     Object.defineProperty(n, "__esModule", {
       value: !0
-    }), n.getSdkArgs = n.getSdkDisplayName = void 0;
-    var r = t(2);
-    n.getSdkDisplayName = i, n.getSdkArgs = o
+    }), n.isWeapp = n.getSdkArgs = n.getSdkDisplayName = void 0;
+    var r = t(2),
+      a = navigator.userAgent.indexOf("weapp") > 0;
+    n.getSdkDisplayName = i, n.getSdkArgs = o, n.isWeapp = a
   }, function(e, n) {
     function t(e) {
       var n = function() {
@@ -266,54 +304,54 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
 
     function o() {
-      if (!I) {
-        I = document.createElement("div");
+      if (!v) {
+        v = document.createElement("div");
         var e = document.createElement("i");
-        "dark" === __wxConfig.window.backgroundTextStyle ? e.style.backgroundImage = "url(" + l["default"] + ")" : e.style.backgroundImage = "url(" + f["default"] + ")", e.style.width = "32px", e.style.position = "absolute", e.style.height = "6px", e.style.left = "50%", e.style.bottom = "20px", e.style.backgroundRepeat = "no-repeat", e.style.marginLeft = "-16px", e.style.backgroundSize = "cover", I.appendChild(e), I.style.width = "100%", I.style.position = "fixed", I.style.top = "0px", I.style.backgroundColor = __wxConfig.window.backgroundColor, document.body.insertBefore(I, document.body.firstChild)
+        "dark" === __wxConfig.window.backgroundTextStyle ? e.style.backgroundImage = "url(" + l["default"] + ")" : e.style.backgroundImage = "url(" + A["default"] + ")", e.style.width = "32px", e.style.position = "absolute", e.style.height = "6px", e.style.left = "50%", e.style.bottom = "20px", e.style.backgroundRepeat = "no-repeat", e.style.marginLeft = "-16px", e.style.backgroundSize = "cover", v.appendChild(e), v.style.width = "100%", v.style.position = "fixed", v.style.top = "0px", v.style.backgroundColor = __wxConfig.window.backgroundColor, document.body.insertBefore(v, document.body.firstChild)
       }
     }
 
     function r() {
       window.addEventListener("touchstart", function(e) {
-        0 == window.scrollY && (o(), g = !0, y = e.touches[0].pageY, window.document.body.style.transition = "all linear 0", I.style.transition = "all linear 0")
+        0 == window.scrollY && (o(), y = !0, g = e.touches[0].pageY, window.document.body.style.transition = "all linear 0", v.style.transition = "all linear 0")
       }, !0)
     }
 
     function a() {
       window.addEventListener("touchmove", function(e) {
-        g && __wxConfig.window.enablePullDownRefresh && (h = e.touches[0].pageY - y, h = Math.max(0, h), h = Math.min(m, h), window.document.body.style.marginTop = h + "px", I.style.height = h + "px")
+        y && __wxConfig.window.enablePullDownRefresh && (I = e.touches[0].pageY - g, I = Math.max(0, I), I = Math.min(p, I), window.document.body.style.marginTop = I + "px", v.style.height = I + "px")
       })
     }
 
     function d() {
       window.addEventListener("touchend", function(e) {
-        g = !1, h > p ? ("function" == typeof v && v(), h = p, window.document.body.style.marginTop = h + "px", I.style.height = h + "px", setTimeout(u, 3e3)) : u()
+        y = !1, I > m ? ("function" == typeof h && h(), I = m, window.document.body.style.marginTop = I + "px", v.style.height = I + "px", setTimeout(s, 3e3)) : s()
       })
     }
 
-    function u() {
-      window.document.body.style.transition = "all linear 0.3s", window.document.body.style.marginTop = "0px", I && (I.style.transition = "all linear 0.3s", I.style.height = "0px")
+    function s() {
+      window.document.body.style.transition = "all linear 0.3s", window.document.body.style.marginTop = "0px", v && (v.style.transition = "all linear 0.3s", v.style.height = "0px")
     }
     Object.defineProperty(n, "__esModule", {
       value: !0
     });
-    var s = t(3),
+    var u = t(3),
       c = t(7),
       l = i(c),
-      A = t(8),
-      f = i(A),
-      m = 100,
-      p = 50,
-      g = !1,
-      y = 0,
-      h = 0,
-      I = null,
-      v = null;
+      f = t(8),
+      A = i(f),
+      p = 100,
+      m = 50,
+      y = !1,
+      g = 0,
+      I = 0,
+      v = null,
+      h = null;
     n["default"] = {
       register: function(e) {
-        (s.isAndroid || s.isiPhone) && (v = e, r(), a(), d())
+        u.isWeapp && (u.isAndroid || u.isiPhone) && (h = e, r(), a(), d())
       },
-      reset: u
+      reset: s
     }
   }, function(e, n) {
     Object.defineProperty(n, "__esModule", {
@@ -336,11 +374,11 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
 
     function i() {
       var e = Math.random();
-      return d[e] ? initMappingID() : e
+      return l[e] ? initMappingID() : e
     }
 
     function o() {
-      window.EditBridge = u;
+      window.EditBridge = f;
       var e = document.createEvent("UIEvent");
       e.initEvent("EditBridgeReady", !1, !1), document.dispatchEvent(e), t("contentscript", "SHAKE_HANDS", {})
     }
@@ -352,93 +390,109 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
     Object.defineProperty(n, "__esModule", {
       value: !0
-    }), n["default"] = r, window.addEventListener("message", function(e) {
-      var n = e.data,
-        t = n.to;
-      if ("webframe" === t) {
-        var i = n.command,
-          o = n.msg,
-          r = n.ext;
-        if ("RETURN_RES" === i) {
-          var u = parseInt(o.ret),
-            s = r.callID;
-          0 === u ? d[s](null, o.res) : d[s](o.ret, {})
-        } else if ("FILE_CHANGE" === i) {
-          var c = o.eventType,
-            l = o.fileName;
-          a && a(c, l)
+    });
+    var a = "function" == typeof Symbol && "symbol" === _typeof2(Symbol.iterator) ? function(e) {
+      return "undefined" == typeof e ? "undefined" : _typeof2(e)
+    } : function(e) {
+      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : "undefined" == typeof e ? "undefined" : _typeof2(e)
+    };
+    n["default"] = r, window.addEventListener("message", function(e) {
+      var n = e.data;
+      if (n && "object" === ("undefined" == typeof n ? "undefined" : a(n))) {
+        var t = n.to;
+        if ("webframe" === t) {
+          var i = n.command,
+            o = n.msg,
+            r = n.ext;
+          if ("RETURN_RES" === i) {
+            var f = parseInt(o.ret),
+              A = r.callID;
+            0 === f ? l[A](null, o.res) : l[A](o.ret, {})
+          } else if ("FILE_CHANGE" === i) {
+            var p = o.eventType,
+              m = o.fileName,
+              y = o.info;
+            d && d(p, m, y)
+          } else "WINDOW_CHANGE" === i ? s && s(o.eventType) : "WEBVIEW_SHOW_CHANGE" === i ? u && u(o.editWebview) : "OPEN_FILE" === i && c && c(o)
         }
       }
     });
-    var a, d = {},
-      u = {};
-    u.on = function(e, n) {
-      "FILE_CHANGE" === e && (a = n)
-    }, u.getFileList = function(e, n) {
+    var d, s, u, c, l = {},
+      f = {};
+    f.on = function(e, n) {
+      "FILE_CHANGE" === e && (d = n), "WINDOW_CHANGE" === e && (s = n), "WEBVIEW_SHOW_CHANGE" === e && (u = n), "OPEN_FILE" === e && (c = n)
+    }, f.getFileList = function(e, n) {
       var o = void 0,
         r = void 0;
       n ? (o = e, r = n) : (o = {}, r = e);
       var a = i();
-      d[a] = r, t("backgroundjs", "GET_FILE_LIST", {
+      l[a] = r, t("backgroundjs", "GET_FILE_LIST", {
         options: o
       }, {
         callID: a
       })
-    }, u.getFile = function(e, n) {
+    }, f.getFile = function(e, n) {
       var o = i();
-      d[o] = n, t("backgroundjs", "GET_FILE_DATA", {
+      l[o] = n, t("backgroundjs", "GET_FILE_DATA", {
         path: e
       }, {
         callID: o
       })
-    }, u.saveFile = function(e, n, o) {
+    }, f.saveFile = function(e, n, o) {
       var r = i();
-      d[r] = o, t("backgroundjs", "SAVE_FILE_DATA", {
+      l[r] = o, t("backgroundjs", "SAVE_FILE_DATA", {
         path: e,
         data: n
       }, {
         callID: r
       })
-    }, u.addFile = function(e, n) {
+    }, f.addFile = function(e, n) {
       var o = i();
-      d[o] = n, t("backgroundjs", "ADD_FILE", {
+      l[o] = n, t("backgroundjs", "ADD_FILE", {
         path: e
       }, {
         callID: o
       })
-    }, u.delFile = function(e, n) {
+    }, f.delFile = function(e, n) {
       var o = i();
-      d[o] = n, t("backgroundjs", "DEL_FILE", {
+      l[o] = n, t("backgroundjs", "DEL_FILE", {
         path: e
       }, {
         callID: o
       })
-    }, u.rename = function(e, n, o) {
+    }, f.rename = function(e, n, o) {
       var r = i();
-      d[r] = o, t("backgroundjs", "RENAME_FILE", {
+      l[r] = o, t("backgroundjs", "RENAME_FILE", {
         oldPath: e,
         newPath: n
       }, {
         callID: r
       })
-    }, u.mkdir = function(e, n) {
+    }, f.mkdir = function(e, n) {
       var o = i();
-      d[o] = n, t("backgroundjs", "MAKE_DIR", {
+      l[o] = n, t("backgroundjs", "MAKE_DIR", {
         path: e
       }, {
         callID: o
       })
-    }, u.rmdir = function(e, n) {
+    }, f.rmdir = function(e, n) {
       var o = i();
-      d[o] = n, t("backgroundjs", "RM_DIR", {
+      l[o] = n, t("backgroundjs", "RM_DIR", {
         path: e
       }, {
         callID: o
       })
-    }, u.getProjectInfo = function(e) {
+    }, f.getProjectInfo = function(e) {
       var n = i();
-      d[n] = e, t("backgroundjs", "GET_PROJECT_INFO", {}, {
+      l[n] = e, t("backgroundjs", "GET_PROJECT_INFO", {}, {
         callID: n
+      })
+    }, f.setEditWebview = function(e, n) {
+      var o = i();
+      l[o] = n, t("backgroundjs", "SET_EDIT_WEBVIEW", {
+        editWebview: e
+      }, {
+        callID: o
       })
     }
   }])
