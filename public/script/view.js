@@ -2516,8 +2516,8 @@ window.exparser.registerElement({
         var n = e.actions,
           i = e.reserve;
         t.actions = n, t.actionsChanged(n, i)
-      }), WeixinJSBridge.subscribe("invokeCanvasToDataUrl", function() {
-        var t = e.$.canvas.toDataURL().replace(/^data:image\/(jpg|png);base64,/, "");
+      }), WeixinJSBridge.subscribe("invokeCanvasToDataUrl_" + t._canvasNumber, function(obj) {
+        var t = e.$.canvas.toDataURL()
         WeixinJSBridge.publish("onCanvasToDataUrl_" + e._canvasNumber, {
           dataUrl: t
         })

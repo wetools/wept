@@ -22,7 +22,7 @@ import Preview from './component/preview'
 import confirm from './component/confirm'
 import Toast from './component/toast'
 import mask from './component/mask'
-import {getRedirectData, validPath} from './util'
+import {getRedirectData, validPath, dataURItoBlob} from './util'
 
 let appData = {} //eslint-disable-line
 let fileIndex = 0
@@ -708,6 +708,14 @@ export function getImageInfo(data) {
     onSuccess(data, res)
   }, err => {
     onError(data, err.message)
+  })
+}
+
+export function base64ToTempFilePath(data) {
+  let uri = data.args.base64Data
+  // args.canvasId
+  onSuccess(data, {
+    filePath: dataURItoBlob(uri)
   })
 }
 
