@@ -251,8 +251,22 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           p(toResult({
             errMsg: "clearStorage:ok"
           }, e))
+        } else if (e.sdkName == 'removeStorageSync') {
+          if (args.key == null || args.key == '') {
+            return p(toResult({
+              errMsg: "removeStorage:fail"
+            }), 'GET_ASSDK_RES')
+          }
+          storage.remove(args.key)
+          p(toResult({
+            errMsg: "removeStorage:ok"
+          }, e, 'GET_ASSDK_RES'))
+        } else if (e.sdkName == 'getStorageInfoSync') {
+          var obj = storage.info()
+          obj.errMsg =  "getStorageInfoSync:ok"
+          p(toResult(obj, e, 'GET_ASSDK_RES'))
         } else {
-          console.log('Ignored sdk call ' + JSON.stringify(o))
+          console.log('Ignored sdk call ' + e.sdkName)
         }
         //var t = "____sdk____" + JSON.stringify(e),
         //  n = prompt(t);

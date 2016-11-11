@@ -645,12 +645,24 @@ export function getSavedFileInfo(data) {
 
 export function openDocument(data) {
   let args = data.args
-  if (!args.filePath) return onError(data, 'filePath required')
+  if (!args.filePath) return onError(data, 'filePath required for openDocument')
   console.warn('WEPT 中没有判定文件格式，返回为模拟返回')
   onSuccess(data)
   confirm(`<div>openDocument</div> ${args.filePath}`, true).then(() => {
   }, () => {
   })
+}
+
+export function getStorageInfo(data) {
+  let info = storage.info()
+  onSuccess(data, info)
+}
+
+export function removeStorage(data) {
+  let args = data.args
+  if (args.key == null) return onError(data, 'key required for removeStorage')
+  let o = storage.remove(args.key)
+  onSuccess(data, {data: o})
 }
 
 function onError(data, message) {

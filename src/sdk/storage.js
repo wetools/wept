@@ -1,6 +1,18 @@
 import Emitter from 'emitter'
 
+// 5MB
+const LIMIT_SIZE = 5*1024
+
 let directory = window.__wxConfig__.directory
+
+function currentSize() {
+  var total = 0
+  for(var x in localStorage) {
+    var amount = (localStorage[x].length * 2) / 1024
+    total += amount
+  }
+  return Math.ceil(total)
+}
 
 function getType(key) {
   let str= localStorage.getItem(directory + '_type')
@@ -43,12 +55,14 @@ let storage = {
     let str = localStorage.getItem(directory)
     if (!str) return
     let obj =JSON.parse(str)
+    let data = obj[key]
     delete obj[key]
     localStorage.setItem(directory, JSON.stringify(obj))
     let types = getTypes()
     delete types[key]
     localStorage.setItem(directory + '_type', JSON.stringify(types))
     this.emit('change')
+    return data
   },
   clear: function () {
     if (window.localStorage == null) return console.error('localStorage not supported')
@@ -68,6 +82,16 @@ let storage = {
       }
     })
     return res
+  },
+  info: function () {
+    if (window.localStorage == null) return console.error('localStorage not supported')
+    let str = localStorage.getItem(directory)
+    let obj = str ? JSON.parse(str) : {}
+    return {
+      keys: Object.keys(obj),
+      limitSize: LIMIT_SIZE,
+      currentSize: currentSize()
+    }
   }
 }
 
