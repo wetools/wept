@@ -14,6 +14,7 @@ import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import * as fileList from './sdk/fileList'
 import toast from './sdk/toast'
+import image from './sdk/image'
 import modal from './sdk/modal'
 import actionSheet from './sdk/actionsheet'
 import {once} from './event'
@@ -719,6 +720,15 @@ export function showActionSheet(data) {
   args.itemList = args.itemList.slice(0, 6)
   actionSheet(args).then(res => {
     onSuccess(data, res)
+  })
+}
+
+export function getImageInfo(data) {
+  if (requiredArgs(['src'], data)) return
+  image(data.args.src).then(res => {
+    onSuccess(data, res)
+  }, err => {
+    onError(data, err.message)
   })
 }
 
