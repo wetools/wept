@@ -5,9 +5,14 @@ import {toAppService} from './service'
 import {currentView} from './viewManage'
 
 window.addEventListener('message', function (e) {
-  let data = e.data
+  let data = e.data || {}
   let cmd = data.command
   let msg = data.msg
+  // location picker of map
+  if (data.module == 'locationPicker') {
+    currentView().setLocation(data)
+    return
+  }
   // no need for contentscript
   if (data.to == null || data.to == 'contentscript' || /^devtools/.test(data.to)) return
   if (data.command == 'EXEC_JSSDK') {

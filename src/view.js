@@ -2,6 +2,10 @@ import merge from 'merge'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
 
+function isMap(path) {
+  return /^http(s)?:\/\/(apis\.map|3gimg\.qq\.com)/.test(path)
+}
+
 export default class View extends Emitter {
   constructor(path) {
     if (!path) throw new Error('path required for view')
@@ -11,6 +15,7 @@ export default class View extends Emitter {
     this.url = path
     this.path = o.path
     this.query = o.query
+    this.isMap = isMap(path)
     let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
     let width = document.body.clientWidth
@@ -29,6 +34,15 @@ export default class View extends Emitter {
         return self.getConfig()
       }
     })
+  }
+  setLocation(data) {
+    this.location = {
+      name: data.poiname,
+      address: data.poiaddress,
+      latitude: data.latlng.lat,
+      longitude: data.latlng.lng
+    }
+    console.log(this.location)
   }
   getConfig() {
     let win = window.__wxConfig__.window

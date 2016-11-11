@@ -32,7 +32,7 @@ let fileStore = {}
 
 // fix incorrect height when keyboard is up
 let height = 0
-document.addEventListener('DOMContentLoaded', function(e) { 
+document.addEventListener('DOMContentLoaded', function() { 
   height = Math.max(doc.clientHeight, window.innerHeight || 0)
 })
 
@@ -80,6 +80,8 @@ export function stopPullDownRefresh(data) {
       command: "STOP_PULL_DOWN_REFRESH"
     })
   }
+  data.sdkName = 'stopPullDownRefresh'
+  onSuccess(data)
 }
 
 // publish event to views
@@ -390,6 +392,29 @@ export function openLocation(data) {
   onSuccess(data, {
     latitude: args.latitude,
     longitude: args.longitude
+  })
+}
+
+export function chooseLocation(data) {
+  let url = `https://3gimg.qq.com/lightmap/components/locationPicker2/index.html?search=1&type=1&coord=39.90403%2C116.407526&key=JMRBZ-R4HCD-X674O-PXLN4-B7CLH-42BSB&referer=wxdevtools`
+  viewManage.openExternal(url)
+  Nprogress.done()
+  let called = false
+  Bus.once('back',() => {
+    if (!called) {
+      called = true
+      onCancel(data)
+    }
+  })
+  Bus.once('location', location => {
+    if (!called) {
+      called = true
+      if (location) {
+        onSuccess(data, location)
+      } else {
+        onCancel(data)
+      }
+    }
   })
 }
 
@@ -721,11 +746,24 @@ function onError(data, message) {
 }
 
 function onSuccess(data, extra = {}) {
+  if (!data.sdkName) throw new Error('sdkName not found')
   let obj = {
     command: "GET_ASSDK_RES",
     ext: merge.recursive(true, {}, data),
     msg: {
       errMsg: `${data.sdkName}:ok`
+    }
+  }
+  obj.msg = merge.recursive(true, obj.msg, extra)
+  toAppService(obj)
+}
+
+function onCancel(data, extra = {}) {
+  let obj = {
+    command: "GET_ASSDK_RES",
+    ext: merge.recursive(true, {}, data),
+    msg: {
+      errMsg: `${data.sdkName}:cancel`
     }
   }
   obj.msg = merge.recursive(true, obj.msg, extra)

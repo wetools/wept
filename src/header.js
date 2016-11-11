@@ -20,7 +20,9 @@ class Header extends Component {
       color: win.navigationBarTextStyle,
       title: win.navigationBarTitleText,
       loading: false,
-      back: false
+      backText: '返回',
+      back: false,
+      sendText: false
     }
     Bus.on('route', this.reset.bind(this))
   }
@@ -34,19 +36,38 @@ class Header extends Component {
       back: false
     }
     let curr = currentView()
+
     let winConfig = win.pages[curr.path] || {}
-    let state = {
-      backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
-      color: winConfig.navigationBarTextStyle || d.color,
-      title: winConfig.navigationBarTitleText || d.title,
-      loading: false,
-      back: curr.pid != null
+    if (curr.isMap) {
+      this.setState({
+        backgroundColor: 'rgb(0, 0, 0)',
+        color: '#ffffff',
+        title: '位置',
+        loading: false,
+        backText: '取消',
+        sendText: true
+      })
+    } else {
+      this.setState({
+        backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
+        color: winConfig.navigationBarTextStyle || d.color,
+        title: winConfig.navigationBarTitleText || d.title,
+        loading: false,
+        backText: '返回',
+        sendText: false,
+        back: curr.pid != null
+      })
     }
-    this.setState(state)
   }
   onBack(e) {
     e.preventDefault()
     Bus.emit('back')
+  }
+  onSend(e) {
+    // TODO send location
+    e.stopPropagation()
+    Bus.emit('location', currentView().location)
+    this.onBack(e)
   }
   onOptions(e) {
     e.preventDefault()
@@ -119,8 +140,10 @@ class Header extends Component {
     return (
       <div style={{backgroundColor: state.backgroundColor}}>
         <div onClick={this.onBack} className="head-back" style={{display: state.back ? 'flex' : 'none' }}>
-          <i className="head-back-icon" style={iconStyle}></i>
-          <span style={{color: state.color}}>返回</span>
+          {do {
+            if (!state.sendText) <i className="head-back-icon" style={iconStyle}></i>
+          }}
+          <span style={{color: state.color}}>{state.backText}</span>
         </div>
         <div onClick={this.onHome} className="head-home" style={{display: state.back ? 'none' : 'flex' }}>
           <i className={homeClz}></i>
@@ -130,7 +153,10 @@ class Header extends Component {
           <span>{state.title}</span>
         </h3>
         <div className="head-option" onClick={this.onOptions.bind(this)}>
-          <i className={clz}></i>
+          {do {
+            if (state.sendText) <div onClick={this.onSend.bind(this)}>发送</div>
+            else <i className={clz}></i>
+          }}
         </div>
       </div>
     )
