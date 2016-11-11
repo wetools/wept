@@ -41,6 +41,7 @@
     "node-serial": "^0.1.1",
     "object-assign": "^4.1.0",
     "open": "0.0.5",
+    "request-component": "0.0.4",
     "throttleit": "^1.0.0",
     "update-notifier": "^1.0.2"
   },
@@ -97,6 +98,7 @@
     "file-picker": "component-file-picker",
     "upload": "component-upload",
     "query": "component-query",
-    "events": "component-events"
+    "events": "component-events",
+    "request": "request-component"
   }
 }

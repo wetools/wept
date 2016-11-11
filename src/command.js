@@ -12,6 +12,7 @@ import {toAppService} from './service'
 import record from './sdk/record'
 import Compass from './sdk/compass'
 import storage from './sdk/storage'
+import * as fileList from './sdk/fileList'
 import {once} from './event'
 import Preview from './component/preview'
 import confirm from './component/confirm'
@@ -612,6 +613,36 @@ export function downloadFile(data) {
   }
   xhr.setRequestHeader('X-Remote', args.url);
   xhr.send(null)
+}
+
+export function getSavedFileList(data) {
+  fileList.getFileList().then(list => {
+    onSuccess('getSavedFileList', data, {
+      fileList: list
+    })
+  }, err => {
+    onError('getSavedFileList', data, err.message)
+  })
+}
+
+export function removeSavedFile(data) {
+  let args = data.args
+  if (!args.filePath) return onError('removeSavedFile', data, 'filePath required')
+  fileList.removeFile(args.filePath).then(() => {
+    onSuccess('removeSavedFile', data, {})
+  }, err => {
+    onError('removeSavedFile', data, err.message)
+  })
+}
+
+export function getSavedFileInfo(data) {
+  let args = data.args
+  if (!args.filePath) return onError('getSavedFileInfo', data, 'filePath required')
+  fileList.getFileInfo(args.filePath).then(info => {
+    onSuccess('getSavedFileInfo', data, info)
+  }, err => {
+    onError('getSavedFileInfo', data, err.message)
+  })
 }
 
 function onError(name, data, message) {

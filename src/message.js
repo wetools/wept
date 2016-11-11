@@ -39,7 +39,9 @@ function sdk(data) {
     let n = msg.sdkName
     if (n == 'onKeyboardComplete') {
       showConsole(msg.sdkName, 'REGISTER_SDK')
-    } else if (n == 'getPublicLibVersion') {
+    } else if (n == 'getPublicLibVersion'
+            || n == 'onTextAreaHeightChange'
+            || n == 'onKeyboardShow') {
       //do nothing
     } else {
       console.warn(`Ignored EXEC_JSSDK ${JSON.stringify(data.msg)}`)
