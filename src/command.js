@@ -24,19 +24,9 @@ import Toast from './component/toast'
 import mask from './component/mask'
 import {getRedirectData, validPath} from './util'
 
-const doc = document.documentElement
-
-
 let appData = {} //eslint-disable-line
 let fileIndex = 0
 let fileStore = {}
-
-// fix incorrect height when keyboard is up
-let height = 0
-document.addEventListener('DOMContentLoaded', function() { 
-  height = Math.max(doc.clientHeight, window.innerHeight || 0)
-})
-
 
 export function getPublicLibVersion() {
   //ignore
@@ -355,17 +345,6 @@ export function getNetworkType(data) {
   let type = navigator.connection == null ? 'WIFI' : navigator.connection.type
   onSuccess(data, {
     networkType: type
-  })
-}
-
-export function getSystemInfo(data) {
-  onSuccess(data, {
-    model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
-    pixelRatio: window.devicePixelRatio || 1,
-    windowWidth: Math.max(doc.clientWidth, window.innerWidth || 0),
-    windowHeight: Math.max(height, Math.max(doc.clientHeight, window.innerHeight || 0)),
-    language: window.navigator.userLanguage || window.navigator.language,
-    version: "6.3.9"
   })
 }
 

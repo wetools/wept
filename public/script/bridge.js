@@ -24,6 +24,17 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
   }
 }(void 0, function() {
 
+  function systemInfo() {
+     return {
+      model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
+      pixelRatio: window.devicePixelRatio || 1,
+      windowWidth: window.top.screen.width || 0,
+      windowHeight: window.top.screen.height || 0,
+      language: window.navigator.userLanguage || window.navigator.language,
+      version: "6.3.9"
+    }
+  }
+
   function toResult(msg, data, command) {
     let obj = {
       ext: data,
@@ -265,6 +276,10 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           var obj = storage.info()
           obj.errMsg =  "getStorageInfoSync:ok"
           p(toResult(obj, e, 'GET_ASSDK_RES'))
+        } else if (e.sdkName == 'getSystemInfo'){
+          let info = systemInfo()
+          info.errMsg = "getSystemInfo:ok"
+          p(toResult(info, e, 'GET_ASSDK_RES'))
         } else {
           console.log('Ignored sdk call ' + e.sdkName)
         }
