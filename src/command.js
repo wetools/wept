@@ -13,10 +13,13 @@ import record from './sdk/record'
 import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import * as fileList from './sdk/fileList'
+import toast from './sdk/toast'
+import modal from './sdk/modal'
+import actionSheet from './sdk/actionsheet'
 import {once} from './event'
 import Preview from './component/preview'
 import confirm from './component/confirm'
-import toast from './component/toast'
+import Toast from './component/toast'
 import mask from './component/mask'
 import {getRedirectData, validPath} from './util'
 
@@ -161,7 +164,7 @@ export function APP_SERVICE_COMPLETE(data) { //eslint-disable-line
         mask.hide()
         if (err) {
           console.error(err.stack)
-          toast(err.message, {type: 'error'})
+          Toast(err.message, {type: 'error'})
           return
         }
       })
@@ -625,7 +628,7 @@ export function getSavedFileList(data) {
 
 export function removeSavedFile(data) {
   let args = data.args
-  if (!args.filePath) return onError(data, 'filePath required')
+  if (requiredArgs(['filePath'], data)) return
   fileList.removeFile(args.filePath).then(() => {
     onSuccess(data, {})
   }, err => {
@@ -635,7 +638,7 @@ export function removeSavedFile(data) {
 
 export function getSavedFileInfo(data) {
   let args = data.args
-  if (!args.filePath) return onError(data, 'filePath required')
+  if (requiredArgs(['filePath'], data)) return
   fileList.getFileInfo(args.filePath).then(info => {
     onSuccess(data, info)
   }, err => {
@@ -645,7 +648,7 @@ export function getSavedFileInfo(data) {
 
 export function openDocument(data) {
   let args = data.args
-  if (!args.filePath) return onError(data, 'filePath required for openDocument')
+  if (requiredArgs(['filePath'], data)) return
   console.warn('WEPT 中没有判定文件格式，返回为模拟返回')
   onSuccess(data)
   confirm(`<div>openDocument</div> ${args.filePath}`, true).then(() => {
@@ -660,9 +663,49 @@ export function getStorageInfo(data) {
 
 export function removeStorage(data) {
   let args = data.args
-  if (args.key == null) return onError(data, 'key required for removeStorage')
+  if (requiredArgs(['key'], data)) return
+
   let o = storage.remove(args.key)
   onSuccess(data, {data: o})
+}
+
+export function showToast(data) {
+  if (requiredArgs(['title'], data)) return
+  toast.show(data.args)
+  onSuccess(data)
+}
+
+export function hideToast(data) {
+  toast.hide()
+  onSuccess(data)
+}
+
+export function showModal(data) {
+  if (requiredArgs(['title', 'content'], data)) return
+  modal(data.args).then(confirm => {
+    onSuccess(data, { confirm })
+  })
+}
+
+export function showActionSheet(data) {
+  let args = data.args
+  if (requiredArgs(['itemList'], data)) return
+  if (!Array.isArray(args.itemList)) return onError(data, 'itemList must be Array')
+  args.itemList = args.itemList.slice(0, 6)
+  actionSheet(args).then(res => {
+    onSuccess(data, res)
+  })
+}
+
+function requiredArgs(keys, data) {
+  let args = data.args
+  for (var i = 0, l = keys.length; i < l; i++) {
+    if (!args.hasOwnProperty(keys[i])) {
+      onError(data, `key ${keys[i]} required for ${data.sdkName}`)
+      return true
+    }
+  }
+  return false
 }
 
 function onError(data, message) {
