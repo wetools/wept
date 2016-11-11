@@ -1,5 +1,4 @@
 import merge from 'merge'
-import Nprogress from 'nprogress'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
 
@@ -14,7 +13,9 @@ export default class View extends Emitter {
     this.query = o.query
     let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
-    let url = external ? path : `/app/${o.path}.wxml`
+    let width = document.body.clientWidth
+    let ratio = window.devicePixelRatio
+    let url = external ? path : `/app/${o.path}.wxml?w=${width}&r=${ratio}`
     this.el = createFrame(`view-${id}`, url, false, root)
     let ua = window.navigator.userAgent
     Object.defineProperty(this.el.contentWindow.navigator, 'userAgent', {
