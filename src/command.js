@@ -44,9 +44,9 @@ export function systemLog() {
 
 export function requestPayment(data) {
   confirm('确认支付吗？').then(() => {
-    onSuccess('requestPayment', data)
+    onSuccess(data)
   }, () => {
-    onError('requestPayment', data)
+    onError(data)
   })
 }
 
@@ -57,7 +57,7 @@ export function previewImage(data) {
   let preview = new Preview(urls, {})
   preview.show()
   preview.active(current)
-  onSuccess('previewImage', data)
+  onSuccess(data)
 }
 
 export function PULLDOWN_REFRESH(data) {
@@ -254,9 +254,7 @@ export function chooseImage(data) {
       fileStore[blob] = file
       return blob
     })
-    onSuccess('chooseImage', data, {
-      tempFilePaths: paths
-    })
+    onSuccess(data, { tempFilePaths: paths })
   })
 }
 
@@ -270,7 +268,7 @@ export function chooseVideo(data) {
     video.onloadedmetadata = function () {
       let duration = video.duration
       let size = files[0].size
-      onSuccess('chooseVideo', data, {
+      onSuccess(data, {
         duration,
         size,
         height: video.videoHeight,
@@ -284,23 +282,23 @@ export function chooseVideo(data) {
 
 export function saveFile(data) {
   let blob = data.args.tempFilePath
-  if (!blob) return onError('saveFile', data, 'file path required')
+  if (!blob) return onError(data, 'file path required')
   let file = fileStore[blob]
-  if (!file) return onError('saveFile', data, 'file not found')
+  if (!file) return onError(data, 'file not found')
   let upload = new Upload(file)
   upload.to('/upload')
   upload.on('end', xhr => {
     if (xhr.status / 100 | 0 == 2) {
       let result = JSON.parse(xhr.responseText)
-      onSuccess('saveFile', data, {
+      onSuccess(data, {
         savedFilePath: result.file_path
       })
     } else {
-      onError('saveFile', data, `request error ${xhr.status}`)
+      onError(data, `request error ${xhr.status}`)
     }
   })
   upload.on('error', err => {
-    onError('saveFile', data, err.message)
+    onError(data, err.message)
   })
 }
 
@@ -349,13 +347,13 @@ export function enableAccelerometer() {
 
 export function getNetworkType(data) {
   let type = navigator.connection == null ? 'WIFI' : navigator.connection.type
-  onSuccess('getNetworkType', data, {
+  onSuccess(data, {
     networkType: type
   })
 }
 
 export function getSystemInfo(data) {
-  onSuccess('getSystemInfo', data, {
+  onSuccess(data, {
     model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
     pixelRatio: window.devicePixelRatio || 1,
     windowWidth: Math.max(doc.clientWidth, window.innerWidth || 0),
@@ -369,13 +367,13 @@ export function getLocation(data) {
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(position => {
       let coords = position.coords
-      onSuccess('getLocation', data, {
+      onSuccess(data, {
         longitude: coords.longitude,
         latitude: coords.latitude
       })
     })
   } else {
-    onError('getLocation', data, {
+    onError(data, {
       message: 'geolocation not supported'
     })
   }
@@ -386,7 +384,7 @@ export function openLocation(data) {
   let url = "http://apis.map.qq.com/tools/poimarker?type=0&marker=coord:" + args.latitude + "," + args.longitude + "&key=JMRBZ-R4HCD-X674O-PXLN4-B7CLH-42BSB&referer=wxdevtools"
   viewManage.openExternal(url)
   Nprogress.done()
-  onSuccess('openLocation', data, {
+  onSuccess(data, {
     latitude: args.latitude,
     longitude: args.longitude
   })
@@ -396,18 +394,18 @@ export function setStorage(data) {
   let args = data.args
   storage.set(args.key, args.data, args.dataType)
   if (args.key == null || args.key == '') {
-    return onError('setStorage', data, 'key required')
+    return onError(data, 'key required')
   }
-  onSuccess('setStorage', data)
+  onSuccess(data)
 }
 
 export function getStorage(data) {
   let args = data.args
   if (args.key == null || args.key == '') {
-    return onError('getStorage', data, 'key required')
+    return onError(data, 'key required')
   }
   let res = storage.get(args.key)
-  onSuccess('getStorage', data, {
+  onSuccess(data, {
     data: res.data,
     dataType: res.dataType
   })
@@ -415,18 +413,18 @@ export function getStorage(data) {
 
 export function clearStorage(data) {
   storage.clear()
-  onSuccess('clearStorage', data)
+  onSuccess(data)
 }
 
 export function startRecord(data) {
   record.startRecord({
     success: url => {
-      onSuccess('startRecord', data, {
+      onSuccess(data, {
         tempFilePath: url
       })
     },
     fail: err => {
-      return onError('startRecord', data, err.message)
+      return onError(data, err.message)
     }
   }).catch((e) => {
     console.warn(`Audio record failed: ${e.message}`)
@@ -453,10 +451,10 @@ export function playVoice(data) {
     audio.load()
     audio.play()
     once(audio, 'error', e => {
-      onError('playVoice', data, e.message)
+      onError(data, e.message)
     })
     once(audio, 'ended', () => {
-      onSuccess('playVoice', data)
+      onSuccess(data)
     })
   }
 }
@@ -499,7 +497,7 @@ export function getMusicPlayerState(data) {
     }
     obj.dataUrl = a.currentSrc
   }
-  onSuccess('getMusicPlayerState', data, obj)
+  onSuccess(data, obj)
 }
 
 export function operateMusicPlayer(data) {
@@ -546,16 +544,16 @@ export function operateMusicPlayer(data) {
       })
       break
   }
-  onSuccess('operateMusicPlayer', data)
+  onSuccess(data)
 }
 
 export function uploadFile(data) {
   let args = data.args
   if (!args.filePath || !args.url || !args.name) {
-    return onError('uploadFile', data, 'filePath, url and name required')
+    return onError(data, 'filePath, url and name required')
   }
   let file = fileStore[args.filePath]
-  if (!file) return onError('uploadFile', data, `${args.filePath} not found`)
+  if (!file) return onError(data, `${args.filePath} not found`)
 
   let headers = args.header || {}
   let formData = args.formData || {}
@@ -563,13 +561,13 @@ export function uploadFile(data) {
   xhr.open('POST', '/remoteProxy')
   xhr.onload = function () {
     if (xhr.status / 100 | 0 == 2) {
-      onSuccess('uploadFile', data)
+      onSuccess(data)
     } else {
-      onError('uploadFile', data, `request error ${xhr.status}`)
+      onError(data, `request error ${xhr.status}`)
     }
   }
   xhr.onerror = function (e) {
-    onError('uploadFile', data, `request error ${e.message}`)
+    onError(data, `request error ${e.message}`)
   }
   let key
   for (key in headers) {
@@ -587,7 +585,7 @@ export function uploadFile(data) {
 export function downloadFile(data) {
   let URL = (window.URL || window.webkitURL)
   let args = data.args
-  if (!args.url) return onError('downloadFile', data, 'url required')
+  if (!args.url) return onError(data, 'url required')
   let xhr = new XMLHttpRequest()
   xhr.responseType = 'arraybuffer'
   let headers = args.header || {}
@@ -597,15 +595,15 @@ export function downloadFile(data) {
       let b = new Blob([xhr.response], {type: xhr.getResponseHeader("Content-Type")});
       let blob = URL.createObjectURL(b)
       fileStore[blob] = b
-      onSuccess('downloadFile', data, {
+      onSuccess(data, {
         tempFilePath: blob
       })
     } else {
-      onError('downloadFile', data, `request error ${xhr.status}`)
+      onError(data, `request error ${xhr.status}`)
     }
   }
   xhr.onerror = function (e) {
-    onError('downloadFile', data, `request error ${e.message}`)
+    onError(data, `request error ${e.message}`)
   }
   let key
   for (key in headers) {
@@ -617,52 +615,62 @@ export function downloadFile(data) {
 
 export function getSavedFileList(data) {
   fileList.getFileList().then(list => {
-    onSuccess('getSavedFileList', data, {
+    onSuccess(data, {
       fileList: list
     })
   }, err => {
-    onError('getSavedFileList', data, err.message)
+    onError(data, err.message)
   })
 }
 
 export function removeSavedFile(data) {
   let args = data.args
-  if (!args.filePath) return onError('removeSavedFile', data, 'filePath required')
+  if (!args.filePath) return onError(data, 'filePath required')
   fileList.removeFile(args.filePath).then(() => {
-    onSuccess('removeSavedFile', data, {})
+    onSuccess(data, {})
   }, err => {
-    onError('removeSavedFile', data, err.message)
+    onError(data, err.message)
   })
 }
 
 export function getSavedFileInfo(data) {
   let args = data.args
-  if (!args.filePath) return onError('getSavedFileInfo', data, 'filePath required')
+  if (!args.filePath) return onError(data, 'filePath required')
   fileList.getFileInfo(args.filePath).then(info => {
-    onSuccess('getSavedFileInfo', data, info)
+    onSuccess(data, info)
   }, err => {
-    onError('getSavedFileInfo', data, err.message)
+    onError(data, err.message)
   })
 }
 
-function onError(name, data, message) {
+export function openDocument(data) {
+  let args = data.args
+  if (!args.filePath) return onError(data, 'filePath required')
+  console.warn('WEPT 中没有判定文件格式，返回为模拟返回')
+  onSuccess(data)
+  confirm(`<div>openDocument</div> ${args.filePath}`, true).then(() => {
+  }, () => {
+  })
+}
+
+function onError(data, message) {
   let obj = {
     command: "GET_ASSDK_RES",
     ext: merge.recursive(true, {}, data),
     msg: {
-      errMsg: `${name}:fail`
+      errMsg: `${data.sdkName}:fail`
     }
   }
   if (message) obj.msg.message = message
   toAppService(obj)
 }
 
-function onSuccess(name, data, extra = {}) {
+function onSuccess(data, extra = {}) {
   let obj = {
     command: "GET_ASSDK_RES",
     ext: merge.recursive(true, {}, data),
     msg: {
-      errMsg: `${name}:ok`
+      errMsg: `${data.sdkName}:ok`
     }
   }
   obj.msg = merge.recursive(true, obj.msg, extra)

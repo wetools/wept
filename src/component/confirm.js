@@ -3,14 +3,14 @@ import domify from 'domify'
 import event from 'event'
 import classes from 'classes'
 
-export default function Confirm(message) {
+export default function Confirm(message, nobtns = false) {
   let tmpl = `
   <div class="cd-popup is-visible" role="alert">
     <div class="cd-popup-container">
       <p>${message}</p>
       <ul class="cd-buttons">
-        <li class="yes"><a href="javascript:">是</a></li>
-        <li class="no"><a href="javascript:">否</a></li>
+        <li class="yes"><a href="javascript:">确认</a></li>
+        <li class="no"><a href="javascript:">取消</a></li>
       </ul>
     </div> <!-- cd-popup-container -->
   </div>
@@ -27,6 +27,14 @@ export default function Confirm(message) {
   }
 
   return new Promise(function (resolve, reject) {
+    if (nobtns) {
+      let btn = el.querySelector('.cd-buttons')
+      btn.style.display = 'none'
+      event.bind(el, 'click', () => {
+        dismiss()
+        resolve()
+      })
+    }
     event.bind(query('.yes', el), 'click', e => {
       if (removed) return
       e.preventDefault()

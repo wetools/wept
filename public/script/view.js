@@ -626,7 +626,7 @@ var Reporter = function(e) {
       }), i(function() {
         setTimeout(function() {
           (0, o.publish)("DOMContentLoaded", {})
-        }, 1e3)
+        }, 10)
       })
     }
   }),
