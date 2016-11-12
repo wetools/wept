@@ -4,7 +4,7 @@
 [![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
 [![Downloads](https://img.shields.io/npm/dm/wept.svg?style=flat-square)](https://img.shields.io/npm/dm/wept.svg)
 
-** 正在补全 102800 版本 API 的兼容 **
+**0.4.0 版本已全面支持最新版 API，欢迎反馈**
 
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
