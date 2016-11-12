@@ -28,6 +28,11 @@ export default class View extends Emitter {
         return `${ua} wechatdevtools webview/${id}`
       }
     })
+    Object.defineProperty(this.el.contentWindow.console, 'warn', {
+      get : function () {
+        return function () {}
+      }
+    })
     let self = this
     Object.defineProperty(this.el.contentWindow, '__wxConfig', {
       get: function () {

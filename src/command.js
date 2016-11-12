@@ -98,6 +98,10 @@ export function redirectTo(data) {
 }
 
 export function navigateTo(data) {
+  let str = sessionStorage.getItem('routes')
+  if (str && str.split('|').length >= 5) {
+    return Toast('页面栈已达上线 5 个，无法继续创建！', {type: 'error'})
+  }
   Nprogress.start()
   viewManage.navigateTo(data.args.url)
   onNavigate(data)
