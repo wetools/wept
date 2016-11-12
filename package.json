@@ -43,6 +43,7 @@
     "open": "0.0.5",
     "request-component": "0.0.4",
     "throttleit": "^1.0.0",
+    "tunnel": "0.0.4",
     "update-notifier": "^1.0.2"
   },
   "devDependencies": {
