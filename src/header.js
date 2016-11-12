@@ -76,7 +76,7 @@ class Header extends Component {
         text: '回主页',
         callback: function () {
           window.sessionStorage.removeItem('routes')
-          util.reload()
+          util.navigateHome()
         }
       },
       qrcode: {
@@ -122,7 +122,7 @@ class Header extends Component {
     })
   }
   onHome() {
-    util.reload()
+    util.navigateHome()
   }
   render() {
     let state = this.state

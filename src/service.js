@@ -16,7 +16,6 @@ Bus.once('APP_SERVICE_COMPLETE', () => {
 
 function message(obj) {
   let el = document.getElementById('service')
-  console.log(obj)
   el.contentWindow.postMessage(obj, '*')
 }
 

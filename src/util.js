@@ -44,9 +44,19 @@ export function isTabbar(url) {
 
 export function reload() {
   location.reload()
-  //let home = `${location.protocol}//${location.host}`
-  //if (typeof location.replace !== 'function') return window.location.reload()
-  //location.replace(home)
+}
+
+export function navigateHome() {
+  let home = `${location.protocol}//${location.host}`
+  if (typeof location.replace == 'function') {
+    location.replace(home)
+  } else if (typeof history.replaceState == 'function') {
+    window.history.replaceState({}, '' , home)
+    location.reload()
+  } else {
+    location.hash = '#'
+    location.reload()
+  }
 }
 
 export function redirectTo(url) {
