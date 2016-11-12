@@ -39,7 +39,7 @@ class Tabbar extends Component {
   }
   componentDidUpdate() {
     let state = this.state
-    if (state.activeIdx == -1 || state.activeIdx == null) {
+    if (state.activeIdx == -1 || state.activeIdx == null || state.position == 'top') {
       this.scrollable.style.bottom = '0px'
     } else {
       this.scrollable.style.bottom = '56px'
@@ -52,22 +52,31 @@ class Tabbar extends Component {
     let shown = list && list.length > 0
     if (!shown) return null
     let hidden = active == -1 || active == null
+    let top = state.position == 'top'
     return (
     <div className="tabbar" style={{
       backgroundColor: state.backgroundColor,
       display: hidden ? 'none' : 'flex',
       borderColor: state.borderStyle,
-      height: 56
+      height: top ? 47 : 56
     }}>
       {list.map((item, idx) => {
         return (
         <div onClick={() => { this.onItemTap(idx) }} className="tabbar-item" key={idx}>
-          <img className="tabbar-icon"
-            src={active == idx ? item.selectedIconPath : item.iconPath}
-            alt="" />
+          {do {
+            if (!top)
+              <img className="tabbar-icon"
+                src={active == idx ? item.selectedIconPath : item.iconPath}
+                alt="" />
+          }}
           <p className="tabbar-label"
             style={{color: active == idx ? state.selectedColor : state.color}}>
             {item.text}
+            {do {
+              if (top && active == idx)
+                <i className="tabbar-label-indicator"
+                  style={{borderColor: state.selectedColor}}></i>
+            }}
           </p>
         </div>
         )

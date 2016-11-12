@@ -38,8 +38,13 @@ class Header extends Component {
     let curr = currentView()
 
     let winConfig = win.pages[curr.path] || {}
+    let tabBar = window.__wxConfig__.tabBar
+
+    let top = tabBar && tabBar.position == 'top'
+    let hide = top && util.isTabbar(curr.url)
     if (curr.isMap) {
       this.setState({
+        hide: true,
         backgroundColor: 'rgb(0, 0, 0)',
         color: '#ffffff',
         title: '位置',
@@ -49,6 +54,7 @@ class Header extends Component {
       })
     } else {
       this.setState({
+        hide,
         backgroundColor: winConfig.navigationBarBackgroundColor || d.backgroundColor,
         color: winConfig.navigationBarTextStyle || d.color,
         title: winConfig.navigationBarTitleText || d.title,
@@ -138,7 +144,7 @@ class Header extends Component {
     })
 
     return (
-      <div style={{backgroundColor: state.backgroundColor}}>
+      <div style={{backgroundColor: state.backgroundColor, display: state.hide ? 'none' : 'flex'}}>
         <div onClick={this.onBack} className="head-back" style={{display: state.back ? 'flex' : 'none' }}>
           {do {
             if (!state.sendText) <i className="head-back-icon" style={iconStyle}></i>

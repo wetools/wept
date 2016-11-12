@@ -14,6 +14,7 @@ html, body {
   height: 100%;
 }
 body {
+  line-height: 1;
   overflow-y: hidden;
   overflow-x: hidden;
 }
@@ -207,11 +208,19 @@ body {
   right: 0;
   z-index: 99999;
 }
+.tabbar-root.tabbar-root-top {
+  top: 0;
+  bottom: auto;
+}
 .tabbar {
   display: flex;
   height: 56px;
   background-color: #f7f7fa;
   border-top: 1px solid;
+}
+.tabbar-root-top .tabbar {
+  border-top: none;
+  border-bottom: 1px solid;
 }
 
 .tabbar-item {
@@ -234,6 +243,24 @@ body {
   text-align: center;
   color: #888;
   font-size: 12px;
+}
+.tabbar-root-top .tabbar-item {
+  line-height: 46px;
+  padding: 0;
+  text-align: center;
+}
+.tabbar-root-top .tabbar-label {
+  position: relative;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.tabbar-root-top .tabbar-label-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  width: 100%;
+  border-bottom: 3px solid;
 }
 
 @keyframes toastUp {

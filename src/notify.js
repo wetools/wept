@@ -23,6 +23,7 @@ export function onReloadJson(p, isGlobal, content) {
       }
       let delta = jsondiffpatch.diff(curr, content)
       if (delta.pages || delta.debug || delta.networkTimeout ||
+          (delta.tabBar && delta.tabBar.position)||
           delta.window.backgroundColor || delta.window.enablePullDownRefresh) {
             // have to reload
             return util.reload()

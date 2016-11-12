@@ -14,9 +14,9 @@
   <div id="app"></div>
   <div class="head">
   </div>
-  <div class="scrollable">
+  <div class="scrollable" style="{{if _.topBar}}top:47px;{{/}}">
   </div>
-  <div class="tabbar-root">
+  <div class="tabbar-root {{if _.topBar}}tabbar-root-top{{/}}">
   </div>
   <script>
     var __wxConfig__ = {{= _.config}}
