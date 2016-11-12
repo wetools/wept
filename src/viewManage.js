@@ -53,13 +53,18 @@ export function navigateTo(path) {
   onRoute()
 }
 
-export function navigateBack() {
+export function navigateBack(delta = 1, onBack) {
   if (!curr) throw new Error('Current page not exists')
   let pid = curr.pid
   if (pid == null) throw new Error(`Parent webview id not found on view-${curr.id}`)
-  curr.destroy()
-  delete views[curr.id]
-  curr = views[pid]
+  let len = sessionStorage.getItem('routes').split('|').length
+  let count = Math.min(len - 1, delta)
+  for (let i = count; i > 0; i--) {
+    curr.destroy()
+    delete views[curr.id]
+    curr = views[curr.pid]
+    if (onBack) onBack()
+  }
   curr.show()
   onRoute()
 }

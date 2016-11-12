@@ -5,7 +5,7 @@ import Upload from 'upload'
 import Serial from 'node-serial'
 import Bus from './bus'
 import * as viewManage from './viewManage'
-import {onNavigate, onLaunch} from './service'
+import {onNavigate, onLaunch, onBack} from './service'
 import header from './header'
 import throttle from 'throttleit'
 import {toAppService} from './service'
@@ -104,8 +104,13 @@ export function navigateTo(data) {
 }
 
 export function navigateBack(data) {
-  viewManage.navigateBack()
-  data.args.url = viewManage.currentView().url
+  data.args = data.args || {}
+  data.args.url = viewManage.currentView().path + '.html'
+  let delta = data.args.delta ? Number(data.args.delta) : 1
+  if (isNaN(delta)) return Toast('Delta 必须为数字', {type: 'error'})
+  viewManage.navigateBack(delta, () => {
+    onBack()
+  })
   onNavigate(data)
 }
 
