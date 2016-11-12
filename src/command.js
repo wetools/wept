@@ -719,6 +719,10 @@ export function base64ToTempFilePath(data) {
   })
 }
 
+export function refreshSession(data) {
+  onSuccess(data)
+}
+
 function requiredArgs(keys, data) {
   let args = data.args
   for (var i = 0, l = keys.length; i < l; i++) {
