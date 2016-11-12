@@ -1,3 +1,19 @@
+# 0.4.0
+
+* 使用最新版 103100 service 和 view 层代码，实现了全部新的接口
+* 实现新的 wxss 生成方式
+* 实现了 `wx.getSavedFileList` `wx.getSavedFileInfo` `wx.removeSavedFile` `wx.openDocument`
+* 实现了 `wx.removeStorage` `wx.removeStorageSync` `wx.getStorageInfo` `wx.getStorageInfoSync`
+* 实现了 `wx.showToast` `wx.showModal` `wx.hideModal` `wx.showActionSheet`
+* 实现了 `wx.chooseLocation` `wx.getImageInfo` `wx.getSystemInfoSync` `wx.makePhoneCall`
+* 实现了 `wx.canvasToTempFilePath`， 该 API 官方工具无法使用
+* 实现了 `wx.checkSession`
+* 实现了 `wx.navigateBack` 支持 delta 参数，支持多层级返回
+* 实现了 `tabBar` 的 position 选项支持，支持使用 `top`
+* 改进： `wx.navigateTo` 超过 5 层页面弹出错误提醒
+* 改进： 返回首页功能，支持使用 history API 跳转
+* 修复： `navigateBack` 调用没有清除对应 appData 的 bug
+
 # 0.3.8
 
 * 构建时忽略 `node_modules` 下文件
