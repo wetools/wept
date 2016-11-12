@@ -44,19 +44,6 @@ export function toAppService(data) {
   }
 }
 
-function onEnd ({data, sdkName, type = 'ok', extra = {}}) {
-  if (!sdkName) throw new Error('sdkName not found')
-  let obj = {
-    command: "GET_ASSDK_RES",
-    ext: merge.recursive(true, {}, data),
-    msg: {
-      errMsg: `${data.sdkName}:${type}`
-    }
-  }
-  obj.msg = merge.recursive(true, obj.msg, extra)
-  toAppService(obj)
-}
-
 export function reload(path) {
   toAppService({
     msg: {
