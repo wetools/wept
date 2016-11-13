@@ -49,10 +49,8 @@ if (!fs.existsSync('./app.json')) {
 
 var server = require('../build/server')
 if (os.platform() == 'darwin' && program.open) {
-  exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function (err) {
-   //ignore error 
-  })
+  exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () { })
 }
-server.listen(port)
-
-console.log('listening on port ' + port);
+server.listen(port, function () {
+  console.log('listening on port ' + port);
+})
