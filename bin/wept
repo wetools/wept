@@ -7,6 +7,7 @@ var updateNotifier = require('update-notifier')
 var fs = require('fs')
 var open = require('open')
 var chalk = require('chalk')
+var net = require('net')
 
 program.version(json.version + ' 103100')
   .usage('[app root]')
@@ -22,8 +23,6 @@ if (program.list) {
   open('https://github.com/chemzqm/wept/blob/master/history.md')
   process.exit()
 }
-
-var port = program.port || 3000
 
 var folder = program.args[0]
 if (folder) {
@@ -48,9 +47,30 @@ if (!fs.existsSync('./app.json')) {
 }
 
 var server = require('../build/server')
-if (os.platform() == 'darwin' && program.open) {
-  exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () { })
-}
-server.listen(port, function () {
-  console.log('listening on port ' + port);
+var startPort = 3000
+
+getPort(function (port) {
+  if (os.platform() == 'darwin' && program.open) {
+    exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () { })
+  }
+  server.listen(port, function () {
+    console.log('listening on port ' + port);
+  })
 })
+
+function getPort(cb) {
+  if (program.port) return cb(program.port)
+  var port = startPort
+
+  var server = net.createServer()
+  server.listen(port, function () {
+    server.once('close', function () {
+      cb(port)
+    })
+    server.close()
+  })
+  server.on('error', function () {
+    startPort += 1
+    getPort(cb)
+  })
+}
