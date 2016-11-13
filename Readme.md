@@ -2,7 +2,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/wept.svg?style=flat-square)](https://www.npmjs.com/package/wept)
 [![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
-[![Downloads](https://img.shields.io/npm/dm/wept.svg?style=flat-square)](https://img.shields.io/npm/dm/wept.svg)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
 
 **0.4.0 版本已全面支持最新版 API，欢迎反馈**
 
