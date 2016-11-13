@@ -1,7 +1,6 @@
 # WEPT (Wechat app page development tool)
 
-[![NPM version](https://img.shields.io/npm/v/wept.svg?style=flat-square)](https://www.npmjs.com/package/wept)
-[![Dependency Status](https://img.shields.io/david/chemzqm/wept.svg?style=flat-square)](https://david-dm.org/chemzqm/wept)
+[![NPM version](https://img.shields.io/npm/v/wept.svg)](https://www.npmjs.com/package/wept)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
 
