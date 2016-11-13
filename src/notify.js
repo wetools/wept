@@ -47,7 +47,7 @@ export function onReloadJson(p, isGlobal, content) {
 }
 
 export function onReloadJavascript(path, isGlobal) {
-  if (isGlobal) return util.reload()
+  if (isGlobal) return window.location.reload()
   reload(path)
 }
 
