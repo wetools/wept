@@ -385,7 +385,7 @@ var Reporter = function(e) {
                   var href = el.getAttribute('href').replace(/\?(.*)$/, '')
                   if (p == href) {
                     console.info('Reload: ' + data.path)
-                    el.setAttribute('href', href + '?id=' + Date.now())
+                    el.setAttribute('href', el.getAttribute('href').replace(/(&id=\d+|$)/, '&id=' + Date.now()))
                   }
                 })
               }
