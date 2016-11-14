@@ -1,3 +1,7 @@
+# 0.5.0
+
+* 添加 wxss 的 sourcemap 支持
+
 # 0.4.5
 
 * 修复 app.wxss 无法自动刷新
