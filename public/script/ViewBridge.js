@@ -175,7 +175,6 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         if (i) {
           var r = n.command,
             a = n.ext;
-          if ("CUSTOM" === r) { return s(i) }
           if ("webframe" === n.to && r && A.webviewID === n.webviewID && "INIT_DEVTOOLS_SUCCESS" !== r) {
             if ("MSG_FROM_APPSERVICE" === r) return void s(i);
             if ("COMMAND_GET_TITLE" === r) {

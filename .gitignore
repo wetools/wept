@@ -6,3 +6,4 @@ build
 build.js
 build.js.map
 *.map
+.official

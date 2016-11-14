@@ -1,15 +1,4 @@
-/*global define, __wxAppData, WeixinJSBridge, __wxConfig*/
-// 通讯, storage, reload javscript,
-// 代理 request，
-// onCompassChange/onAccelerometerChange API
 "use strict";
-var ua = navigator.userAgent
-Object.defineProperty(navigator, 'userAgent', {
-  get : function () {
-    return ua +' appservice webview/10000'
-  }
-})
-
 var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
   return typeof e
 } : function(e) {
@@ -23,26 +12,6 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     for (var o in n)("object" === ("undefined" == typeof exports ? "undefined" : _typeof2(exports)) ? exports : e)[o] = n[o]
   }
 }(void 0, function() {
-
-  function systemInfo() {
-     return {
-      model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
-      pixelRatio: window.devicePixelRatio || 1,
-      windowWidth: window.top.screen.width || 0,
-      windowHeight: window.top.screen.height || 0,
-      language: window.navigator.userLanguage || window.navigator.language,
-      version: "6.3.9"
-    }
-  }
-
-  function toResult(msg, data, command) {
-    let obj = {
-      ext: data,
-      msg: msg
-    }
-    if (command) obj.command = command
-    return obj
-  }
 
   return function(e) {
     function t(o) {
@@ -230,62 +199,9 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       },
       h = function(e) {
         e.command = "COMMAND_FROM_ASJS", e.appid = a, e.appname = u, e.apphash = s, e.webviewID = l;
-
-        var storage = window.parent.__storage
-        var args = e.args;
-        delete e.to
-        if (e.sdkName == 'setStorageSync') {
-          if (args.key == null || args.data == null) {
-            p(toResult({
-              errMsg: "setStorage:fail"
-            }, e))
-          } else {
-            storage.set(args.key, args.data, args.dataType)
-            p(toResult({
-              errMsg: "setStorage:ok"
-            }, e))
-          }
-        } else if (e.sdkName == 'getStorageSync'){
-          if (args.key == null || args.key == '') {
-            return p(toResult({
-              errMsg: "getStorage:fail"
-            }), 'GET_ASSDK_RES')
-          }
-          var res = storage.get(args.key)
-          p(toResult({
-            data: res.data,
-            dataType: res.dataType,
-            errMsg: "getStorage:ok"
-          }, e, 'GET_ASSDK_RES'))
-        } else if (e.sdkName == 'clearStorageSync') {
-          storage.clear()
-          p(toResult({
-            errMsg: "clearStorage:ok"
-          }, e))
-        } else if (e.sdkName == 'removeStorageSync') {
-          if (args.key == null || args.key == '') {
-            return p(toResult({
-              errMsg: "removeStorage:fail"
-            }), 'GET_ASSDK_RES')
-          }
-          storage.remove(args.key)
-          p(toResult({
-            errMsg: "removeStorage:ok"
-          }, e, 'GET_ASSDK_RES'))
-        } else if (e.sdkName == 'getStorageInfoSync') {
-          var obj = storage.info()
-          obj.errMsg =  "getStorageInfoSync:ok"
-          p(toResult(obj, e, 'GET_ASSDK_RES'))
-        } else if (e.sdkName == 'getSystemInfo'){
-          let info = systemInfo()
-          info.errMsg = "getSystemInfo:ok"
-          p(toResult(info, e, 'GET_ASSDK_RES'))
-        } else {
-          console.log('Ignored sdk call ' + e.sdkName)
-        }
-        //var t = "____sdk____" + JSON.stringify(e),
-        //  n = prompt(t);
-        //n = JSON.parse(n), delete n.to, p(n)
+        var t = "____sdk____" + JSON.stringify(e),
+          n = prompt(t);
+        n = JSON.parse(n), delete n.to, p(n)
       };
     window._____sendMsgToNW = g;
     var m = function(e) {
@@ -876,21 +792,3 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }), t["default"] = n
   }])
 });
-!function () {
-  WeixinJSBridge.subscribe('reload', function (data) {
-    var xhr = new XMLHttpRequest()
-    var p = data.path
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var text = xhr.responseText
-          var path = p.replace(/\.js$/, '')
-          var code = 'window.__wxRoute="' + path + '";' + text
-          eval(code)
-        }
-      }
-    }
-    xhr.open('GET', '/generateJavascript?path=' + encodeURIComponent(p))
-    xhr.send()
-  })
-}()

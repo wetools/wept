@@ -18,7 +18,7 @@ export default class View extends Emitter {
     this.isMap = isMap(path)
     let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
-    let width = document.body.clientWidth
+    let width = window.screen.width
     let ratio = window.devicePixelRatio
     let url = external ? path : `/app/${o.path}.wxml?w=${width}&r=${ratio}`
     this.el = createFrame(`view-${id}`, url, false, root)
@@ -84,15 +84,51 @@ export default class View extends Emitter {
     obj.msg = data.msg || {}
     this.el.contentWindow.postMessage(obj, '*')
   }
-  reload(path) {
-    this.postMessage({
-      msg: {
-        data: {
-          data: { path }
-        },
-        eventName: 'reload'
-      },
-      command: 'CUSTOM'
-    })
+  reloadWxss(path) {
+    let width = window.screen.width
+    let ratio = window.devicePixelRatio
+    if (this.el.contentWindow.hasOwnProperty('reloadWxss')) {
+      this.el.contentWindow.reloadWxss(width, ratio, path)
+    }
+  }
+  resizeWxss() {
+    let width = window.screen.width
+    let ratio = window.devicePixelRatio
+    if (this.el.contentWindow.hasOwnProperty('resizeWxss')) {
+      this.el.contentWindow.resizeWxss(width, ratio)
+    }
+  }
+  reloadWxml(path, isGlobal) {
+    if (!isGlobal && path !== this.path) return
+    // load generateFn and notify view
+    //this.el.contentWindow.__gen()
+    let root = this.el
+    let p = this.path
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          var text = xhr.responseText
+          var func = new Function(text + '\n return $gwx("./' + p + '.wxml")')
+          root.contentWindow.__generateFunc__ = func()
+          this.postMessage({
+            msg: {
+              eventName: "appDataChange",
+              data: {
+                data:{}
+              },
+              sdkName: "publish",
+              to: "backgroundjs",
+              comefrom: "webframe",
+              command: "COMMAND_FROM_ASJS"
+            },
+            command: "MSG_FROM_APPSERVICE",
+          })
+          console.info('Hot apply: ' + p + '.wxml')
+        }
+      }
+    }
+    xhr.open('GET', '/generateFunc?path=' + encodeURIComponent(p))
+    xhr.send()
   }
 }

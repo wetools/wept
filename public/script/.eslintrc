@@ -1,0 +1,40 @@
+{
+    "parserOptions": {
+      "ecmaVersion": 5
+    },
+    "rules": {
+        "comma-dangle": 0,
+        "func-names": 0,
+        "react/jsx-no-bind": 0,
+        "react/jsx-uses-vars": 1,
+        "react/jsx-uses-react": 1,
+        "react/prefer-stateless-function": 0,
+        "no-empty": [
+            0
+        ],
+        "no-console": [
+            0
+        ],
+        "linebreak-style": [
+            1,
+            "unix"
+        ],
+        "no-unused-vars": [
+            1
+        ]
+    },
+    "globals": {
+      "define": true,
+      "__wxAppData": true,
+      "WeixinJSBridge": true,
+      "__wxConfig": true,
+      "WeixinJSCore": true,
+      "Symbol": true,
+      "errorReport": true,
+      "__webviewId__": true
+    },
+    "env": {
+      "browser": true
+    },
+    "extends": "eslint:recommended"
+}

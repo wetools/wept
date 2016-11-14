@@ -8,3 +8,5 @@ webpack.*.js
 Makefile
 *.map
 extensions
+.official
+.eslintrc

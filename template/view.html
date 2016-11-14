@@ -4,9 +4,6 @@
   <link href="https://res.wx.qq.com/mpres/htmledition/images/favicon218877.ico" rel="Shortcut Icon">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-  <link rel="stylesheet" type="text/css" href="/css/default.css?v={{= _.version}}">
-  <link rel="stylesheet" type="text/css" href="/app/app.wxss?w={{= _.width}}&r={{= _.ratio}}">
-  <link rel="stylesheet" type="text/css" href="/app/{{= _.path}}.wxss?w={{= _.width}}&r={{= _.ratio}}">
   <script> var __path__ = '{{= _.path}}'</script>
   <script src="/script/ViewBridge.js?v={{= _.version}}" async type="text/javascript"></script>
   <script src="/script/view.js?v={{= _.version}}" type="text/javascript"></script>
@@ -19,6 +16,43 @@
         generateFunc: $gwx('./{{= _.path}}.wxml')
       }
     }))
+  </script>
+  <link rel="stylesheet" type="text/css" href="/app/app.wxss?w={{= _.width}}&r={{= _.ratio}}">
+  <link rel="stylesheet" type="text/css" href="/app/{{= _.path}}.wxss?w={{= _.width}}&r={{= _.ratio}}">
+  <script type="text/javascript">
+  window.reloadWxss = function (width, ratio, path) {
+    var p = '/app/' + path
+    var els = document.getElementsByTagName('link')
+    ;[].slice.call(els).forEach(function(el) {
+      var href = el.getAttribute('href').replace(/\?(.*)$/, '')
+      if (p == href) {
+        console.info('Reload: ' + path)
+        el.setAttribute('href', href + '?w=' + width + '&r=' + ratio + '&ts=' + Math.random())
+      }
+    })
+  }
+
+  window.resizeWxss = function (width, ratio) {
+    var els = document.getElementsByTagName('link')
+    ;[].slice.call(els).forEach(function(el) {
+      var href = el.getAttribute('href').replace(/\?(.*)$/, '')
+      if (/^\/app/.test(href)) {
+        el.setAttribute('href', href + '?w=' + width + '&r=' + ratio + '&ts=' + Math.random())
+      }
+    })
+  }
+  document.addEventListener('touchstart', function (e) {
+  })
+  document.addEventListener('touchend', function (e) {
+  })
+  document.addEventListener('touchmove', function (e) {
+  })
+  document.addEventListener('touchcancel', function (e) {
+  })
+  document.addEventListener('focus', function (e) {
+  })
+  document.addEventListener('blur', function (e) {
+  })
   </script>
 </head>
 <body>

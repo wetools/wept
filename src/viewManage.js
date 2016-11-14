@@ -97,15 +97,6 @@ export function eachView(fn) {
   })
 }
 
-export function notifyViews(msg) {
-  eachView(view => {
-    view.postMessage({
-      msg: msg,
-      command: 'CUSTOM'
-    })
-  })
-}
-
 function normalize(p) {
   return p.replace(/\.html/, '').replace(/^\.?\//, '')
 }

@@ -50,14 +50,3 @@ export function onReloadJavascript(path, isGlobal) {
   if (isGlobal) return window.location.reload()
   reload(path)
 }
-
-export function notifyView(p, isGlobal) {
-  let page = p.replace(/\.(\w+)$/, '')
-  eachView(view => {
-    if (isGlobal) {
-      view.reload(p)
-    } else if (view.path == page) {
-      view.reload(p)
-    }
-  })
-}
