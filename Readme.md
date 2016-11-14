@@ -22,6 +22,10 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 [小程序开发小 tips](https://github.com/chemzqm/wept/wiki/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%8F-tips)
 
+## TODO
+
+* wxml 面板
+* wxss sourcemap 支持
 
 ## 主要特性
 
