@@ -2231,7 +2231,7 @@ var Reporter = function(e) {
           return "return this" === arguments[arguments.length - 1] ? arguments[arguments.length - 1] = "return global" : arguments[arguments.length - 1] = "console.warn('can not create Function')", t.apply(this, arguments)
         }
       }
-      "undefined" != typeof navigator && ! function() {
+      "undefined" != typeof eval && (eval = void 0), "undefined" != typeof navigator && ! function() {
         var e = setTimeout;
         setTimeout = function(t, n) {
           if ("function" == typeof t) return e(t, n)
