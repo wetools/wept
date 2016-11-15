@@ -2642,7 +2642,6 @@ var Reporter = function(e) {
             newPage.__query__ = query
             if (isCurr) l.page = newPage
             option.page = newPage
-            console.log(query)
             newPage.onLoad(query)
             if (isCurr) newPage.onShow()
             window.__wxAppData[route] = newPage.data
