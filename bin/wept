@@ -3,11 +3,12 @@ var os = require('os')
 var exec = require('child_process').exec
 var program = require('commander')
 var json = require('../package.json')
-var updateNotifier = require('update-notifier')
+var UpdateNotifier = require('update-notifier').UpdateNotifier
 var fs = require('fs')
 var open = require('open')
 var chalk = require('chalk')
 var net = require('net')
+var boxen = require('boxen')
 
 program.version(json.version + ' 103100')
   .usage('[app root]')
@@ -17,7 +18,26 @@ program.version(json.version + ' 103100')
 
 program.parse(process.argv)
 
-updateNotifier({pkg: json}).notify()
+var notifier = new UpdateNotifier({
+  pkg: json,
+  callback: function (err, result) {
+    if (err) return
+    if (result.current !== result.latest) {
+      var message = 'Update available ' + chalk.dim(result.current) + chalk.reset(' → ') +
+        chalk.green(result.latest) + ' \nRun ' + chalk.cyan('npm i -g ' + json.name) + ' to update'
+      var msg = '\n' + boxen(message, {
+        padding: 1,
+        margin: 1,
+        align: 'center',
+        borderColor: 'yellow',
+        borderStyle: 'round'
+      })
+      console.log(msg)
+    }
+  }
+})
+
+notifier.check()
 
 if (program.list) {
   open('https://github.com/chemzqm/wept/blob/master/history.md')
@@ -37,7 +57,7 @@ if (folder) {
   try {
     process.chdir(folder)
   } catch(err) {
-    console.log('切换目录失败: ' + err);
+    console.log('切换目录失败: ' + err)
   }
 }
 
@@ -54,7 +74,7 @@ getPort(function (port) {
     exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () { })
   }
   server.listen(port, function () {
-    console.log('listening on port ' + port);
+    console.log('listening on port ' + port)
   })
 })
 
