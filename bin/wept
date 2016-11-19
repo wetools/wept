@@ -94,3 +94,8 @@ function getPort(cb) {
     getPort(cb)
   })
 }
+
+process.on('uncaughtException', function (e) {
+  console.log(chalk.red('发生了未知错误'))
+  console.error(e.stack)
+})
