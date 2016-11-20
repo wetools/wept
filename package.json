@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "prepublish": "gulp prepublish"
+    "prepublish": "in-publish && gulp prepublish"
   },
   "author": "chemzqm@gmail.com",
   "license": "MIT",
@@ -29,6 +29,7 @@
     "faye-websocket": "^0.11.0",
     "glob": "^7.1.1",
     "growl": "^1.9.2",
+    "in-publish": "^2.0.0",
     "jsondiffpatch": "^0.2.4",
     "koa": "^1.2.4",
     "koa-compress": "^1.0.9",
