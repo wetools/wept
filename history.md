@@ -1,3 +1,7 @@
+# 0.5.3
+
+* 使用 in-publish 防止安装时运行 prepublish 脚本
+
 # 0.5.2
 
 * 改进 updateNotifier 使用方式
