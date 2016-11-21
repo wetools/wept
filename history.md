@@ -1,3 +1,5 @@
+# 0.5.4
+
 # 0.5.3
 
 * 使用 in-publish 防止安装时运行 prepublish 脚本
