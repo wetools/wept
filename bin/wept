@@ -10,7 +10,7 @@ var chalk = require('chalk')
 var net = require('net')
 var boxen = require('boxen')
 
-program.version(json.version + ' 103100')
+program.version(json.version + ' 112200')
   .usage('[app root]')
   .option('-o, --open', '使用 Chrome 打开小程序，仅对 Mac 有效')
   .option('-l, --list', '使用默认浏览器打开更新历史')
