@@ -12,7 +12,6 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     for (var o in n)("object" === ("undefined" == typeof exports ? "undefined" : _typeof2(exports)) ? exports : e)[o] = n[o]
   }
 }(void 0, function() {
-
   return function(e) {
     function t(o) {
       if (n[o]) return n[o].exports;
@@ -33,7 +32,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
     var r = n(1),
       i = o(r),
-      s = n(14),
+      s = n(17),
       a = o(s);
     (0, a["default"])(), window.MutationObserver = window.WebKitMutationObserver = window.File = void 0, window.WeixinJSBridge = i["default"]
   }, function(e, t, n) {
@@ -63,9 +62,9 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       }
       if ("MSG_FROM_WEBVIEW" === t) {
         var u = n.eventName,
-          l = (n.type, n.data || {});
-        c["default"].emit("triggerOnEvent", u, l, n.webviewID), c["default"].emit("triggerSubscribeEvent", u, l, n.webviewID)
-      } else if ("GET_APP_DATA" === t) f["default"].sendMsgToNW({
+          f = (n.type, n.data || {});
+        0 === u.indexOf("publish_") ? (u = u.replace(/^publish_/, ""), c["default"].emit("triggerSubscribeEvent", u, f, n.webviewID)) : (u = u.replace(/^sys_/, ""), c["default"].emit("triggerOnEvent", u, f, n.webviewID))
+      } else if ("GET_APP_DATA" === t) l["default"].sendMsgToNW({
         appData: __wxAppData,
         sdkName: "send_app_data"
       });
@@ -73,7 +72,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         for (var d in n) {
           var p = n[d],
             v = p.__webviewId__;
-          console.log(p), (0, m["default"])("appDataChange", {
+          console.log(p), (0, _["default"])("appDataChange", {
             data: {
               data: p
             }
@@ -87,22 +86,22 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       s = o(i),
       a = n(5),
       u = (o(a), n(3)),
-      f = o(u),
-      l = n(6),
-      c = o(l),
+      l = o(u),
+      f = n(6),
+      c = o(f),
       d = n(8),
       p = o(d),
-      v = n(9),
+      v = n(10),
       g = o(v),
-      h = n(10),
-      m = o(h),
-      _ = n(11),
-      w = o(_);
-    f["default"].registerCallback(r), t["default"] = {
+      h = n(11),
+      _ = o(h),
+      m = n(12),
+      w = o(m);
+    l["default"].registerCallback(r), t["default"] = {
       invoke: w["default"],
       on: p["default"],
       subscribe: g["default"],
-      publish: m["default"]
+      publish: _["default"]
     }
   }, function(e, t, n) {
     function o(e) {
@@ -145,7 +144,11 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         fun: "openToolsLog"
       }, {
         fun: "openVendor"
+      }, {
+        fun: "showRequestInfo"
       }])
+    }, window.showRequestInfo = function() {
+      console.table(window.securityDetails)
     }, window.openToolsLog = function() {
       i["default"].sendMsgToNW({
         sdkName: "__open-tools-log"
@@ -158,15 +161,15 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     var u = function() {
         return s
       },
-      f = function(e, t) {
+      l = function(e, t) {
         s && (console.group(e), console.debug.apply(void 0, t), console.groupEnd(e))
       },
-      l = function(e) {
+      f = function(e) {
         a.push(e)
       };
     t["default"] = {
-      debugLog: f,
-      debugInfo: l,
+      debugLog: l,
+      debugInfo: f,
       isDev: u
     }
   }, function(e, t, n) {
@@ -183,8 +186,8 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       s = __wxConfig.apphash,
       a = __wxConfig.appid,
       u = __wxConfig.appname,
-      f = navigator.userAgent,
-      l = parseInt(f.match(/webview\/(\d*)/)[1]),
+      l = navigator.userAgent,
+      f = parseInt(l.match(/webview\/(\d*)/)[1]),
       c = [],
       d = [],
       p = function() {
@@ -195,19 +198,19 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       },
       g = function(e) {
         var t = JSON.parse(JSON.stringify(e));
-        t.to = "backgroundjs", t.comefrom = "webframe", t.command = "COMMAND_FROM_ASJS", t.appid = a, t.appname = u, t.apphash = s, t.webviewID = l, window.parent.postMessage(t, "*")
+        t.to = "backgroundjs", t.comefrom = "webframe", t.command = "COMMAND_FROM_ASJS", t.appid = a, t.appname = u, t.apphash = s, t.webviewID = f, window.parent.postMessage(t, "*")
       },
       h = function(e) {
-        e.command = "COMMAND_FROM_ASJS", e.appid = a, e.appname = u, e.apphash = s, e.webviewID = l;
+        e.command = "COMMAND_FROM_ASJS", e.appid = a, e.appname = u, e.apphash = s, e.webviewID = f;
         var t = "____sdk____" + JSON.stringify(e),
           n = prompt(t);
         n = JSON.parse(n), delete n.to, p(n)
       };
     window._____sendMsgToNW = g;
-    var m = function(e) {
-        e.to = "contentscript", e.comefrom = "webframe", e.webviewID = l, window.parent.postMessage(e, "*")
+    var _ = function(e) {
+        e.to = "contentscript", e.comefrom = "webframe", e.webviewID = f, window.parent.postMessage(e, "*")
       },
-      _ = function(e, t, n) {
+      m = function(e, t, n) {
         var o = (0, i.isSyncSDK)(e),
           r = {
             sdkName: e,
@@ -224,10 +227,10 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       c.forEach(function(e) {
         p(e)
       }), c = []
-    }), m({
+    }), _({
       command: "SHAKE_HANDS"
     }), t["default"] = {
-      brigeToNW: _,
+      brigeToNW: m,
       sendMsgToNW: g,
       registerCallback: v
     }
@@ -332,11 +335,11 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       if (!r(e) || e < 0 || isNaN(e)) throw TypeError("n must be a positive number");
       return this._maxListeners = e, this
     }, n.prototype.emit = function(e) {
-      var t, n, r, a, u, f;
+      var t, n, r, a, u, l;
       if (this._events || (this._events = {}), "error" === e && (!this._events.error || i(this._events.error) && !this._events.error.length)) {
         if (t = arguments[1], t instanceof Error) throw t;
-        var l = new Error('Uncaught, unspecified "error" event. (' + t + ")");
-        throw l.context = t, l
+        var f = new Error('Uncaught, unspecified "error" event. (' + t + ")");
+        throw f.context = t, f
       }
       if (n = this._events[e], s(n)) return !1;
       if (o(n)) switch (arguments.length) {
@@ -352,7 +355,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         default:
           a = Array.prototype.slice.call(arguments, 1), n.apply(this, a)
       } else if (i(n))
-        for (a = Array.prototype.slice.call(arguments, 1), f = n.slice(), r = f.length, u = 0; u < r; u++) f[u].apply(this, a);
+        for (a = Array.prototype.slice.call(arguments, 1), l = n.slice(), r = l.length, u = 0; u < r; u++) l[u].apply(this, a);
       return !0
     }, n.prototype.addListener = function(e, t) {
       var r;
@@ -418,7 +421,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         eventName: e,
         data: arguments,
         timesmap: new Date
-      }), "onAppEnterForeground" === e && (l.onAppShow || (t && t({}), l.onAppShow = !0)), f.hasOwnProperty(e) && t && f[e].push(t)
+      }), "onAppEnterForeground" === e && (p.onAppShow || (t && t({}), p.onAppShow = !0)), c[e] && t && c[e].push(t), d[e] && t && (d[e] = t)
     }
     Object.defineProperty(t, "__esModule", {
       value: !0
@@ -427,7 +430,9 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       s = o(i),
       a = n(6),
       u = o(a),
-      f = {
+      l = n(9),
+      f = o(l),
+      c = {
         onSocketOpen: [],
         onSocketError: [],
         onSocketMessage: [],
@@ -437,20 +442,23 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         onAppRouteDone: [],
         onAppEnterBackground: [],
         onAppEnterForeground: [],
-        onCompassChange: [],
-        onAccelerometerChange: [],
         onMusicPlay: [],
         onMusicPause: [],
         onMusicEnd: [],
         onMusicError: [],
+        onCompassChange: [],
+        onAccelerometerChange: [],
         onPullDownRefresh: []
       },
-      l = {
+      d = {
+        onShareAppMessage: !0
+      },
+      p = {
         onAppShow: !1
       };
     u["default"].on("triggerOnEvent", function(e, t, n) {
-      if (f.hasOwnProperty(e)) {
-        var o = f[e],
+      if (c[e]) {
+        var o = c[e],
           r = !0,
           i = !1,
           s = void 0;
@@ -459,8 +467,8 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
             var l = a.value;
             l(t, n)
           }
-        } catch (c) {
-          i = !0, s = c
+        } catch (p) {
+          i = !0, s = p
         } finally {
           try {
             !r && u["return"] && u["return"]()
@@ -469,7 +477,21 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           }
         }
       }
+      d[e] && "function" == typeof d[e] && (0, f["default"])(t, n, d[e]), "insertContactButton" === e && (console.group(new Date + "  调用临时会话成功"), console.log("sessionFrom: " + t.sessionFrom), console.groupEnd())
     })
+  }, function(e, t) {
+    function n(e, t) {
+      var n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : function() {},
+        o = Object.assign({
+          title: __wxConfig.app_nickname,
+          desc: "",
+          imgUrl: ""
+        }, e);
+      n(o, t)
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t["default"] = n
   }, function(e, t, n) {
     function o(e) {
       return e && e.__esModule ? e : {
@@ -483,7 +505,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         eventName: e,
         data: arguments,
         timesmap: new Date
-      }), f[e] = t
+      }), l[e] = t
     }
     Object.defineProperty(t, "__esModule", {
       value: !0
@@ -492,9 +514,9 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       s = o(i),
       a = n(6),
       u = o(a),
-      f = {};
+      l = {};
     u["default"].on("triggerSubscribeEvent", function(e, t, n) {
-      f.hasOwnProperty(e) && f[e](t, n)
+      l[e] && l[e](t, n)
     })
   }, function(e, t, n) {
     function o(e) {
@@ -507,7 +529,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       if (s["default"].debugLog(new Date + " WeixinJSBridge publish " + e, arguments), t && 0 !== e.indexOf("canvas")) {
         var r = JSON.stringify(t),
           i = r.length;
-        if (i > f.AppserviceMaxDataSize) return console.group(new Date + " 数据传输错误"), console.error(e + " 数据传输长度为 " + i + " 已经超过最大长度 " + f.AppserviceMaxDataSize), void console.groupEnd()
+        if (i > l.AppserviceMaxDataSize) return console.group(new Date + " 数据传输错误"), console.error(e + " 数据传输长度为 " + i + " 已经超过最大长度 " + l.AppserviceMaxDataSize), void console.groupEnd()
       }
       s["default"].debugInfo({
         type: "publish",
@@ -531,7 +553,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
       s = o(i),
       a = n(3),
       u = o(a),
-      f = n(4)
+      l = n(4)
   }, function(e, t, n) {
     function o(e) {
       return e && e.__esModule ? e : {
@@ -541,7 +563,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
 
     function r() {
       var e = Math.random();
-      return M[e] ? r() : e
+      return k[e] ? r() : e
     }
 
     function i(e) {
@@ -550,22 +572,23 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
         o = e.ext || {};
       if ("GET_ASSDK_RES" === t) {
         var r = o.callbackID;
-        "function" == typeof M[r] && (M[r](n), delete M[r])
+        "function" == typeof k[r] && (k[r](n), delete k[r])
       }
     }
 
     function s(e, t, n) {
-      if (u["default"].debugLog(new Date + " WeixinJSBridge invoke " + e, arguments), !l["default"].check.apply(this, arguments)) {
-        var o = (0, w.isLockSDK)(e),
+      if (u["default"].debugLog(new Date + " WeixinJSBridge invoke " + e, arguments), !f["default"].check.apply(this, arguments)) {
+        var o = (0, b.isLockSDK)(e),
           i = +new Date;
-        if (!(o && i - b < 200))
-          if (b = i, u["default"].debugInfo({
+        if (!(o && i - S < 200))
+          if (S = o ? i : 0, u["default"].debugInfo({
               type: "invoke",
               eventName: e,
               data: arguments,
               timesmap: new Date
-            }), y.hasOwnProperty(e)) y[e].apply(this, arguments);
+            }), M.hasOwnProperty(e)) M[e].apply(this, arguments);
           else {
+            if (y["default"].hasOwnProperty(e) && !y["default"][e].apply(this, arguments)) return;
             var s = r(),
               a = function(t) {
                 if (t.errMsg.indexOf("ok") > -1 && ("navigateTo" === e || "redirectTo" === e)) {
@@ -576,21 +599,21 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
                   if (r) {
                     i = r[2] || "";
                     for (var a = (r[4] || "").split("&"), u = 0; u < a.length; ++u) {
-                      var f = a[u].split("=");
-                      2 == f.length && (s[f[0]] = f[1])
+                      var l = a[u].split("=");
+                      2 == l.length && (s[l[0]] = l[1])
                     }
                   }
-                  var l = e;
+                  var f = e;
                   d["default"].emit("triggerOnEvent", "onAppRoute", {
                     path: i,
                     query: s,
-                    openType: l,
+                    openType: f,
                     webviewId: t.webviewId
                   })
                 }
                 n && n(t)
               };
-            M[s] = a, v["default"].brigeToNW(e, t, s)
+            k[s] = a, v["default"].brigeToNW(e, t, s)
           }
       }
     }
@@ -599,21 +622,169 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }), t["default"] = s;
     var a = n(2),
       u = o(a),
-      f = n(5),
-      l = o(f),
+      l = n(5),
+      f = o(l),
       c = n(6),
       d = o(c),
       p = n(3),
       v = o(p),
-      g = n(12),
+      g = n(13),
       h = o(g),
-      m = n(13),
-      _ = o(m),
-      w = n(4),
-      y = Object.assign(_["default"], h["default"]),
-      b = 0,
-      M = {};
+      _ = n(16),
+      m = o(_),
+      w = n(15),
+      y = o(w),
+      b = n(4),
+      M = Object.assign(m["default"], h["default"]),
+      S = 0,
+      k = {};
     v["default"].registerCallback(i)
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    });
+    var r = n(6),
+      i = o(r),
+      s = n(5),
+      a = (o(s), n(14)),
+      u = n(4),
+      l = n(15),
+      f = null,
+      c = 0,
+      d = function(e, t, n) {
+        if (c++, c > u.MaxRequestConcurrent) return c--, console.group(new Date + " wx.request 错误"), console.error("同时最多发起 " + u.MaxRequestConcurrent + " 个 wx.request 请求，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.groupEnd(), void(n && n({
+          errMsg: "request:fail"
+        }));
+        var o = t.url,
+          r = t.header || {};
+        if (!(0, l.checkUrl)(o)) return c--, void(n && n({
+          errMsg: "request:fail"
+        }));
+        if (!(0, a.checkTLS)(o)) return c--, void(n && n({
+          errMsg: "request:fail 小程序要求的 TLS 版本必须大于等于 1.2"
+        }));
+        var i, s = new XMLHttpRequest,
+          f = t.method || "POST",
+          d = (t.complete, u.appconfig.networkTimeout && u.appconfig.networkTimeout.request);
+        s.open(f, '/remoteProxy', !0), s.onreadystatechange = function() {
+          if (3 == s.readyState, 4 == s.readyState) {
+            s.onreadystatechange = null;
+            var e = s.status;
+            s.setRequestHeader('X-Remote', t.url)
+            0 == e || setTimeout(function() {
+              return (0, a.checkTLS)(t.url) ? (n && n({
+                errMsg: "request:ok",
+                data: s.responseText,
+                statusCode: e
+              }), c--, void(i && clearTimeout(i))) : (c--, void(n && n({
+                errMsg: "request:fail 小程序要求的 TLS 版本必须大于等于 1.2"
+              })))
+            }, 30)
+          }
+        }, s.onerror = function() {
+          n && n({
+            errMsg: "request:fail"
+          })
+        };
+        var p = 0;
+        for (var v in r) "content-type" === v.toLowerCase() && p++;
+        p >= 2 && delete r["content-type"];
+        var g = !1;
+        for (var h in r)
+          if (r.hasOwnProperty(h)) {
+            var _ = h.toLowerCase();
+            g = "content-type" == _ || g, "cookie" === _ ? s.setRequestHeader("_Cookie", r[h]) : s.setRequestHeader(h, r[h])
+          }
+          "POST" != f || g || s.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"), s.setRequestHeader("X-Requested-With", "XMLHttpRequest"), "number" == typeof d && (i = setTimeout(function() {
+          s.abort("timeout"), t.complete && t.complete(), t.complete = null, c--, n && n({
+            errMsg: "request:fail"
+          })
+        }, d));
+        var m = "string" == typeof t.data ? t.data : null;
+        try {
+          s.send(m)
+        } catch (w) {
+          c--, n && n({
+            errMsg: "request:fail"
+          })
+        }
+      },
+      p = function(e, t, n) {
+        var o = t.url,
+          r = t.header;
+        if (!(0, l.checkUrl)(o, "webscoket")) return void(n && n({
+          errMsg: "connectSocket:fail"
+        }));
+        f = new WebSocket(o);
+        for (var s in r) r.hasOwnProperty(s);
+        f.onopen = function(e) {
+          i["default"].emit("triggerOnEvent", "onSocketOpen", e)
+        }, f.onmessage = function(e) {
+          i["default"].emit("triggerOnEvent", "onSocketMessage", {
+            data: e.data
+          })
+        }, f.onclose = function(e) {
+          i["default"].emit("triggerOnEvent", "onSocketClose", e)
+        }, f.onerror = function(e) {
+          i["default"].emit("triggerOnEvent", "onSocketError", e)
+        }, n && n({
+          errMsg: "connectSocket:ok"
+        })
+      },
+      v = function(e, t, n) {
+        f ? (f.close(), f = null, n && n({
+          errMsg: "closeSocket:ok"
+        })) : n && n({
+          errMsg: "closeSocket:fail"
+        })
+      },
+      g = function(e, t, n) {
+        var o = t.data;
+        if (f) try {
+          f.send(o), n && n({
+            errMsg: "sendSocketMessage:ok"
+          })
+        } catch (r) {
+          n && n({
+            errMsg: "sendSocketMessage:fail " + r.message
+          })
+        } else n && n({
+          errMsg: "sendSocketMessage:fail"
+        })
+      };
+    t["default"] = {
+      request: d,
+      connectSocket: p,
+      sendSocketMessage: g,
+      closeSocket: v
+    }
+  }, function(e, t, n) {
+    function o(e) {
+      return e && e.__esModule ? e : {
+        "default": e
+      }
+    }
+
+    function r(e) {
+      var t = document.createElement("a");
+      return t.href = e, t.href
+    }
+
+    function i(e) {
+      return true
+    }
+    Object.defineProperty(t, "__esModule", {
+      value: !0
+    }), t.securityDetails = t.checkTLS = void 0;
+    var s = n(5),
+      a = o(s),
+      u = window.securityDetails = {};
+    t.checkTLS = i, t.securityDetails = u
   }, function(e, t, n) {
     function o(e) {
       return e && e.__esModule ? e : {
@@ -622,130 +793,30 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
 
     function r(e, t) {
-      if (f["default"].isTourist()) return console.group(new Date + " 无 AppID 关联"), console.warn("工具未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.groupEnd(), !0;
-      try {
-        var n = function() {
-          for (var n = "webscoket" === t ? l.NetworkConfig.WsRequestDomain : l.NetworkConfig.RequestDomain, o = 0; o < n.length; o++)
-            if (0 === e.indexOf(n[o])) return {
-              v: !0
-            };
-          var r = [];
-          n.forEach(function(e) {
-            r.push([e])
-          }), console.group(new Date + " 合法域名校验出错"), console.error(" " + e + " 不在以下合法域名列表中，请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.table(r), console.groupEnd()
-        }();
-        if ("object" === ("undefined" == typeof n ? "undefined" : i(n))) return n.v
-      } catch (o) {
-        return console.error(o), !1
-      }
+      return console.warn('WEPT 请求时不检查安全域名')
     }
-    Object.defineProperty(t, "__esModule", {
-      value: !0
-    });
     var i = "function" == typeof Symbol && "symbol" === _typeof2(Symbol.iterator) ? function(e) {
         return "undefined" == typeof e ? "undefined" : _typeof2(e)
       } : function(e) {
         return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : "undefined" == typeof e ? "undefined" : _typeof2(e)
       },
-      s = n(6),
+      s = n(5),
       a = o(s),
-      u = n(5),
-      f = o(u),
-      l = n(4),
-      c = null,
-      d = 0,
-      p = function(e, t, n) {
-        if (d++, d > l.MaxRequestConcurrent) return d--, console.group(new Date + " wx.request 错误"), console.error("同时最多发起 " + l.MaxRequestConcurrent + " 个 wx.request 请求，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.groupEnd(), void(n && n({
-          errMsg: "request:fail;"
-        }));
-        var o = t.url,
-          i = t.header || {};
-        if (!r(o)) return d--, void(n && n({
-          errMsg: "request:fail;"
-        }));
-        var s, a = new XMLHttpRequest,
-          u = t.method || "POST",
-          f = (t.complete, l.appconfig.networkTimeout && l.appconfig.networkTimeout.request);
-        a.open(u, '/remoteProxy', !0), a.onreadystatechange = function() {
-          if (3 == a.readyState, 4 == a.readyState) {
-            a.onreadystatechange = null;
-            var e = a.status;
-            0 == e || (n && n({
-              errMsg: "request:ok",
-              data: a.responseText,
-              statusCode: e
-            }), d--, s && clearTimeout(s))
-          }
-        };
-        a.setRequestHeader('X-Remote', t.url)
-        var c = !1;
-        for (var p in i)
-          if (i.hasOwnProperty(p)) {
-            var v = p.toLowerCase();
-            c = "content-type" == v || c, "cookie" === v ? a.setRequestHeader("_Cookie", i[p]) : a.setRequestHeader(p, i[p])
-          }
-          "POST" != u || c || a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"), a.setRequestHeader("X-Requested-With", "XMLHttpRequest"), "number" == typeof f && (s = setTimeout(function() {
-          a.abort("timeout"), t.complete && t.complete(), t.complete = null, d--, n && n({
-            errMsg: "request:fail"
-          })
-        }, f));
-        var g = "string" == typeof t.data ? t.data : null;
-        try {
-          a.send(g)
-        } catch (h) {
-          d--, n && n({
-            errMsg: "request:fail"
-          })
-        }
+      u = n(4),
+      l = function(e, t, n) {
+        return !!r(t.url, "upload") || (n({
+          errMsg: e + ":fail illegal host"
+        }), !1)
       },
-      v = function(e, t, n) {
-        var o = t.url,
-          i = t.header;
-        if (!r(o, "webscoket")) return void(n && n({
-          errMsg: "connectSocket:fail"
-        }));
-        c = new WebSocket(o);
-        for (var s in i) i.hasOwnProperty(s);
-        c.onopen = function(e) {
-          a["default"].emit("triggerOnEvent", "onSocketOpen", e)
-        }, c.onmessage = function(e) {
-          a["default"].emit("triggerOnEvent", "onSocketMessage", {
-            data: e.data
-          })
-        }, c.onclose = function(e) {
-          a["default"].emit("triggerOnEvent", "onSocketClose", e)
-        }, c.onerror = function(e) {
-          a["default"].emit("triggerOnEvent", "onSocketError", e)
-        }, n && n({
-          errMsg: "connectSocket:ok"
-        })
-      },
-      g = function(e, t, n) {
-        c ? (c.close(), c = null, n && n({
-          errMsg: "closeSocket:ok"
-        })) : n && n({
-          errMsg: "closeSocket:fail"
-        })
-      },
-      h = function(e, t, n) {
-        var o = t.data;
-        if (c) try {
-          c.send(o), n && n({
-            errMsg: "sendSocketMessage:ok"
-          })
-        } catch (r) {
-          n && n({
-            errMsg: "sendSocketMessage:fail," + r.message
-          })
-        } else n && n({
-          errMsg: "sendSocketMessage:fail"
-        })
+      f = function(e, t, n) {
+        return !!r(t.url, "download") || (n({
+          errMsg: e + ":fail illegal host"
+        }), !1)
       };
-    t["default"] = {
-      request: p,
-      connectSocket: v,
-      sendSocketMessage: h,
-      closeSocket: g
+    e.exports = {
+      uploadFile: l,
+      downloadFile: f,
+      checkUrl: r
     }
   }, function(e, t) {
     Object.defineProperty(t, "__esModule", {
@@ -782,9 +853,11 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
   }, function(e, t) {
     function n() {
-      var e = ["Pormise", "chrome", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
+      var e = ["Promise", "chrome", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
       e.forEach(function(e) {
         window[e] = void 0
+      }), window.addEventListener("load", function(e) {
+        history.replaceState({}, {}, location.href + "?load")
       })
     }
     Object.defineProperty(t, "__esModule", {

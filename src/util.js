@@ -70,7 +70,7 @@ export function getRedirectData(url, webviewID) {
   return {
     to: 'backgroundjs',
     msg: {
-      eventName: 'INVOKE_METHOD',
+      eventName: 'publish_INVOKE_METHOD',
       data: {
         data: {
           name: 'navigateTo',

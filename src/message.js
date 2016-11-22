@@ -19,7 +19,7 @@ window.addEventListener('message', function (e) {
     sdk(data)
   } else if (cmd == 'TO_APP_SERVICE') {
     delete data.command
-    if (msg && msg.eventName == 'DOMContentLoaded') {
+    if (msg && msg.eventName == 'publish_DOMContentLoaded') {
       Bus.emit('ready', data.webviewID)
       Nprogress.done()
     }
