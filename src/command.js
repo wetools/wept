@@ -12,6 +12,7 @@ import {toAppService} from './service'
 import record from './sdk/record'
 import Compass from './sdk/compass'
 import storage from './sdk/storage'
+import Picker from './sdk/picker'
 import * as fileList from './sdk/fileList'
 import toast from './sdk/toast'
 import image from './sdk/image'
@@ -732,6 +733,25 @@ export function refreshSession(data) {
   onSuccess(data)
 }
 
+export function showPickerView(data, args) {
+  const picker = new Picker(args)
+  picker.show()
+  //picker.on('cancel', () => {})
+  picker.on('select', n => {
+    publishPagEevent('bindPickerChange', {
+      type: 'change',
+      detail: {
+        value: n + ''
+      }
+    })
+  })
+}
+
+export function showDatePickerView(data, args) {
+  //console.log(args)
+        console.warn('WEPT 暂时不支持日期选择模拟，后续会添加')
+}
+
 function requiredArgs(keys, data) {
   let args = data.args
   for (var i = 0, l = keys.length; i < l; i++) {
@@ -777,5 +797,21 @@ function onCancel(data, extra = {}) {
     }
   }
   obj.msg = merge.recursive(true, obj.msg, extra)
+  toAppService(obj)
+}
+
+function publishPagEevent(eventName, extra) {
+  let obj = {
+    command: 'MSG_FROM_WEBVIEW',
+    msg: {
+      data: {
+        data: {
+          data: extra,
+          eventName
+        }
+      },
+      eventName: 'publish_PAGE_EVENT',
+    }
+  }
   toAppService(obj)
 }

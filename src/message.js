@@ -42,7 +42,11 @@ function sdk(data) {
   let msg = data.msg
   if (msg) {
     let n = msg.sdkName
-    if (n == 'onKeyboardComplete') {
+    if (n == 'showPickerView') {
+      command.showPickerView(data, msg.args)
+    } else if (n == 'showDatePickerView') {
+      command.showDatePickerView(data, msg.args)
+    } else if (n == 'onKeyboardComplete') {
       showConsole(msg.sdkName, 'REGISTER_SDK')
     } else if (n == 'getPublicLibVersion'
             || n == 'onTextAreaHeightChange'
