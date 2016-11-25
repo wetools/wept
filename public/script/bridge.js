@@ -793,7 +793,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
     }
 
     function r(e, t) {
-      return console.warn('WEPT 请求时不检查安全域名')
+      return true
     }
     var i = "function" == typeof Symbol && "symbol" === _typeof2(Symbol.iterator) ? function(e) {
         return "undefined" == typeof e ? "undefined" : _typeof2(e)
