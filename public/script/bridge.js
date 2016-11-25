@@ -675,7 +675,6 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           if (3 == s.readyState, 4 == s.readyState) {
             s.onreadystatechange = null;
             var e = s.status;
-            s.setRequestHeader('X-Remote', t.url)
             0 == e || setTimeout(function() {
               return (0, a.checkTLS)(t.url) ? (n && n({
                 errMsg: "request:ok",
@@ -690,7 +689,7 @@ var _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           n && n({
             errMsg: "request:fail"
           })
-        };
+        },s.setRequestHeader('X-Remote', t.url);
         var p = 0;
         for (var v in r) "content-type" === v.toLowerCase() && p++;
         p >= 2 && delete r["content-type"];
