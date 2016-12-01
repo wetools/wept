@@ -1,3 +1,6 @@
+# 0.5.9
+* 支持 DatePicker 和 TimePicker， 不支持 range 选项
+
 # 0.5.8
 
 重新实现了基础版的 picker
