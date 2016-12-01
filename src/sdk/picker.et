@@ -1,0 +1,21 @@
+<div class="wx-picker">
+  <div class="wx-picker-hd">
+    <a class="wx-picker-action cancel">取消</a>
+    <a class="wx-picker-action confirm">确定</a>
+  </div>
+  <div class="wx-picker-bd">
+    {{each _.group as items, i}}
+    <div class="wx-picker-group">
+      <div class="wx-picker-mask2" data-index="{{= i}}"></div>
+      <div class="wx-picker-indicator"></div>
+      <div class="wx-picker-content">
+        {{each items as item, j}}
+        <div class="wx-picker-item" data-value="{{= item.value}}">
+          {{= item.text}}
+        </div>
+        {{/}}
+      </div>
+    </div>
+    {{/}}
+  </div>
+</div>

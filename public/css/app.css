@@ -303,10 +303,12 @@
 
 .wx-picker-hd {
   display: flex;
-  padding: 10px 15px;
   background-color: #fbf9fe;
   position: relative;
   text-align: center;
+}
+.wx-picker-action {
+  padding: 10px 15px;
 }
 
 .wx-picker-action:first-child {

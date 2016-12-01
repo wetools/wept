@@ -1,10 +1,12 @@
+import Emitter from 'emitter'
 import Tween from 'tween'
 import raf from 'raf'
 import events from 'events'
 import {touchAction, transform} from 'prop-detect'
 
-export default class Scrollable {
-  constructor(root, opts) {
+export default class Scrollable extends Emitter {
+  constructor(root, curr) {
+    super()
     if (root.firstElementChild) {
       this.el = root
       this.touchAction('none')
@@ -15,14 +17,19 @@ export default class Scrollable {
       this.events.bind('touchend')
       this.docEvents = events(document, this)
       this.docEvents.bind('touchend')
-      this.minY = 0
-      this.maxY = (root.children.length - 1)*this.itemHeight
-      const n = 3 - (opts.current || 0)
+      this.maxY = this.itemHeight*3
+      this.minY = (4 - root.children.length)*this.itemHeight
+      const n = 3 - (curr || 0)
       this.translate(n*this.itemHeight)
     }
   }
   current() {
     return 3 - Math.floor(this.y/this.itemHeight)
+  }
+  currentValue() {
+    const n = this.current()
+    const el =this.el.children[n]
+    return el.getAttribute('data-value')
   }
   unbind() {
     if (!this.el) return
@@ -55,7 +62,10 @@ export default class Scrollable {
     this.down = null
     e.preventDefault()
     let n = Math.round(this.y/this.itemHeight)
-    let y = n*this.itemHeight
+    this.select(n)
+  }
+  select(index) {
+    let y = index*this.itemHeight
     this.scrollTo(y, 200, 'inQuad')
   }
     /**
@@ -93,6 +103,7 @@ export default class Scrollable {
     })
     let promise = new Promise(resolve => {
       tween.on('end', () => {
+        this.emit('end')
         resolve()
         self.tween = null
         self.animating = false

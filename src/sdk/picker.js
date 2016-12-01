@@ -2,6 +2,7 @@ import Emitter from 'emitter'
 import domify from 'domify'
 import events from 'events'
 import Scrollable from './scrollable'
+import tmplFn from './picker.et'
 
 export default class Picker extends Emitter {
   constructor(opts) {
@@ -15,29 +16,13 @@ export default class Picker extends Emitter {
   }
   show() {
     this.root.appendChild(domify('<div class="wx-picker-mask"></div>'))
-    const el = domify('<div class="wx-picker"></div>')
-    this.root.appendChild(el)
-    el.appendChild(domify(`
-    <div class="wx-picker-hd">
-      <a class="wx-picker-action cancel">取消</a>
-      <a class="wx-picker-action confirm">确定</a>
-    </div>`))
-    el.appendChild(domify(`
-      <div class="wx-picker-bd">
-        <div class="wx-picker-group">
-          <div class="wx-picker-mask2"></div>
-          <div class="wx-picker-indicator"></div>
-          <div class="wx-picker-content">
-          </div>
-        </div>
-      </div>`))
-    const container = this.root.querySelector('.wx-picker-content')
-    this.opts.array.forEach(text => {
-      container.appendChild(domify(`
-        <div class="wx-picker-item">${text}</div>
-      `))
+    const items = this.opts.array.map(text => {
+      return {text, value: text}
     })
-    this.scrollable = new Scrollable(container, this.opts)
+    const el = domify(tmplFn({group: [items]}))
+    this.root.appendChild(el)
+    const container = this.root.querySelector('.wx-picker-content')
+    this.scrollable = new Scrollable(container, this.opts.current)
   }
   hide() {
     this.events.unbind()

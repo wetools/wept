@@ -13,6 +13,8 @@ import record from './sdk/record'
 import Compass from './sdk/compass'
 import storage from './sdk/storage'
 import Picker from './sdk/picker'
+import TimePicker from './sdk/timePicker'
+import DatePicker from './sdk/datePicker'
 import * as fileList from './sdk/fileList'
 import toast from './sdk/toast'
 import image from './sdk/image'
@@ -748,8 +750,24 @@ export function showPickerView(data, args) {
 }
 
 export function showDatePickerView(data, args) {
-  //console.log(args)
-        console.warn('WEPT 暂时不支持日期选择模拟，后续会添加')
+  let picker
+  let eventName
+  if (args.mode == 'time') {
+    eventName = 'bindTimeChange'
+    picker = new TimePicker(args)
+  } else {
+    eventName = 'bindDateChange'
+    picker = new DatePicker(args)
+  }
+  picker.show()
+  picker.on('select', val => {
+    publishPagEevent(eventName, {
+      type: 'change',
+      detail: {
+        value: val
+      }
+    })
+  })
 }
 
 function requiredArgs(keys, data) {
