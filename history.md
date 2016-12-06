@@ -1,3 +1,7 @@
+# 0.6.0
+
+* 支持设置 wept.json 关闭 babel 编译，默认开启
+
 # 0.5.9
 * 支持 DatePicker 和 TimePicker， 不支持 range 选项
 
