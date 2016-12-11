@@ -1,3 +1,8 @@
+# 0.6.4
+
+* 修复 import 解析 join 两次导致路径错误的 bug ＃54
+* wxml 中 import 和 include 支持递归解析
+
 # 0.6.2
 
 * 修复无法支持递推 css import 解析的 bug
