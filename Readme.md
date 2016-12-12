@@ -9,6 +9,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
 
 支持 Mac 和 Win7 上正常使用。
+Linux 下依赖 wine，需要保证 `wine` 命令存在环境变量中才可使用。
 
 [使用 WEPT 配置文件](https://github.com/chemzqm/wept/wiki/wept-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
 
@@ -40,7 +41,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 ## 安装 & 使用方法
 
 下载安装 [nodejs](https://nodejs.org) __windows 用户请确保[添加 npm 环境变量](http://jingyan.baidu.com/article/2d5afd69e243cc85a2e28efa.html)__，执行：
-    
+
     # 可能需要 sudo
     npm i wept -g
 
