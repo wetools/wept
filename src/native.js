@@ -5,8 +5,8 @@ function systemInfo() {
   return {
     model: /iPhone/.test(navigator.userAgent) ? 'iPhone6' : 'Android',
     pixelRatio: window.devicePixelRatio || 1,
-    windowWidth: window.screen.width || 0,
-    windowHeight: window.screen.height || 0,
+    windowWidth: window.innerWidth || 0,
+    windowHeight: window.innerHeight || 0,
     language: window.navigator.userLanguage || window.navigator.language,
     version: "6.3.9"
   }

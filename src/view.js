@@ -18,7 +18,7 @@ export default class View extends Emitter {
     this.isMap = isMap(path)
     let external = this.external = /^http(s)?:\/\//.test(path)
     let root = document.querySelector('.scrollable')
-    let width = window.screen.width
+    let width = window.innerWidth
     let ratio = window.devicePixelRatio
     let url = external ? path : `/app/${o.path}.wxml?w=${width}&r=${ratio}`
     this.el = createFrame(`view-${id}`, url, false, root)
@@ -85,14 +85,14 @@ export default class View extends Emitter {
     this.el.contentWindow.postMessage(obj, '*')
   }
   reloadWxss(path) {
-    let width = window.screen.width
+    let width = window.innerWidth
     let ratio = window.devicePixelRatio
     if (this.el.contentWindow.hasOwnProperty('reloadWxss')) {
       this.el.contentWindow.reloadWxss(width, ratio, path)
     }
   }
   resizeWxss() {
-    let width = window.screen.width
+    let width = window.innerWidth
     let ratio = window.devicePixelRatio
     if (this.el.contentWindow.hasOwnProperty('resizeWxss')) {
       this.el.contentWindow.resizeWxss(width, ratio)
