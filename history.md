@@ -1,3 +1,7 @@
+# 0.6.7
+
+* 使用 window.innerWidth 计算 rpx，修复做为 iframe 时渲染错误的 bug
+
 # 0.6.6
 
 * 添加了 Linux 支持，需要 wine 命令在当前 shell 下可用
