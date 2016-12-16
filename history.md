@@ -1,3 +1,7 @@
+# 0.6.8
+
+* 顶层菜单支持点击事件，方便 vscode 用户
+
 # 0.6.7
 
 * 使用 window.innerWidth 计算 rpx，修复做为 iframe 时渲染错误的 bug
