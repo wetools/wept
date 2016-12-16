@@ -50,7 +50,7 @@
     "request-component": "0.0.4",
     "autoscale-canvas": "0.0.3",
     "classnames": "^2.2.5",
-    "actionsheet": "^0.1.0",
+    "actionsheet": "^0.1.2",
     "prop-detect": "^1.1.0",
     "pinch-zoom": "^0.3.8",
     "jr-qrcode": "^1.0.5",
