@@ -1,6 +1,6 @@
 # 0.6.9
 
-* 支持代理图片，支持代理时添加自定义 headers， 参考 [wept 配置文件](https://github.com/chemzqm/wept/wiki/wept-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+* 支持代理图片，支持代理时添加自定义 headers， 参考 [#61](https://github.com/chemzqm/wept/pull/61)
 
 # 0.6.8
 
