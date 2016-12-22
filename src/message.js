@@ -8,6 +8,7 @@ window.addEventListener('message', function (e) {
   let data = e.data || {}
   let cmd = data.command
   let msg = data.msg
+  console.log(JSON.stringify(data))
   // location picker of map
   if (data.module == 'locationPicker') {
     currentView().setLocation(data)

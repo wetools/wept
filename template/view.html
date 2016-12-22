@@ -8,7 +8,9 @@
   <script src="/script/ViewBridge.js?v={{= _.version}}" async type="text/javascript"></script>
   <script src="/script/view.js?v={{= _.version}}" type="text/javascript"></script>
   <script>
+  window.__pageFrameStartTime__ = Date.now()
   {{= _.inject_js}}
+  window.__pageFrameEndTime__ = Date.now()
   </script>
   <script>
     document.dispatchEvent(new CustomEvent("generateFuncReady", {
