@@ -1,3 +1,7 @@
+# 0.7.0-beta
+
+* 使用 122100 官方代码，支持除 scanCode 外 API 调用
+
 # 0.6.9
 
 * 支持代理图片，支持代理时添加自定义 headers， 参考 [#61](https://github.com/chemzqm/wept/pull/61)
