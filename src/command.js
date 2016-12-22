@@ -94,10 +94,15 @@ export function publish(data) {
   })
 }
 
+
+export function WEBVIEW_READY (data) {
+  console.log(data)
+}
+
 export function redirectTo(data) {
   Nprogress.start()
   viewManage.redirectTo(data.args.url)
-  onNavigate(data)
+  onNavigate(data, 'redirectTo')
 }
 
 export function navigateTo(data) {
@@ -107,7 +112,7 @@ export function navigateTo(data) {
   }
   Nprogress.start()
   viewManage.navigateTo(data.args.url)
-  onNavigate(data)
+  onNavigate(data, 'navigateTo')
 }
 
 export function navigateBack(data) {
@@ -118,7 +123,7 @@ export function navigateBack(data) {
   viewManage.navigateBack(delta, () => {
     onBack()
   })
-  onNavigate(data)
+  onNavigate(data, 'navigateBack')
 }
 
 function getRoutes() {

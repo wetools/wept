@@ -8,7 +8,6 @@ window.addEventListener('message', function (e) {
   let data = e.data || {}
   let cmd = data.command
   let msg = data.msg
-  console.log(JSON.stringify(data))
   // location picker of map
   if (data.module == 'locationPicker') {
     currentView().setLocation(data)
@@ -34,6 +33,8 @@ window.addEventListener('message', function (e) {
     }
   } else if (cmd == 'PULLDOWN_REFRESH') {
     command['PULLDOWN_REFRESH'](data)
+  } else if (cmd == 'WEBVIEW_READY') {
+    // TODO figure out WTF is this
   } else {
     console.warn(`Command ${cmd} not recognized!`)
   }

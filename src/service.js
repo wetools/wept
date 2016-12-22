@@ -77,17 +77,19 @@ export function onBack() {
   lifeSycleEvent(view.path, view.query, 'navigateBack')
 }
 
-export function onNavigate(data) {
+export function onNavigate(data, type = 'navigateTo') {
   if (!data.args.url) throw new Error('url not found')
+  let view = currentView()
   message({
     to: 'appservice',
     msg: {
       errMsg: `${data.sdkName}:ok`,
       url: data.args.url,
-      webviewId: currentView().id
+      webviewId: view.id
     },
     command: 'GET_ASSDK_RES',
     ext: merge.recursive(true, {}, data),
     webviewID: SERVICE_ID
   })
+  lifeSycleEvent(view.path, view.query,type)
 }

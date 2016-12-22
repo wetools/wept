@@ -1,3 +1,4 @@
+import Bus from './bus'
 import merge from 'merge'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
@@ -22,6 +23,7 @@ export default class View extends Emitter {
     let ratio = window.devicePixelRatio
     let url = external ? path : `/app/${o.path}.wxml?w=${width}&r=${ratio}`
     this.el = createFrame(`view-${id}`, url, false, root)
+    this.ready = false
     let ua = window.navigator.userAgent
     Object.defineProperty(this.el.contentWindow.navigator, 'userAgent', {
       get : function () {
@@ -39,6 +41,21 @@ export default class View extends Emitter {
         return self.getConfig()
       }
     })
+    Bus.on('ready', viewId => {
+      if (viewId == id) {
+        this.ready = true
+        let cbs = this.readyCallbacks
+        for (let cb of cbs) {
+          cb()
+        }
+        this.readyCallbacks = null
+      }
+    })
+    this.readyCallbacks = []
+  }
+  onReady(cb) {
+    if (this.ready) return cb()
+    this.readyCallbacks.push(cb)
   }
   setLocation(data) {
     this.location = {
@@ -75,14 +92,15 @@ export default class View extends Emitter {
     this.el.parentNode.removeChild(this.el)
   }
   postMessage(data) {
-    if (!this.el) return
-    let obj = merge.recursive(true, {
-      to: 'webframe',
-      webviewID: this.id,
-      id: Math.random()
-    }, data)
-    obj.msg = data.msg || {}
-    this.el.contentWindow.postMessage(obj, '*')
+    this.onReady(() => {
+      let obj = merge.recursive(true, {
+        to: 'webframe',
+        webviewID: this.id,
+        id: Math.random()
+      }, data)
+      obj.msg = data.msg || {}
+      this.el.contentWindow.postMessage(obj, '*')
+    })
   }
   reloadWxss(path) {
     let width = window.innerWidth
