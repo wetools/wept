@@ -1,0 +1,3 @@
+<view>
+  <button type="default" size="default" bindtap="systemInfo">systemInfo</button>
+</view>

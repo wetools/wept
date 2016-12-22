@@ -1,5 +1,6 @@
 import et from 'et-improve'
 import domify from 'domify'
+import Mask from './mask'
 
 const tmpl = `
 <div>
@@ -13,9 +14,10 @@ const tmpl = `
 </div>
 `
 const fn = et.compile(tmpl)
+let hideMask = null
 
 export default {
-  show: function ({duration = 1500, icon, title}) {
+  show: function ({duration = 1500, icon, title, mask}) {
     this.hide()
     duration = Math.min(duration, 10000)
     let el = domify(fn({
@@ -24,13 +26,18 @@ export default {
     }))
     this.el = el
     document.body.appendChild(el)
+    if (mask) {
+      hideMask = Mask()
+    }
     this.timeout = setTimeout(() => {
       if (el.parentNode) document.body.removeChild(el)
+      if (hideMask) hideMask()
       this.el = null
     }, duration)
   },
   hide: function () {
     window.clearTimeout(this.timeout)
+    if (hideMask) hideMask()
     if (this.el) {
       this.el.parentNode.removeChild(this.el)
       this.el = null

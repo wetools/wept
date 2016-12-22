@@ -1,0 +1,1 @@
+<button type="default" size="default" bindtap="scancode">Scan code</button>

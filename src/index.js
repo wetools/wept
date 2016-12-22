@@ -3,10 +3,9 @@ import * as util from './util'
 import {onReloadJson, onReloadJavascript } from './notify'
 import Bus from './bus'
 import {eachView, navigateBack, navigateTo, currentView} from './viewManage'
-import {onBack} from './service'
+import {onBack, lifeSycleEvent, toAppService} from './service'
 import toast from './component/toast'
 import tabbar from './tabbar'
-import {lifeSycleEvent} from './service'
 import debounce from 'debounce'
 import * as nativeMethods from './native'
 require('./message')
@@ -24,6 +23,17 @@ Bus.on('back', () => {
   let curr = currentView()
   navigateBack()
   if (!curr.external) onBack()
+})
+
+Bus.on('share', () => {
+  toAppService({
+    msg: {
+      data: {
+        data: '{}'
+      },
+      eventName: "onShareAppMessage"
+    }
+  })
 })
 
 tabbar.on('active', pagePath => {

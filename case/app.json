@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "features/index",
+    "features/tab",
+    "features/canvas",
+    "features/disableScroll",
+    "features/downloadFile",
+    "features/error",
+    "features/map",
+    "features/record",
+    "features/scanCode",
+    "features/share",
+    "features/modal",
+    "features/toast",
+    "features/switchTab",
+    "features/systemInfo"
+  ],
+  "window": {
+    "enablePullDownRefresh": true,
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Test features",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+    "tabBar": {
+    "color": "#dddddd",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+      "pagePath": "features/index",
+      "text": "组件"
+    }, {
+      "pagePath": "features/tab",
+      "text": "接口"
+    }]
+  },
+  "debug": true
+}
+

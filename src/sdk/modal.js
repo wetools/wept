@@ -9,7 +9,12 @@ const tmpl = `
     <div class="wx-modal-dialog-hd">
       <strong>{{= _.title}}</strong>
     </div>
-    <div class="wx-modal-dialog-bd">{{= _.content}}</div>
+    <div class="wx-modal-dialog-bd">
+      {{if _.imgUrl}}
+        <img src="{{= _.imgurl}}" class="wx-modal-dialog-img"/>
+      {{/}}
+      {{= _.content}}
+    </div>
     <div class="wx-modal-dialog-ft">
     {{if _.showCancel}}
         <a class="wx-modal-btn-default cancel-btn" style="color: {{=_.cancelColor}};">{{= _.cancelText}}</a>
@@ -22,10 +27,11 @@ const fn = et.compile(tmpl)
 
 let el = null
 
-export default function ({title = '', content = '', showCancel = true, cancelText = '取消', cancelColor = '#000000', confirmText = '确定', confirmColor = '#3CC51F'}) {
+export default function ({title = '', content = '', imgUrl, showCancel = true, cancelText = '取消', cancelColor = '#000000', confirmText = '确定', confirmColor = '#3CC51F'}) {
   if (el && el.parentNode) el.parentNode.removeChild(el)
 
   el = domify(fn({
+    imgUrl,
     title,
     content,
     showCancel,

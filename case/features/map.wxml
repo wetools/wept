@@ -1,0 +1,4 @@
+<map id="myMap" show-location />
+
+<button type="primary" bindtap="getCenterLocation">获取位置</button>
+<button type="primary" bindtap="moveToLocation">移动位置</button>

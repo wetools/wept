@@ -47,6 +47,6 @@ export function onReloadJson(p, isGlobal, content) {
 }
 
 export function onReloadJavascript(path, isGlobal) {
-  if (isGlobal) return window.location.reload()
-  reload(path)
+  // just reload, HOT fix sucks
+  return window.location.reload()
 }

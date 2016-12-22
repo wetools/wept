@@ -78,6 +78,12 @@ class Header extends Component {
   onOptions(e) {
     e.preventDefault()
     actionSheet({
+      share: {
+        text: '分享',
+        callback: function () {
+          Bus.emit('share')
+        }
+      },
       refresh: {
         text: '回主页',
         callback: function () {

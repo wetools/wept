@@ -10,3 +10,4 @@ Makefile
 extensions
 .official
 .eslintrc
+case

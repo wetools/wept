@@ -39,9 +39,27 @@ export function systemLog() {
   //ignore
 }
 
+export function switchTab(data) {
+  let url = data.args.url
+  Nprogress.start()
+  viewManage.switchTo(url)
+  onNavigate(data, 'switchTab')
+}
+
+export function shareAppMessage(data) {
+  let {desc, imgUrl, path, title} = data.args
+  modal({
+    title,
+    imgUrl,
+    content: desc
+  }).then(confirm => {
+    onSuccess(data, { confirm })
+  })
+}
+
 export function requestPayment(data) {
   confirm('确认支付吗？').then(() => {
-    onSuccess(data)
+    onSuccess(data, {statusCode: 200})
   }, () => {
     onError(data)
   })
@@ -94,6 +112,9 @@ export function publish(data) {
   })
 }
 
+export function scanCode(data) {
+  console.warn('WEPT 暂不支持')
+}
 
 export function WEBVIEW_READY (data) {
   console.log(data)
@@ -304,6 +325,7 @@ export function saveFile(data) {
     if (xhr.status / 100 | 0 == 2) {
       let result = JSON.parse(xhr.responseText)
       onSuccess(data, {
+        statusCode: xhr.status,
         savedFilePath: result.file_path
       })
     } else {
@@ -586,7 +608,7 @@ export function uploadFile(data) {
   xhr.open('POST', '/remoteProxy')
   xhr.onload = function () {
     if (xhr.status / 100 | 0 == 2) {
-      onSuccess(data)
+      onSuccess(data, {statusCode: xhr.status})
     } else {
       onError(data, `request error ${xhr.status}`)
     }
@@ -616,11 +638,12 @@ export function downloadFile(data) {
   let headers = args.header || {}
   xhr.open('GET', '/remoteProxy', true)
   xhr.onload = function () {
-    if (xhr.status / 100 | 0 == 2) {
+    if (xhr.status / 100 | 0 == 2 || xhr.status == 304) {
       let b = new Blob([xhr.response], {type: xhr.getResponseHeader("Content-Type")});
       let blob = URL.createObjectURL(b)
       fileStore[blob] = b
       onSuccess(data, {
+        statusCode: xhr.status,
         tempFilePath: blob
       })
     } else {

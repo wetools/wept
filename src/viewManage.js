@@ -1,3 +1,5 @@
+import Toast from './component/toast'
+import Nprogress from 'nprogress'
 import * as util from './util'
 import Bus from './bus'
 import View from './view'
@@ -50,6 +52,27 @@ export function navigateTo(path) {
     views[v.id] = v
     if (isTabView) tabViews[path] = curr
   }
+  onRoute()
+}
+
+export function switchTo(path) {
+  let p = normalize(path)
+  let find = false
+  Object.keys(views).forEach(key => {
+    let view = views[key]
+    if (p == view.path) {
+      find = view
+    } else if (!util.isTabbar(view.path)) {
+      view.destroy()
+      delete views[key]
+    }
+  })
+  if (!find) {
+    return Toast(`无法找到存在的 ${path} 页面`, {type: 'error'})
+  }
+  curr = find
+  curr.show()
+  Nprogress.done()
   onRoute()
 }
 
