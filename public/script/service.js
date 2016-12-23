@@ -154,8 +154,8 @@ var Reporter = function(e) {
       S = 500,
       T = 0,
       A = 0,
-      M = 0,
       P = 0,
+      M = 0,
       x = {},
       C = {},
       O = 3,
@@ -268,10 +268,10 @@ var Reporter = function(e) {
           }
         },
         log: function(e, t) {
-          e && "string" == typeof e && (!t && Date.now() - M < k || (M = Date.now(), y.push(e + ""), y.length >= h && s()))
+          e && "string" == typeof e && (!t && Date.now() - P < k || (P = Date.now(), y.push(e + ""), y.length >= h && s()))
         },
         submit: function() {
-          Date.now() - P < m || (P = Date.now(), a(), i(), s())
+          Date.now() - M < m || (M = Date.now(), a(), i(), s())
         },
         registerErrorListener: function(e) {
           "function" == typeof e && (j = e)
@@ -431,7 +431,7 @@ var Reporter = function(e) {
     var c = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
       },
       u = n(1),
       l = n(2),
@@ -452,8 +452,8 @@ var Reporter = function(e) {
     var S = function() {},
       T = {},
       A = "",
-      M = [],
       P = [],
+      M = [],
       x = void 0,
       C = {},
       O = ("devtools" === (0, l.getPlatform)(), !1),
@@ -466,7 +466,7 @@ var Reporter = function(e) {
       var t = e.data,
         n = e.eventName,
         o = e.ext,
-        r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+        r = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       if (t && "input" == t.type && "function" == typeof x) {
         var i = x({
             data: t,
@@ -486,8 +486,8 @@ var Reporter = function(e) {
       }
     });
     var B = function(e) {
-        var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-          n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "";
+        var t = arguments.length <= 1 || void 0 === arguments[1] ? {} : arguments[1],
+          n = arguments.length <= 2 || void 0 === arguments[2] ? "" : arguments[2];
         console.error(n), Reporter.triggerErrorMessage(n);
         var o = Reporter.surroundThirdByTryCatch(t.fail || S, "sdk catch error in " + e + " fail callback function"),
           r = Reporter.surroundThirdByTryCatch(t.complete || S, "sdk catch error in " + e + " complete callback function");
@@ -510,7 +510,7 @@ var Reporter = function(e) {
           console.log("onPullDownRefresh has been removed from api list")
         },
         setNavigationBarTitle: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("setNavigationBarTitle", e, {
             title: ""
           }) && (0, u.invokeMethod)("setNavigationBarTitle", e)
@@ -525,7 +525,7 @@ var Reporter = function(e) {
           (0, u.invokeMethod)("stopPullDownRefresh", e)
         },
         redirectTo: function(e) {
-          arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+          !(arguments.length <= 1 || void 0 === arguments[1]) && arguments[1];
           a("redirectTo", e, {
             url: ""
           }) && (e.url = (0, l.getRealRoute)(A, e.url), e.url = (0, l.encodeUrlQuery)(e.url), s("redirectTo", e) && (0, u.invokeMethod)("redirectTo", e, {
@@ -535,7 +535,7 @@ var Reporter = function(e) {
           }))
         },
         navigateTo: function(e) {
-          arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+          !(arguments.length <= 1 || void 0 === arguments[1]) && arguments[1];
           a("navigateTo", e, {
             url: ""
           }) && (e.url = (0, l.getRealRoute)(A, e.url), e.url = (0, l.encodeUrlQuery)(e.url), s("navigateTo", e) && (0, u.invokeMethod)("navigateTo", e, {
@@ -545,7 +545,7 @@ var Reporter = function(e) {
           }))
         },
         switchTab: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("switchTab", e, {
             url: ""
           }) && (/\?.*$/.test(e.url) && (console.warn("wx.switchTab: url 不支持 queryString"), e.url = e.url.replace(/\?.*$/, "")), e.url = (0, l.getRealRoute)(A, e.url), e.url = (0, l.encodeUrlQuery)(e.url), s("switchTab", e) && (0, u.invokeMethod)("switchTab", e, {
@@ -555,7 +555,7 @@ var Reporter = function(e) {
           }))
         },
         navigateBack: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           "number" != typeof e.delta ? e.delta = 1 : (e.delta = parseInt(e.delta), e.delta < 1 && (e.delta = 1)), (0, u.invokeMethod)("navigateBack", e)
         },
         getStorage: function(e) {
@@ -575,7 +575,7 @@ var Reporter = function(e) {
               key: e
             }, {
               beforeAll: function() {
-                var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
                 n = (0, l.stringToAnyType)(e.data, e.dataType)
               }
             }), n
@@ -599,7 +599,7 @@ var Reporter = function(e) {
           }
         },
         setStorageSync: function(e) {
-          var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "";
+          var t = arguments.length <= 1 || void 0 === arguments[1] ? "" : arguments[1];
           if (a("setStorage", e, "")) {
             var n = "ios" === (0, l.getPlatform)() ? "setStorage" : "setStorageSync",
               o = (0, l.anyTypeToString)(t),
@@ -641,7 +641,7 @@ var Reporter = function(e) {
           }), e
         },
         request: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           if (a("request", e, {
               url: ""
             })) {
@@ -738,7 +738,7 @@ var Reporter = function(e) {
           })
         },
         chooseImage: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           (0, u.invokeMethod)("chooseImage", (0, l.assign)({
             count: 9,
             sizeType: ["original", "compressed"],
@@ -797,21 +797,21 @@ var Reporter = function(e) {
           (0, u.onMethod)("onVoicePlayEnd", Reporter.surroundThirdByTryCatch(e, "onVoicePlayEnd"))
         },
         chooseVideo: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           e.sourceType = e.sourceType || ["album", "camera"], e.camera = e.camera || ["front", "back"], (0, u.invokeMethod)("chooseVideo", e)
         },
         getLocation: function(e) {
           console.log("getLocation", e, L.appStatus, L.hanged), L.appStatus === b.AppStatus.BACK_GROUND && L.hanged === !1 || (0, u.invokeMethod)("getLocation", e)
         },
         openLocation: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("openLocation", e, {
             latitude: .1,
             longitude: .1
           }) && (0, u.invokeMethod)("openLocation", e)
         },
         chooseLocation: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           (0, u.invokeMethod)("chooseLocation", e)
         },
         getNetworkType: function(e) {
@@ -830,7 +830,7 @@ var Reporter = function(e) {
             n = (0, l.getPlatform)();
           return (0, u.invokeMethod)("getSystemInfo", {}, {
             beforeSuccess: function() {
-              var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+              var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
               t = e, t.platform = n, delete e.errMsg
             }
           }), t
@@ -856,7 +856,7 @@ var Reporter = function(e) {
           })
         },
         playBackgroundAudio: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           L.appStatus === b.AppStatus.BACK_GROUND && L.hanged === !1 || (0, u.invokeMethod)("operateMusicPlayer", (0, l.assign)({
             operationType: "play"
           }, e), {
@@ -866,7 +866,7 @@ var Reporter = function(e) {
           })
         },
         pauseBackgroundAudio: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           (0, u.invokeMethod)("operateMusicPlayer", (0, l.assign)({
             operationType: "pause"
           }, e), {
@@ -876,7 +876,7 @@ var Reporter = function(e) {
           })
         },
         seekBackgroundAudio: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("seekBackgroundAudio", e, {
             position: 1
           }) && (0, u.invokeMethod)("operateMusicPlayer", (0, l.assign)({
@@ -888,7 +888,7 @@ var Reporter = function(e) {
           })
         },
         stopBackgroundAudio: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           console.log("stopBackgroundAudio"), (0, u.invokeMethod)("operateMusicPlayer", (0, l.assign)({
             operationType: "stop"
           }, e), {
@@ -985,7 +985,7 @@ var Reporter = function(e) {
           (0, u.invokeMethod)("requestPaymentToBank", e)
         },
         scanCode: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("scanCode", e, {}) && (0, u.invokeMethod)("scanCode", e)
         },
         openAddress: function(e) {
@@ -1005,16 +1005,16 @@ var Reporter = function(e) {
           (0, u.invokeMethod)("chooseContact", e)
         },
         makePhoneCall: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("makePhoneCall", e, {
             phoneNumber: ""
           }) && (0, u.invokeMethod)("makePhoneCall", e)
         },
         onAppRoute: function(e, t) {
-          M.push(e)
+          P.push(e)
         },
         onAppRouteDone: function(e, t) {
-          P.push(e)
+          M.push(e)
         },
         onAppEnterBackground: function(e) {
           k.onAppEnterBackground.call(L, e)
@@ -1023,7 +1023,7 @@ var Reporter = function(e) {
           k.onAppEnterForeground.call(L, e)
         },
         setAppData: function(e) {
-          var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
+          var t = arguments.length <= 1 || void 0 === arguments[1] ? {} : arguments[1],
             n = arguments[2];
           arguments[3];
           if (t.forceUpdate = "undefined" != typeof t.forceUpdate && t.forceUpdate, (0, l.isObject)(e) === !1) throw new l.AppServiceSdkKnownError("setAppData:data should be an object");
@@ -1055,7 +1055,7 @@ var Reporter = function(e) {
           console.warn("'onPageEvent' is deprecated, use 'Page[eventName]'")
         },
         createAnimation: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           if (a("createAnimation", e, {})) return new d.default(e)
         },
         createAudioContext: function(e) {
@@ -1071,7 +1071,7 @@ var Reporter = function(e) {
           x = e, (0, u.subscribe)("PAGE_EVENT", function(t) {
             var n = t.data,
               o = t.eventName,
-              r = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+              r = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
             e({
               data: n,
               eventName: o,
@@ -1102,7 +1102,7 @@ var Reporter = function(e) {
           }), e
         },
         showModal: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
             t = {
               title: "",
               content: "",
@@ -1126,7 +1126,7 @@ var Reporter = function(e) {
           })
         },
         showToast: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
             t = {
               duration: 1500,
               title: "",
@@ -1143,7 +1143,7 @@ var Reporter = function(e) {
           (0, u.invokeMethod)("hideToast", e)
         },
         showActionSheet: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
             t = {
               itemList: [],
               itemColor: "#000000"
@@ -1168,17 +1168,17 @@ var Reporter = function(e) {
           })
         },
         getSavedFileList: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           (0, u.invokeMethod)("getSavedFileList", e)
         },
         getSavedFileInfo: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("getSavedFileInfo", e, {
             filePath: ""
           }) && (0, u.invokeMethod)("getSavedFileInfo", e)
         },
         removeSavedFile: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           a("removeSavedFile", e, {
             filePath: ""
           }) && (0, u.invokeMethod)("removeSavedFile", e)
@@ -1192,19 +1192,19 @@ var Reporter = function(e) {
       var n = e.msg;
       Reporter.triggerErrorMessage(n)
     }), (0, u.onMethod)("onAppRoute", function(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       if (e.path = e.path.substring(0, e.path.length - 5), e.webviewId = "undefined" != typeof e.webviewId ? e.webviewId : t, A = e.path, "appLaunch" !== e.openType)
         for (var n in e.query) e.query[n] = decodeURIComponent(e.query[n]);
-      "navigateBack" != e.openType && "redirectTo" != e.openType || (0, w.clearOldWebviewCanvas)(), (0, w.notifyWebviewIdtoCanvas)(e.webviewId), (0, y.notifyWebviewIdtoMap)(e.webviewId), D = e.webviewId, M.forEach(function(t) {
+      "navigateBack" != e.openType && "redirectTo" != e.openType || (0, w.clearOldWebviewCanvas)(), (0, w.notifyWebviewIdtoCanvas)(e.webviewId), (0, y.notifyWebviewIdtoMap)(e.webviewId), D = e.webviewId, P.forEach(function(t) {
         t(e)
       })
     }), (0, u.onMethod)("onAppRouteDone", function(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
-      e.path = e.path.substring(0, e.path.length - 5), e.webviewId = "undefined" != typeof e.webviewId ? e.webviewId : t, A = e.path, P.forEach(function(t) {
+      var t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
+      e.path = e.path.substring(0, e.path.length - 5), e.webviewId = "undefined" != typeof e.webviewId ? e.webviewId : t, A = e.path, M.forEach(function(t) {
         t(e)
       }), (0, u.publish)("onAppRouteDone", {}, [t])
     }), (0, u.onMethod)("onKeyboardValueChange", function(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
+      var t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
         n = e.value,
         o = e.cursor;
       if (e.data && "function" == typeof x) {
@@ -1317,7 +1317,7 @@ var Reporter = function(e) {
       };
     ["onTouchStart", "onTouchMove", "onTouchEnd", "onTouchCancel", "onLongPress"].forEach(function(e) {
       (0, u.onMethod)(e, function(t) {
-        var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
+        var n = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
           o = JSON.parse(t.data),
           r = o.canvasNumber;
         w.canvasInfo.hasOwnProperty(r) || console.error("No such canvas " + r + " register in " + n + ", but trigger " + e + " event.");
@@ -1341,7 +1341,7 @@ var Reporter = function(e) {
       })
     }), ["onVideoPlay", "onVideoPause", "onVideoEnded", "onVideoTimeUpdate", "onVideoClickFullScreenBtn", "onVideoClickDanmuBtn"].forEach(function(e) {
       (0, u.onMethod)(e, function() {
-        var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+        var t = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
           n = arguments[1],
           o = "bind" + e.substring(7).toLowerCase(),
           r = JSON.parse(t.data),
@@ -1366,24 +1366,24 @@ var Reporter = function(e) {
         }
       })
     }), (0, u.onMethod)("onAccelerometerChange", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-      arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
+      arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       E.forEach(function(t) {
         "function" == typeof t && t(e)
       })
     }), (0, u.onMethod)("onCompassChange", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-      arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
+      arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       R.forEach(function(t) {
         "function" == typeof t && t(e)
       })
     }), (0, u.onMethod)("onError", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-      arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
+      arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       console.error("thirdScriptError", "\n", "sdk uncaught third Error", "\n", e.message, "\n", e.stack)
     }), (0, u.onMethod)("onMapMarkerClick", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-        t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
+        t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       if (e.data && "function" == typeof x) {
         var n = JSON.parse(e.data);
         n.bindmarkertap && x({
@@ -1395,8 +1395,8 @@ var Reporter = function(e) {
         })
       }
     }), (0, u.onMethod)("onMapControlClick", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-        t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
+        t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
       if (e.data && "function" == typeof x) {
         var n = JSON.parse(e.data);
         n.bindcontroltap && x({
@@ -1408,8 +1408,8 @@ var Reporter = function(e) {
         })
       }
     }), (0, u.onMethod)("onMapRegionChange", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-        t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
+        t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
         n = y.mapInfo[t + "_" + e.mapId];
       n && n.bindregionchange && "function" == typeof x && x({
         data: {
@@ -1419,8 +1419,8 @@ var Reporter = function(e) {
         webviewId: t
       })
     }), (0, u.onMethod)("onMapClick", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-        t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
+        t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
         n = y.mapInfo[t + "_" + e.mapId];
       n && n.bindtap && "function" == typeof x && x({
         data: {},
@@ -1455,7 +1455,7 @@ var Reporter = function(e) {
       e[1] = function(e, n) {
         var o = e.data,
           r = e.options,
-          i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+          i = arguments.length <= 2 || void 0 === arguments[2] ? {} : arguments[2],
           a = r && r.timestamp || 0,
           s = Date.now();
         "function" == typeof t && t(o, n), Reporter.speedReport({
@@ -1471,8 +1471,8 @@ var Reporter = function(e) {
     }
 
     function s(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-        n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+      var t = arguments.length <= 1 || void 0 === arguments[1] ? {} : arguments[1],
+        n = arguments.length <= 2 || void 0 === arguments[2] ? {} : arguments[2],
         r = {};
       for (var i in t) "function" == typeof t[i] && (r[i] = Reporter.surroundThirdByTryCatch(t[i], "sdk catch error in " + e + " " + i + " callback function"), delete t[i]);
       var a = {};
@@ -1567,7 +1567,7 @@ var Reporter = function(e) {
     }
 
     function f(e, t) {
-      var n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "parameter",
+      var n = arguments.length <= 2 || void 0 === arguments[2] ? "parameter" : arguments[2],
         o = u(t),
         r = u(e);
       if (r != o) return n + " should be " + o + " instead of " + r + ";";
@@ -1583,7 +1583,7 @@ var Reporter = function(e) {
     }
 
     function d(e, t) {
-      var n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+      var n = arguments.length <= 2 || void 0 === arguments[2] || arguments[2];
       if (n && (t = m(t)), 0 === t.indexOf("/")) return t.substr(1);
       if (0 === t.indexOf("./")) return d(e, t.substr(2), !1);
       var o, r, i = t.split("/");
@@ -1602,7 +1602,7 @@ var Reporter = function(e) {
     }
 
     function h(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+      var t = !(arguments.length <= 1 || void 0 === arguments[1]) && arguments[1];
       if ("object" !== ("undefined" == typeof e ? "undefined" : A(e))) return e;
       var n = [],
         o = !1;
@@ -1669,7 +1669,7 @@ var Reporter = function(e) {
     }
 
     function m(e) {
-      if ("string" != typeof e) throw new M("wx.redirectTo: invalid url:" + e);
+      if ("string" != typeof e) throw new P("wx.redirectTo: invalid url:" + e);
       var t = e.split("?")[0],
         n = e.split("?")[1];
       return t += ".html", "undefined" != typeof n ? t + "?" + n : t
@@ -1708,20 +1708,20 @@ var Reporter = function(e) {
     var A = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
       return typeof e
     } : function(e) {
-      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+      return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
     };
     t.surroundByTryCatchFactory = a, t.getDataType = u, t.isObject = l, t.paramCheck = f, t.getRealRoute = d, t.getPlatform = p, t.urlEncodeFormData = h, t.addQueryStringToUrl = v, t.validateUrl = g, t.assign = y, t.encodeUrlQuery = b, t.extend = w, t.arrayBufferToBase64 = _, t.base64ToArrayBuffer = k, t.blobToArrayBuffer = S, t.convertObjectValueToString = T;
-    var M = (t.anyTypeToString = a(s, "anyTypeToString"), t.stringToAnyType = a(c, "stringToAnyType"), t.AppServiceSdkKnownError = function(e) {
+    var P = (t.anyTypeToString = a(s, "anyTypeToString"), t.stringToAnyType = a(c, "stringToAnyType"), t.AppServiceSdkKnownError = function(e) {
         function t(e) {
           n(this, t);
-          var r = o(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, "APP-SERVICE-SDK:" + e));
+          var r = o(this, Object.getPrototypeOf(t).call(this, "APP-SERVICE-SDK:" + e));
           return r.type = "AppServiceSdkKnownError", r
         }
         return r(t, e), t
       }(Error)),
-      P = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+      M = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
       x = x || function(e) {
-        for (var t, n, o = String(e), r = "", i = 0, a = P; o.charAt(0 | i) || (a = "=", i % 1); r += a.charAt(63 & t >> 8 - i % 1 * 8)) {
+        for (var t, n, o = String(e), r = "", i = 0, a = M; o.charAt(0 | i) || (a = "=", i % 1); r += a.charAt(63 & t >> 8 - i % 1 * 8)) {
           if (n = o.charCodeAt(i += .75), n > 255) throw new Error('"btoa" failed');
           t = t << 8 | n
         }
@@ -1731,7 +1731,7 @@ var Reporter = function(e) {
         var t = String(e).replace(/=+$/, ""),
           n = "";
         if (t.length % 4 === 1) throw new Error('"atob" failed');
-        for (var o, r, i = 0, a = 0; r = t.charAt(a++); ~r && (o = i % 4 ? 64 * o + r : r, i++ % 4) ? n += String.fromCharCode(255 & o >> (-2 * i & 6)) : 0) r = P.indexOf(r);
+        for (var o, r, i = 0, a = 0; r = t.charAt(a++); ~r && (o = i % 4 ? 64 * o + r : r, i++ % 4) ? n += String.fromCharCode(255 & o >> (-2 * i & 6)) : 0) r = M.indexOf(r);
         return n
       }
   }, function(e, t) {
@@ -1762,7 +1762,7 @@ var Reporter = function(e) {
       }(),
       i = function() {
         function e() {
-          var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var t = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           o(this, e), this.actions = [], this.currentTransform = [], this.currentStepAnimates = [], this.option = {
             transition: {
               duration: "undefined" != typeof t.duration ? t.duration : 400,
@@ -1784,7 +1784,7 @@ var Reporter = function(e) {
           key: "step",
           value: function() {
             var e = this,
-              t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+              t = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
             return this.currentStepAnimates.forEach(function(t) {
               "style" !== t.type ? e.currentTransform[t.type] = t : e.currentTransform[t.type + "." + t.args[0]] = t
             }), this.actions.push({
@@ -1804,12 +1804,12 @@ var Reporter = function(e) {
         }, {
           key: "matrix",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
-              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0,
-              o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1,
-              r = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : 1,
-              i = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
+              n = arguments.length <= 2 || void 0 === arguments[2] ? 0 : arguments[2],
+              o = arguments.length <= 3 || void 0 === arguments[3] ? 1 : arguments[3],
+              r = arguments.length <= 4 || void 0 === arguments[4] ? 1 : arguments[4],
+              i = arguments.length <= 5 || void 0 === arguments[5] ? 1 : arguments[5];
             return this.currentStepAnimates.push({
               type: "matrix",
               args: [e, t, n, o, r, i]
@@ -1818,22 +1818,22 @@ var Reporter = function(e) {
         }, {
           key: "matrix3d",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
-              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0,
-              o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 0,
-              r = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : 0,
-              i = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : 1,
-              a = arguments.length > 6 && void 0 !== arguments[6] ? arguments[6] : 0,
-              s = arguments.length > 7 && void 0 !== arguments[7] ? arguments[7] : 0,
-              c = arguments.length > 8 && void 0 !== arguments[8] ? arguments[8] : 0,
-              u = arguments.length > 9 && void 0 !== arguments[9] ? arguments[9] : 0,
-              l = arguments.length > 10 && void 0 !== arguments[10] ? arguments[10] : 1,
-              f = arguments.length > 11 && void 0 !== arguments[11] ? arguments[11] : 0,
-              d = arguments.length > 12 && void 0 !== arguments[12] ? arguments[12] : 0,
-              p = arguments.length > 13 && void 0 !== arguments[13] ? arguments[13] : 0,
-              h = arguments.length > 14 && void 0 !== arguments[14] ? arguments[14] : 0,
-              v = arguments.length > 15 && void 0 !== arguments[15] ? arguments[15] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
+              n = arguments.length <= 2 || void 0 === arguments[2] ? 0 : arguments[2],
+              o = arguments.length <= 3 || void 0 === arguments[3] ? 0 : arguments[3],
+              r = arguments.length <= 4 || void 0 === arguments[4] ? 0 : arguments[4],
+              i = arguments.length <= 5 || void 0 === arguments[5] ? 1 : arguments[5],
+              a = arguments.length <= 6 || void 0 === arguments[6] ? 0 : arguments[6],
+              s = arguments.length <= 7 || void 0 === arguments[7] ? 0 : arguments[7],
+              c = arguments.length <= 8 || void 0 === arguments[8] ? 0 : arguments[8],
+              u = arguments.length <= 9 || void 0 === arguments[9] ? 0 : arguments[9],
+              l = arguments.length <= 10 || void 0 === arguments[10] ? 1 : arguments[10],
+              f = arguments.length <= 11 || void 0 === arguments[11] ? 0 : arguments[11],
+              d = arguments.length <= 12 || void 0 === arguments[12] ? 0 : arguments[12],
+              p = arguments.length <= 13 || void 0 === arguments[13] ? 0 : arguments[13],
+              h = arguments.length <= 14 || void 0 === arguments[14] ? 0 : arguments[14],
+              v = arguments.length <= 15 || void 0 === arguments[15] ? 1 : arguments[15];
             return this.currentStepAnimates.push({
               type: "matrix3d",
               args: [e, t, n, o, r, i, a, s, c, u, l, f, d, p, h, v]
@@ -1842,7 +1842,7 @@ var Reporter = function(e) {
         }, {
           key: "rotate",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "rotate",
               args: [e]
@@ -1851,10 +1851,10 @@ var Reporter = function(e) {
         }, {
           key: "rotate3d",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
-              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0,
-              o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
+              n = arguments.length <= 2 || void 0 === arguments[2] ? 0 : arguments[2],
+              o = arguments.length <= 3 || void 0 === arguments[3] ? 0 : arguments[3];
             return this.currentStepAnimates.push({
               type: "rotate3d",
               args: [e, t, n, o]
@@ -1863,7 +1863,7 @@ var Reporter = function(e) {
         }, {
           key: "rotateX",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "rotateX",
               args: [e]
@@ -1872,7 +1872,7 @@ var Reporter = function(e) {
         }, {
           key: "rotateY",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "rotateY",
               args: [e]
@@ -1881,7 +1881,7 @@ var Reporter = function(e) {
         }, {
           key: "rotateZ",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "rotateZ",
               args: [e]
@@ -1890,7 +1890,7 @@ var Reporter = function(e) {
         }, {
           key: "scale",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0],
               t = arguments[1];
             return t = "undefined" != typeof t ? t : e, this.currentStepAnimates.push({
               type: "scale",
@@ -1900,9 +1900,9 @@ var Reporter = function(e) {
         }, {
           key: "scale3d",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1,
-              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 1 : arguments[1],
+              n = arguments.length <= 2 || void 0 === arguments[2] ? 1 : arguments[2];
             return this.currentStepAnimates.push({
               type: "scale3d",
               args: [e, t, n]
@@ -1911,7 +1911,7 @@ var Reporter = function(e) {
         }, {
           key: "scaleX",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0];
             return this.currentStepAnimates.push({
               type: "scaleX",
               args: [e]
@@ -1920,7 +1920,7 @@ var Reporter = function(e) {
         }, {
           key: "scaleY",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0];
             return this.currentStepAnimates.push({
               type: "scaleY",
               args: [e]
@@ -1929,7 +1929,7 @@ var Reporter = function(e) {
         }, {
           key: "scaleZ",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 1 : arguments[0];
             return this.currentStepAnimates.push({
               type: "scaleZ",
               args: [e]
@@ -1938,8 +1938,8 @@ var Reporter = function(e) {
         }, {
           key: "skew",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
             return this.currentStepAnimates.push({
               type: "skew",
               args: [e, t]
@@ -1948,7 +1948,7 @@ var Reporter = function(e) {
         }, {
           key: "skewX",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "skewX",
               args: [e]
@@ -1957,7 +1957,7 @@ var Reporter = function(e) {
         }, {
           key: "skewY",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "skewY",
               args: [e]
@@ -1966,8 +1966,8 @@ var Reporter = function(e) {
         }, {
           key: "translate",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1];
             return this.currentStepAnimates.push({
               type: "translate",
               args: [e, t]
@@ -1976,9 +1976,9 @@ var Reporter = function(e) {
         }, {
           key: "translate3d",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
-              t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0,
-              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0],
+              t = arguments.length <= 1 || void 0 === arguments[1] ? 0 : arguments[1],
+              n = arguments.length <= 2 || void 0 === arguments[2] ? 0 : arguments[2];
             return this.currentStepAnimates.push({
               type: "translate3d",
               args: [e, t, n]
@@ -1987,7 +1987,7 @@ var Reporter = function(e) {
         }, {
           key: "translateX",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "translateX",
               args: [e]
@@ -1996,7 +1996,7 @@ var Reporter = function(e) {
         }, {
           key: "translateY",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "translateY",
               args: [e]
@@ -2005,7 +2005,7 @@ var Reporter = function(e) {
         }, {
           key: "translateZ",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+            var e = arguments.length <= 0 || void 0 === arguments[0] ? 0 : arguments[0];
             return this.currentStepAnimates.push({
               type: "translateZ",
               args: [e]
@@ -2175,7 +2175,7 @@ var Reporter = function(e) {
     var o, r = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
       return typeof e
     } : function(e) {
-      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+      return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
     };
     ! function(i) {
       function a() {
@@ -2183,16 +2183,15 @@ var Reporter = function(e) {
       }
 
       function s(e) {
-        e ? (this._conf = e, e.delimiter && (this.delimiter = e.delimiter), this._events.maxListeners = e.maxListeners !== i ? e.maxListeners : p, e.wildcard && (this.wildcard = e.wildcard), e.newListener && (this.newListener = e.newListener), e.verboseMemoryLeak && (this.verboseMemoryLeak = e.verboseMemoryLeak), this.wildcard && (this.listenerTree = {})) : this._events.maxListeners = p
+        e ? (this._conf = e, e.delimiter && (this.delimiter = e.delimiter), this._events.maxListeners = e.maxListeners !== i ? e.maxListeners : p, e.wildcard && (this.wildcard = e.wildcard), e.newListener && (this.newListener = e.newListener), this.wildcard && (this.listenerTree = {})) : this._events.maxListeners = p
       }
 
-      function c(e, t) {
-        var n = "(node) warning: possible EventEmitter memory leak detected. %d listeners added. Use emitter.setMaxListeners() to increase limit.";
-        this.verboseMemoryLeak ? (n += " Event name: %s.", console.error(n, e, t)) : console.error(n, e), console.trace && console.trace()
+      function c(e) {
+        console.error("(node) warning: possible EventEmitter memory leak detected. %d listeners added. Use emitter.setMaxListeners() to increase limit.", e), console.trace && console.trace()
       }
 
       function u(e) {
-        this._events = {}, this.newListener = !1, this.verboseMemoryLeak = !1, s.call(this, e)
+        this._events = {}, this.newListener = !1, s.call(this, e)
       }
 
       function l(e, t, n, o) {
@@ -2233,7 +2232,7 @@ var Reporter = function(e) {
         for (var n = 0, o = e.length; n + 1 < o; n++)
           if ("**" === e[n] && "**" === e[n + 1]) return;
         for (var r = this.listenerTree, a = e.shift(); a !== i;) {
-          if (r[a] || (r[a] = {}), r = r[a], 0 === e.length) return r._listeners ? ("function" == typeof r._listeners && (r._listeners = [r._listeners]), r._listeners.push(t), !r._listeners.warned && this._events.maxListeners > 0 && r._listeners.length > this._events.maxListeners && (r._listeners.warned = !0, c.call(this, r._listeners.length, a))) : r._listeners = t, !0;
+          if (r[a] || (r[a] = {}), r = r[a], 0 === e.length) return r._listeners ? ("function" == typeof r._listeners && (r._listeners = [r._listeners]), r._listeners.push(t), !r._listeners.warned && this._events.maxListeners > 0 && r._listeners.length > this._events.maxListeners && (r._listeners.warned = !0, c(r._listeners.length))) : r._listeners = t, !0;
           a = e.shift()
         }
         return !0
@@ -2381,7 +2380,7 @@ var Reporter = function(e) {
       }, u.prototype.on = function(e, t) {
         if ("function" == typeof e) return this.onAny(e), this;
         if ("function" != typeof t) throw new Error("on only accepts instances of Function");
-        return this._events || a.call(this), this.emit("newListener", e, t), this.wildcard ? (f.call(this, e, t), this) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), this._events[e].push(t), !this._events[e].warned && this._events.maxListeners > 0 && this._events[e].length > this._events.maxListeners && (this._events[e].warned = !0, c.call(this, this._events[e].length, e))) : this._events[e] = t, this)
+        return this._events || a.call(this), this.emit("newListener", e, t), this.wildcard ? (f.call(this, e, t), this) : (this._events[e] ? ("function" == typeof this._events[e] && (this._events[e] = [this._events[e]]), this._events[e].push(t), !this._events[e].warned && this._events.maxListeners > 0 && this._events[e].length > this._events.maxListeners && (this._events[e].warned = !0, c(this._events[e].length))) : this._events[e] = t, this)
       }, u.prototype.onAny = function(e) {
         if ("function" != typeof e) throw new Error("onAny only accepts instances of Function");
         return this._all || (this._all = []), this._all.push(e), this
@@ -2605,7 +2604,8 @@ var Reporter = function(e) {
           var n = (0, s.getPlatform)();
           if ("ios" === n || "android" === n) {
             var o = l[d + "_" + t.mapId];
-            if ("moveToMapLocation" === e) return void(o && o.showLocation ? (0, a.invokeMethod)(e, t) : console.error("only show-location set to true can invoke moveToLocation"));
+            if ("moveToMapLocation" === e) return void(o && o.showLocation ? (0,
+              a.invokeMethod)(e, t) : console.error("only show-location set to true can invoke moveToLocation"));
             (0, a.invokeMethod)(e, t)
           } else {
             t.method = e;
@@ -2625,13 +2625,13 @@ var Reporter = function(e) {
       }, {
         key: "getCenterLocation",
         value: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           this._invokeMethod("getMapCenterLocation", e)
         }
       }, {
         key: "moveToLocation",
         value: function() {
-          var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+          var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
           this._invokeMethod("moveToMapLocation", e)
         }
       }]), e
@@ -2646,7 +2646,7 @@ var Reporter = function(e) {
       var t = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
       };
       n(1);
       if ("undefined" != typeof Function) {
@@ -2657,7 +2657,7 @@ var Reporter = function(e) {
           return arguments[arguments.length - 1] = "console.warn('can not create Function')", o.apply(this, arguments)
         }, Function = function() {
           return "return this" === arguments[arguments.length - 1] ? arguments[arguments.length - 1] = "return global" : arguments[arguments.length - 1] = "console.warn('can not create Function')", o.apply(this, arguments)
-        }
+        }, Function.constructor.__proto__ = null
       }
       "undefined" != typeof eval && (eval = void 0), "undefined" != typeof navigator && ! function() {
         var e = setTimeout;
@@ -2771,7 +2771,7 @@ var Reporter = function(e) {
       u = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
       },
       l = n(2),
       f = n(13),
@@ -2810,7 +2810,7 @@ var Reporter = function(e) {
         }, {
           key: "draw",
           value: function() {
-            var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0],
+            var e = !(arguments.length <= 0 || void 0 === arguments[0]) && arguments[0],
               t = this.canvasId,
               n = s(this.actions);
             this.actions = [], this.path = [], (0, f.drawCanvas)({
@@ -2933,7 +2933,7 @@ var Reporter = function(e) {
     }
 
     function a(e, t) {
-      var n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2],
+      var n = !(arguments.length <= 2 || void 0 === arguments[2]) && arguments[2],
         o = arguments[3],
         r = arguments[4],
         i = arguments[5],
@@ -3204,23 +3204,22 @@ var Reporter = function(e) {
       s = o(a),
       c = new s.default;
     (0, r.onMethod)("onAppEnterForeground", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
       c.emit("onAppEnterForeground", e)
     }), (0, r.onMethod)("onAppEnterBackground", function() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0];
       c.emit("onAppEnterBackground", e)
     });
     var u = function(e) {
         var t = this;
-        c.on("onAppEnterForeground", function(n) {
+        setTimeout(e, 0), c.on("onAppEnterForeground", function(n) {
           (0, r.publish)("onAppEnterForeground", n), t.appStatus = i.AppStatus.FORE_GROUND, "function" == typeof e && e(n)
         })
       },
       l = function(e) {
         var t = this;
-        c.on("onAppEnterBackground", function() {
-          var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-          (0, r.publish)("onAppEnterBackground", n), "hide" !== n.mode && (t.appStatus = i.AppStatus.BACK_GROUND), "close" === n.mode ? t.hanged = !1 : "hang" === n.mode && (t.hanged = !0), "function" == typeof e && e(n)
+        c.on("onAppEnterBackground", function(n) {
+          n = n || {}, (0, r.publish)("onAppEnterBackground", n), "hide" !== n.mode && (t.appStatus = i.AppStatus.BACK_GROUND), "close" === n.mode ? t.hanged = !1 : "hang" === n.mode && (t.hanged = !0), "function" == typeof e && e(n)
         })
       };
     t.onAppEnterForeground = u, t.onAppEnterBackground = l
@@ -3280,7 +3279,7 @@ var Reporter = function(e) {
     var r = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       i = n(2),
       a = n(5),
@@ -3293,18 +3292,16 @@ var Reporter = function(e) {
       p = {},
       h = [],
       v = 0,
-      g = {},
-      y = "ios" === (0, c.getPlatform)(),
-      b = [];
+      g = ("ios" === (0, c.getPlatform)(), []);
     __wxConfig.tabBar && __wxConfig.tabBar.list && "object" === r(__wxConfig.tabBar.list) && "function" == typeof __wxConfig.tabBar.list.forEach && __wxConfig.tabBar.list.forEach(function(e) {
-      b.push(e.pagePath)
+      g.push(e.pagePath)
     });
-    var m = {
+    var y = {
         appRouteTime: 0,
         newPageTime: 0,
         pageReadyTime: 0
       },
-      w = function(e, t, n) {
+      b = function(e, t, n) {
         Reporter.speedReport({
           key: e,
           timeMark: {
@@ -3313,7 +3310,7 @@ var Reporter = function(e) {
           }
         })
       },
-      _ = (t.getCurrentPage = function() {
+      m = (t.getCurrentPage = function() {
         return f
       }, t.getCurrentPages = function() {
         var e = [];
@@ -3346,31 +3343,31 @@ var Reporter = function(e) {
           }), e.__waitingData__ = [], (0, l.triggerAnalytics)("pageReady", e)
         }
       })),
-      k = function(e, t, n) {
+      w = function(e, t, n) {
         var o = void 0;
-        p.hasOwnProperty(e) ? o = p[e] : ((0, c.warn)("Page route 错误", "Page[" + e + "] not found. May be caused by: 1. Forgot to add page route in app.json. 2. Invoking Page() in async task."), o = {}), m.newPageTime = Date.now();
+        p.hasOwnProperty(e) ? o = p[e] : ((0, c.warn)("Page route 错误", "Page[" + e + "] not found. May be caused by: 1. Forgot to add page route in app.json. 2. Invoking Page() in async task."), o = {}), y.newPageTime = Date.now();
         var r = new s.default(o, t, e);
-        (y || (0, c.isDevTools)() || g[t]) && _(r, t), (0, c.isDevTools)() && (__wxAppData[e] = r.data, __wxAppData[e].__webviewId__ = t, (0, c.publish)(u.UPDATE_APP_DATA)), f = {
+        m(r, t), (0, c.isDevTools)() && (__wxAppData[e] = r.data, __wxAppData[e].__webviewId__ = t, (0, c.publish)(u.UPDATE_APP_DATA)), f = {
           page: r,
           webviewId: t,
           route: e
         }, h.push(f), r.onLoad(n), r.onShow(), d[t] = {
           page: r,
           route: e
-        }, (0, l.triggerAnalytics)("enterPage", r), w("appRoute2newPage", m.appRouteTime, m.newPageTime)
+        }, (0, l.triggerAnalytics)("enterPage", r), b("appRoute2newPage", y.appRouteTime, y.newPageTime)
       },
-      S = function(e) {
+      _ = function(e) {
         e.page.onHide(), (0, l.triggerAnalytics)("leavePage", e.page)
       },
-      T = function(e) {
-        e.page.onUnload(), (0, c.isDevTools)() && (delete __wxAppData[e.route], (0, c.publish)(u.UPDATE_APP_DATA)), delete d[e.webviewId], delete g[e.webviewId], h = h.slice(0, h.length - 1), (0, l.triggerAnalytics)("leavePage", e.page)
+      k = function(e) {
+        e.page.onUnload(), (0, c.isDevTools)() && (delete __wxAppData[e.route], (0, c.publish)(u.UPDATE_APP_DATA)), delete d[e.webviewId], h = h.slice(0, h.length - 1), (0, l.triggerAnalytics)("leavePage", e.page)
       },
-      A = function(e) {
-        return b.indexOf(e.route) !== -1 || b.indexOf(e.route + ".html") !== -1
+      S = function(e) {
+        return g.indexOf(e.route) !== -1 || g.indexOf(e.route + ".html") !== -1
       },
-      M = function(e, t, n, o) {
-        if ((0, c.info)("On app route: " + e), m.appRouteTime = Date.now(), "navigateTo" === o) f && S(f), d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "navigateTo with an already exist webviewId " + t) : k(e, t, n);
-        else if ("redirectTo" === o) f && T(f), d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "redirectTo with an already exist webviewId " + t) : k(e, t, n);
+      T = function(e, t, n, o) {
+        if ((0, c.info)("On app route: " + e), y.appRouteTime = Date.now(), "navigateTo" === o) f && _(f), d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "navigateTo with an already exist webviewId " + t) : w(e, t, n);
+        else if ("redirectTo" === o) f && k(f), d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "redirectTo with an already exist webviewId " + t) : w(e, t, n);
         else if ("navigateBack" === o) {
           for (var r = !1, i = h.length - 1; i >= 0; i--) {
             var a = h[i];
@@ -3378,37 +3375,37 @@ var Reporter = function(e) {
               r = !0, f = a, a.page.onShow(), (0, l.triggerAnalytics)("enterPage", a);
               break
             }
-            T(a)
+            k(a)
           }
           r || (0, c.error)("Page route 错误(system error)", "navigateBack with an unexist webviewId " + t)
         } else if ("switchTab" === o) {
-          for (var s = !0; h.length > 1;) T(h[h.length - 1]), s = !1;
+          for (var s = !0; h.length > 1;) k(h[h.length - 1]), s = !1;
           if (h[0].webviewId === t) f = h[0];
           else {
-            if (A(h[0]) ? s && S(h[0]) : T(h[0]), d.hasOwnProperty(t)) {
+            if (S(h[0]) ? s && _(h[0]) : k(h[0]), d.hasOwnProperty(t)) {
               var u = d[t].page;
               f = {
                 webviewId: t,
                 route: e,
                 page: u
               }, u.onShow(), (0, l.triggerAnalytics)("enterPage", u)
-            } else k(e, t, n);
+            } else w(e, t, n);
             h = [f]
           }
-        } else "appLaunch" === o ? d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "apppLaunch with an already exist webviewId " + t) : k(e, t, n) : (0, c.error)("Page route 错误(system error)", "Illegal open type: " + o)
+        } else "appLaunch" === o ? d.hasOwnProperty(t) ? (0, c.error)("Page route 错误(system error)", "apppLaunch with an already exist webviewId " + t) : w(e, t, n) : (0, c.error)("Page route 错误(system error)", "Illegal open type: " + o)
       },
-      P = function(e, t, n) {
+      A = function(e, t, n) {
         if (!d.hasOwnProperty(e)) return void(0, c.warn)("事件警告", "OnWebviewEvent: " + t + ", WebviewId: " + e + " not found");
         var o = d[e],
           r = o.page;
-        return t === u.DOM_READY_EVENT ? (m.pageReadyTime = Date.now(), (0, c.info)("Invoke event onReady in page: " + o.route), r.onReady(), void w("newPage2pageReady", m.newPageTime, m.pageReadyTime)) : ((0, c.info)("Invoke event " + t + " in page: " + o.route), r.hasOwnProperty(t) ? r[t](n) : void(0, c.warn)("事件警告", "Do not have " + t + " handler in current page: " + o.route + ". Please make sure that " + t + " handler has been defined in " + o.route + ", or " + o.route + " has been added into app.json"))
+        return t === u.DOM_READY_EVENT ? (y.pageReadyTime = Date.now(), (0, c.info)("Invoke event onReady in page: " + o.route), r.onReady(), void b("newPage2pageReady", y.newPageTime, y.pageReadyTime)) : ((0, c.info)("Invoke event " + t + " in page: " + o.route), r.hasOwnProperty(t) ? r[t](n) : void(0, c.warn)("事件警告", "Do not have " + t + " handler in current page: " + o.route + ". Please make sure that " + t + " handler has been defined in " + o.route + ", or " + o.route + " has been added into app.json"))
       },
-      x = function(e) {
+      P = function(e) {
         var t = d[e],
           n = t.page;
         n.hasOwnProperty("onPullDownRefresh") && ((0, c.info)("Invoke event onPullDownRefresh in page: " + t.route), n.onPullDownRefresh(), (0, l.triggerAnalytics)("pullDownRefresh", n))
       },
-      C = function(e, t) {
+      M = function(e, t) {
         var n = e,
           o = d[t],
           r = o.page,
@@ -3425,26 +3422,22 @@ var Reporter = function(e) {
         n = e.webviewId,
         o = e.query || {},
         r = e.openType;
-      M(t, n, o, r)
-    }), "onAppRoute"), WeixinJSBridge.subscribe("pageReady", (0, c.surroundByTryCatch)(function(e, t) {
-      if (!d.hasOwnProperty(t)) return void(g[t] = !0);
-      var n = d[t].page;
-      _(n, t)
-    })), wx.onWebviewEvent((0, c.surroundByTryCatch)(function(e) {
+      T(t, n, o, r)
+    }), "onAppRoute"), wx.onWebviewEvent((0, c.surroundByTryCatch)(function(e) {
       var t = e.webviewId,
         n = e.eventName,
         o = e.data;
-      return P(t, n, o)
+      return A(t, n, o)
     }, "onWebviewEvent")), WeixinJSBridge.on("onPullDownRefresh", (0, c.surroundByTryCatch)(function(e, t) {
-      x(t)
+      P(t)
     }, "onPullDownRefresh"));
-    var O = function(e, t) {
-      var n = C(e, t);
+    var x = function(e, t) {
+      var n = M(e, t);
       WeixinJSBridge.invoke("shareAppMessage", n, function(e) {
         /^shareAppMessage:ok/.test(e.errMsg) && "function" == typeof n.success ? n.success(e) : /^shareAppMessage:cancel/.test(e.errMsg) && "function" == typeof n.cancel ? n.cancel(e) : /^shareAppMessage:fail/.test(e.errMsg) && "function" == typeof n.fail && n.cancel(e), "function" == typeof n.complete && n.complete(e)
       })
     };
-    WeixinJSBridge.on("onShareAppMessage", (0, c.surroundByTryCatch)(O, "onShareAppMessage"));
+    WeixinJSBridge.on("onShareAppMessage", (0, c.surroundByTryCatch)(x, "onShareAppMessage"));
     t.reset = function() {
       f = void 0, d = {}, p = {}, h = [], v = 0
     }, t.setWxConfig = function(e) {
@@ -3515,7 +3508,7 @@ var Reporter = function(e) {
     var a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
       return typeof e
     } : function(e) {
-      return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
     };
     t.getPlatform = i;
     var s = (t.isEmptyObject = function(e) {
@@ -3572,7 +3565,7 @@ var Reporter = function(e) {
     t.AppServiceEngineKnownError = function(e) {
       function t(e) {
         n(this, t);
-        var r = o(this, Object.getPrototypeOf(t).call(this, "APP-SERVICE-Engine:" + e));
+        var r = o(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, "APP-SERVICE-Engine:" + e));
         return r.type = "AppServiceEngineKnownError", r
       }
       return r(t, e), t
@@ -3644,7 +3637,7 @@ var Reporter = function(e) {
       },
       g = function() {
         function e() {
-          var t = arguments.length <= 0 || void 0 === arguments[0] ? {} : arguments[0],
+          var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
             n = this,
             o = arguments[1],
             i = arguments[2];
@@ -3805,7 +3798,7 @@ var Reporter = function(e) {
     function o(e) {}
 
     function r(e) {
-      var t = arguments.length <= 1 || void 0 === arguments[1] ? o : arguments[1];
+      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : o;
       if (null === e) return null;
       var n = (0, s.copyValue)(e);
       if (null !== n) return n;
@@ -3838,7 +3831,7 @@ var Reporter = function(e) {
     var a = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       s = n(10),
       c = n(11);
@@ -3877,7 +3870,7 @@ var Reporter = function(e) {
     var i = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       a = Object.prototype.toString;
     t.copy = n, t.copyCollection = o, t.copyValue = r
@@ -3899,7 +3892,7 @@ var Reporter = function(e) {
     var o = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       r = Object.prototype.toString,
       i = "function" == typeof Object.keys ? function(e) {
@@ -4161,7 +4154,7 @@ var Reporter = function(e) {
     return i.exports
   }
 }(), wx.version = {
-  updateTime: "2016.12.18 20:39:33",
+  updateTime: "2016.12.22 20:03:49",
   info: "",
   version: 30
 };;

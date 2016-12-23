@@ -1,6 +1,15 @@
 ;
 var __WAWebviewStartTime__ = Date.now();
 
+function _defineProperty(e, t, n) {
+  return t in e ? Object.defineProperty(e, t, {
+    value: n,
+    enumerable: !0,
+    configurable: !0,
+    writable: !0
+  }) : e[t] = n, e
+}
+
 function _toArray(e) {
   return Array.isArray(e) ? e : Array.from(e)
 }
@@ -11,15 +20,6 @@ function _toConsumableArray(e) {
     return n
   }
   return Array.from(e)
-}
-
-function _defineProperty(e, t, n) {
-  return t in e ? Object.defineProperty(e, t, {
-    value: n,
-    enumerable: !0,
-    configurable: !0,
-    writable: !0
-  }) : e[t] = n, e
 }! function(e) {
   if ("function" == typeof logxx && logxx("jsbridge start"), !e.WeixinJSBridge) {
     if (e.navigator && e.navigator.userAgent) {
@@ -532,10 +532,8 @@ var Reporter = function(e) {
           (0, r.invokeMethod)("removeShareButton", e)
         },
         onAppDataChange: function(e) {
-          (0, r.publish)("pageReady", {}), (0, r.subscribe)("appDataChange", function(t) {
-            setTimeout(function() {
-              e(t)
-            }, 0)
+          (0, r.subscribe)("appDataChange", function(t) {
+            e(t)
           })
         },
         publishPageEvent: function(e, t) {
@@ -585,7 +583,7 @@ var Reporter = function(e) {
       e[1] = function(e, n) {
         var i = e.data,
           o = e.options,
-          r = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+          r = arguments.length <= 2 || void 0 === arguments[2] ? {} : arguments[2],
           a = o && o.timestamp || 0,
           s = Date.now();
         "function" == typeof t && t(i, n), Reporter.speedReport({
@@ -603,8 +601,8 @@ var Reporter = function(e) {
     }
 
     function s(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-        n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+      var t = arguments.length <= 1 || void 0 === arguments[1] ? {} : arguments[1],
+        n = arguments.length <= 2 || void 0 === arguments[2] ? {} : arguments[2],
         o = {};
       for (var r in t) "function" == typeof t[r] && (o[r] = t[r], delete t[r]);
       i(e, t, function(t) {
@@ -694,7 +692,9 @@ var Reporter = function(e) {
       return Array.from(e)
     }
 
-    function a(e, t) {
+    function a() {
+      var e = arguments.length <= 0 || void 0 === arguments[0] ? "" : arguments[0],
+        t = arguments.length <= 1 || void 0 === arguments[1] ? "" : arguments[1];
       if (0 === t.indexOf("/")) return t.substr(1);
       if (0 === t.indexOf("./")) return a(e, t.substr(2));
       var n, i, o = t.split("/");
@@ -804,7 +804,7 @@ var Reporter = function(e) {
     t.WebviewSdkKnownError = function(e) {
       function t(e) {
         n(this, t);
-        var o = i(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, "Webview-SDK:" + e));
+        var o = i(this, Object.getPrototypeOf(t).call(this, "Webview-SDK:" + e));
         return o.type = "WebviewSdkKnownError", o
       }
       return o(t, e), t
@@ -2433,6 +2433,23 @@ function(e) {
     })
   }
 }), window.exparser.registerElement({
+  is: "wx-action-sheet-cancel",
+  template: '\n    <div class="wx-action-sheet-middle" id="middle"></div>\n    <div class="wx-action-sheet-cancel" id="cancel">\n      <slot></slot>\n    </div>\n  ',
+  properties: {},
+  listeners: {
+    "middle.tap": "handleMiddleTap",
+    "cancel.tap": "handleCancelTap"
+  },
+  behaviors: ["wx-base"],
+  handleMiddleTap: function(e) {
+    return !1
+  },
+  handleCancelTap: function(e) {
+    this.triggerEvent("actionSheetCancel", void 0, {
+      bubbles: !0
+    })
+  }
+}), window.exparser.registerElement({
   is: "wx-action-sheet",
   template: '\n    <div class="wx-action-sheet-mask" id="mask" style.z-index="1000" style="display: none;"></div>\n    <div class="wx-action-sheet" class.wx-action-sheet-show="{{!hidden}}">\n      <div class="wx-action-sheet-menu">\n        <slot></slot>\n      </div>\n    </div>\n  ',
   behaviors: ["wx-base"],
@@ -2459,23 +2476,6 @@ function(e) {
     e ? (setTimeout(function() {
       t.style.display = "none"
     }, 300), t.style.backgroundColor = "rgba(0,0,0,0)") : (t.style.display = "block", t.focus(), t.style.backgroundColor = "rgba(0,0,0,0.6)")
-  }
-}), window.exparser.registerElement({
-  is: "wx-action-sheet-cancel",
-  template: '\n    <div class="wx-action-sheet-middle" id="middle"></div>\n    <div class="wx-action-sheet-cancel" id="cancel">\n      <slot></slot>\n    </div>\n  ',
-  properties: {},
-  listeners: {
-    "middle.tap": "handleMiddleTap",
-    "cancel.tap": "handleCancelTap"
-  },
-  behaviors: ["wx-base"],
-  handleMiddleTap: function(e) {
-    return !1
-  },
-  handleCancelTap: function(e) {
-    this.triggerEvent("actionSheetCancel", void 0, {
-      bubbles: !0
-    })
   }
 }), window.exparser.registerElement({
   is: "wx-action-sheet-item",
@@ -2604,6 +2604,61 @@ function(e) {
     })
   }
 }), window.exparser.registerElement({
+  is: "wx-checkbox",
+  template: '\n    <div class="wx-checkbox-wrapper">\n      <div id="input" class="wx-checkbox-input" class.wx-checkbox-input-checked="{{checked}}" class.wx-checkbox-input-disabled="{{disabled}}" style.color="{{_getColor(checked,color)}}"></div>\n      <slot></slot>\n    </div>\n  ',
+  behaviors: ["wx-base", "wx-label-target", "wx-item", "wx-disabled"],
+  properties: {
+    color: {
+      type: String,
+      value: "#09BB07",
+      public: !0
+    }
+  },
+  listeners: {
+    tap: "_inputTap"
+  },
+  _getColor: function(e, t) {
+    return e ? t : ""
+  },
+  _inputTap: function() {
+    return !this.disabled && (this.checked = !this.checked, void this.changedByTap())
+  },
+  handleLabelTap: function() {
+    this._inputTap()
+  }
+}), window.exparser.registerElement({
+  is: "wx-checkbox-group",
+  template: "\n    <slot></slot>\n  ",
+  behaviors: ["wx-base", "wx-data-component", "wx-group"],
+  properties: {
+    value: {
+      type: Array,
+      value: []
+    }
+  },
+  addItem: function(e) {
+    e.checked && this.value.push(e.value)
+  },
+  removeItem: function(e) {
+    if (e.checked) {
+      var t = this.value.indexOf(e.value);
+      t >= 0 && this.value.splice(t, 1)
+    }
+  },
+  renameItem: function(e, t, n) {
+    if (e.checked) {
+      var i = this.value.indexOf(n);
+      i >= 0 && (this.value[i] = t)
+    }
+  },
+  changed: function(e) {
+    if (e.checked) this.value.push(e.value);
+    else {
+      var t = this.value.indexOf(e.value);
+      t >= 0 && this.value.splice(t, 1)
+    }
+  }
+}), window.exparser.registerElement({
   is: "wx-button",
   template: "\n    <slot></slot>\n  ",
   behaviors: ["wx-base", "wx-hover", "wx-label-target"],
@@ -2664,6 +2719,870 @@ function(e) {
         changedTouches: e.changedTouches
       }
     })
+  }
+}), window.exparser.registerElement({
+  is: "wx-form",
+  template: '\n    <span id="wrapper"><slot></slot></span>\n  ',
+  behaviors: ["wx-base"],
+  properties: {
+    reportSubmit: {
+      type: Boolean,
+      value: !1,
+      public: !0
+    }
+  },
+  listeners: {
+    "this.formSubmit": "submitHandler",
+    "this.formReset": "resetHandler"
+  },
+  resetDfs: function(e) {
+    if (e.childNodes)
+      for (var t = 0; t < e.childNodes.length; ++t) {
+        var n = e.childNodes[t];
+        n instanceof exparser.Element && (n.hasBehavior("wx-data-component") && n.resetFormData(), this.resetDfs(n))
+      }
+  },
+  getFormData: function(e, t) {
+    return e.name && e.hasBehavior("wx-data-component") ? "WX-INPUT" === e.__domElement.tagName || "WX-PICKER" === e.__domElement.tagName || "WX-TEXTAREA" === e.__domElement.tagName ? e.getFormData(function(e) {
+      t(e)
+    }) : t(e.getFormData()) : t()
+  },
+  asyncDfs: function(e, t) {
+    var n = this,
+      i = function() {
+        "function" == typeof t && t(), t = void 0
+      };
+    if (!e.childNodes) return i();
+    for (var o = e.childNodes.length, r = 0; r < e.childNodes.length; ++r) {
+      var a = e.childNodes[r];
+      a instanceof exparser.Element ? ! function(e) {
+        n.getFormData(e, function(t) {
+          "undefined" != typeof t && (n._data[e.name] = t), n.asyncDfs(e, function() {
+            0 == --o && i()
+          })
+        })
+      }(a) : --o
+    }
+    0 == o && i()
+  },
+  submitHandler: function(e) {
+    var t = this,
+      n = {
+        id: e.target.__domElement.id,
+        dataset: e.target.dataset,
+        offsetTop: e.target.__domElement.offsetTop,
+        offsetLeft: e.target.__domElement.offsetLeft
+      };
+    return this._data = Object.create(null), this.asyncDfs(this, function() {
+      t.reportSubmit ? t._isDevTools() ? t.triggerEvent("submit", {
+        value: t._data,
+        formId: "the formId is a mock one",
+        target: n
+      }) : WeixinJSBridge.invoke("reportSubmitForm", {}, function(e) {
+        t.triggerEvent("submit", {
+          value: t._data,
+          formId: e.formId,
+          target: n
+        })
+      }) : t.triggerEvent("submit", {
+        value: t._data,
+        target: n
+      })
+    }), !1
+  },
+  resetHandler: function(e) {
+    var t = {
+      id: e.target.__domElement.id,
+      dataset: e.target.dataset,
+      offsetTop: e.target.__domElement.offsetTop,
+      offsetLeft: e.target.__domElement.offsetLeft
+    };
+    return this._data = Object.create(null), this.resetDfs(this), this.triggerEvent("reset", {
+      target: t
+    }), !1
+  }
+}), window.exparser.registerElement({
+  is: "wx-icon",
+  template: '<i class$="wx-icon-{{type}}" style.color="{{color}}" style.font-size="{{size}}px"></i>',
+  behaviors: ["wx-base"],
+  properties: {
+    type: {
+      type: String,
+      public: !0
+    },
+    size: {
+      type: Number,
+      value: 23,
+      public: !0
+    },
+    color: {
+      type: String,
+      public: !0
+    }
+  }
+}), window.exparser.registerElement({
+  is: "wx-image",
+  template: '<div id="div"></div>',
+  behaviors: ["wx-base"],
+  properties: {
+    src: {
+      type: String,
+      observer: "srcChanged",
+      public: !0
+    },
+    mode: {
+      type: String,
+      observer: "modeChanged",
+      public: !0
+    },
+    _disableSizePositionRepeat: {
+      type: Boolean,
+      value: !1
+    },
+    backgroundSize: {
+      type: String,
+      observer: "backgroundSizeChanged",
+      value: "100% 100%",
+      public: !0
+    },
+    backgroundPosition: {
+      type: String,
+      observer: "backgroundPositionChanged",
+      public: !0
+    },
+    backgroundRepeat: {
+      type: String,
+      observer: "backgroundRepeatChanged",
+      value: "no-repeat",
+      public: !0
+    },
+    _img: {
+      type: Object
+    }
+  },
+  _publishError: function(e) {
+    this.triggerEvent("error", e)
+  },
+  _ready: function() {
+    if (!(this._img && this._img instanceof Image)) {
+      this._img = new Image;
+      var e = this;
+      this._img.onerror = function(t) {
+        t.stopPropagation();
+        var n = {
+          errMsg: "GET " + e._img.src + " 404 (Not Found)"
+        };
+        e._publishError(n)
+      }, this._img.onload = function(t) {
+        t.stopPropagation(), e.triggerEvent("load", {
+          width: this.width,
+          height: this.height
+        }), "widthFix" === e.mode && (e.rate = this.width / this.height, e.$$.style.height = e.$$.offsetWidth / e.rate + "px")
+      }, document.addEventListener("pageReRender", this._pageReRenderCallback.bind(this))
+    }
+  },
+  attached: function() {
+    this._ready(), this.backgroundSizeChanged(this.backgroundSize), this.backgroundRepeatChanged(this.backgroundRepeat)
+  },
+  detached: function() {
+    document.removeEventListener("pageReRender", this._pageReRenderCallback.bind(this))
+  },
+  _pageReRenderCallback: function() {
+    "widthFix" === this.mode && "undefined" != typeof this.rate && (this.$$.style.height = this.$$.offsetWidth / this.rate + "px")
+  },
+  _srcChanged: function(e) {
+    this._img.src = e, this.$.div.style.backgroundImage = "url('" + e + "')"
+  },
+  srcChanged: function(e, t) {
+    if (e) {
+      var n = (this.$.div, window.navigator.userAgent.toLowerCase()),
+        i = this;
+      this._ready();
+      var o = {
+        success: function(e) {
+          i._srcChanged(e.localData)
+        },
+        fail: function(e) {
+          i._publishError(e)
+        }
+      };
+      !/wechatdevtools/.test(n) && /iphone/.test(n) ? /^(http|https):\/\//.test(e) || /^\s*data:image\//.test(e) ? this._srcChanged(e) : /^wxfile:\/\//.test(e) ? (o.filePath = e, wx.getLocalImgData(o)) : (o.path = e, wx.getLocalImgData(o)) : !/wechatdevtools/.test(n) && /android/.test(n) ? /^wxfile:\/\//.test(e) || /^(http|https):\/\//.test(e) || /^\s*data:image\//.test(e) ? this._srcChanged(e) : wx.getCurrentRoute({
+        success: function(t) {
+          var n = wx.getRealRoute(t.route, e);
+          i._srcChanged(n)
+        }
+      }) : this._srcChanged(e.replace("wxfile://", "http://wxfile.open.weixin.qq.com/"))
+    }
+  },
+  _checkMode: function(e) {
+    for (var t = ["scaleToFill", "aspectFit", "aspectFill", "top", "bottom", "center", "left", "right", "top left", "top right", "bottom left", "bottom right"], n = !1, i = 0; i < t.length; i++)
+      if (e == t[i]) {
+        n = !0;
+        break
+      }
+    return n
+  },
+  modeChanged: function(e, t) {
+    if (!this._checkMode(e)) return void(this._disableSizePositionRepeat = !1);
+    switch (this._disableSizePositionRepeat = !0, this.$.div.style.backgroundSize = "auto auto", this.$.div.style.backgroundPosition = "0% 0%", this.$.div.style.backgroundRepeat = "no-repeat", e) {
+      case "scaleToFill":
+        this.$.div.style.backgroundSize = "100% 100%";
+        break;
+      case "aspectFit":
+        this.$.div.style.backgroundSize = "contain", this.$.div.style.backgroundPosition = "center center";
+        break;
+      case "aspectFill":
+        this.$.div.style.backgroundSize = "cover", this.$.div.style.backgroundPosition = "center center";
+        break;
+      case "widthFix":
+        this.$.div.style.backgroundSize = "100% 100%";
+        break;
+      case "top":
+        this.$.div.style.backgroundPosition = "top center";
+        break;
+      case "bottom":
+        this.$.div.style.backgroundPosition = "bottom center";
+        break;
+      case "center":
+        this.$.div.style.backgroundPosition = "center center";
+        break;
+      case "left":
+        this.$.div.style.backgroundPosition = "center left";
+        break;
+      case "right":
+        this.$.div.style.backgroundPosition = "center right";
+        break;
+      case "top left":
+        this.$.div.style.backgroundPosition = "top left";
+        break;
+      case "top right":
+        this.$.div.style.backgroundPosition = "top right";
+        break;
+      case "bottom left":
+        this.$.div.style.backgroundPosition = "bottom left";
+        break;
+      case "bottom right":
+        this.$.div.style.backgroundPosition = "bottom right"
+    }
+  },
+  backgroundSizeChanged: function(e, t) {
+    this._disableSizePositionRepeat || (this.$.div.style.backgroundSize = e)
+  },
+  backgroundPositionChanged: function(e, t) {
+    this._disableSizePositionRepeat || (this.$.div.style.backgroundPosition = e)
+  },
+  backgroundRepeatChanged: function(e, t) {
+    this._disableSizePositionRepeat || (this.$.div.style.backgroundRepeat = e)
+  }
+});
+var MAX_SIZE = 27,
+  MIN_SIZE = 18,
+  buttonTypes = {
+    "default-dark": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAABRCAYAAABBuPE1AAAAAXNSR0IArs4c6QAAA1tJREFUeAHtm89rE0EcxZttbA00ePBc8CLkEEMlNId69uKtWKt/gqRevcejeBNRj/aiKNibHpVST4GQ5gc9F/RYEaE1BNLG9y1ZSNXa3eyb7Ya8hWUmuztv5vuZN9nJTnZqSpsIiIAIiIAIiMB4EEiVSqXLnU7neb/fv4Umz41Hs09t5X4qlfqYyWTK1Wr1+6lXOTiRHkBcdaB9HpJzMMQqYrK678bZAG/gxDjrdF7XecTkIapxH87/6pjYYzKQ2ggEBJIA0SQEUiBJBEgycqRAkgiQZORIgSQRIMnIkQJJIkCSkSMFkkSAJCNHCiSJAElGjhRIEgGSjBxJApkm6SRaJp/P9x008CsW2p41m80nSPty5OiE57E29LhQKDw0CYEcHeRxScB8IJARIQ6KzwskB+SxioY2CaZACiSJAElGjhRIEgGSjBwpkCQCJBk5UiBJBEgycqRAkgiQZORIIsh9klaSZGKPybPXKZJEgNSWD77OwsLCop93mXr2TgpgvkMlsfeig8AshrfZbLbsax8eHq75eZdpKox40LUPdMwv6K61Wq1XYfTZ18KNNwDyM55iX2BrD+u12+2Ui8WvnXQ6fader+8MVxZ3HhCvAuJ71xD9uKgg4cT1mZmZcq1WM0fGvhWLxUtHR0dXer3ebey2KHUxrkZQQEYdykG/Ms6C0u12z7rE2XkGyEQMZWeEAgpHmpDbUJ6dnV087+/DgLE6vWwkR9pQxl7GvwzWnbZujMRDgQS8b4jtB+7K9+TCk70camhPT09fy+Vy1wXxJET7FGpC/ndxzhHWXZvTmvAqNiEP5cjwVUxOCYEk9bVACiSJAElGjhRIEgGSTFIc+YUUT+wy+JGyZZUmAiR+ry+jQW+w/4ydxIgVWluxv8YKw7JJJGJCPmIsIxXD5P8+ADwN+sDXJttBKkqEI4M0lHUNwLyE1k3seyxN05k4kBY01pI28eBlEc5s2mfGNpEgDdz29vYuQC4huyGQEQngeeoB3Lnied4jSEV6O2xiHen3AVzZB9AKHhGuIH/gHw+bTjxIH1ij0djAnXwJMHf9Y2FSgRyihTt6E8vJdhPatMNIPw2d/m9WIP/AgzX5PcC06dELgLS1cW1RCFQqFZksCkCVFQEREAEREIHEEvgNdubEHW4rptkAAAAASUVORK5CYII=",
+    "default-light": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAABRCAYAAABBuPE1AAAAAXNSR0IArs4c6QAAAsJJREFUeAHtm71KA0EUhbOijT8o6APY2FgoCFYW9nYK/pSWkvTaig9hrY2iYKmdIOgLWGgrqIUgIpKoIOh6RjMQgpid3bOb3cwZOEyMd86d++UmG3fdUklDBERABERABESgGAQCs80wDIcxbUNzUD9U5FHD5k+gchAET1kVYkEeIOFSVkkzynMIkMsZ5SpZkFUkLHonNjOrAeRA85Np/WxBhmklaKcvQP7Ul8UeurJI4kMOgSS9ygIpkCQCJBt1pECSCJBs1JECSSJAslFHCiSJAMlGHSmQJAIkG3WkQJIIkGzUkQJJIkCyUUcKpBsBXOBLY9zCdB36PRVvMrhtqxjRjZcaUq5xw5trNimDvBNI0ptLBxuBJBEg2agjBZJEgGSjjhRIEgGSjTpSIEkESDbqSIEkESDZqCMFkkSAZKOOJIM0dwJ02si0JtuR5naKThvHtiCci5y2j9Oau+vG5frcKffZGIi2JlNapV5ffiZzpjnieEXcart3jj3MQB8R9xw7zLnOiJmuEDfubE5egD2MQQ8R95wozHnrEbLtIKbX2Zi0ALkHoUloC3qHMhn2M5JRxhtMKrhytxPHzFQbZ11e1rBAXqOgRUA0s5fDfv1JUvwuFk/7DNHAS9KR5q1sbuU1IL0fcUDeg9oztOJ7FzZ2z88/CDQ+0eoxjglDiKkC4merWJffF/1g4wzSBY5LbNFBMg42Lrw6NlYgSS+tQAokiQDJRh0pkCQCJJs8deQFqaZ22JznCeQ8COxDL+0gETOn2eseZPbu38CX/zUo8llz/wg5VAyQs9Aj1HI42PoZCoKj0GUrkn7ScawaEPugo/9gOlr6Gw6IAbQJff0F1F8yMSsHxAWo1gwzpp3fywBxArpphOk3kQTVA+IIdFaHeZrASksBsQfahqZEIyEBQMzTX34Jq9FyERABERABERCBXwLfe8eGVVx752oAAAAASUVORK5CYII="
+  };
+window.exparser.registerElement({
+    is: "wx-contact-button",
+    behaviors: ["wx-base", "wx-native"],
+    template: '\n    <div id="wrapper" class="wx-contact-button-wrapper">\n    </div>\n  ',
+    properties: _defineProperty({
+      sessionFrom: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      type: {
+        type: String,
+        value: "default-dark",
+        public: !0,
+        observer: "typeChanged"
+      },
+      size: {
+        type: Number,
+        value: 36,
+        public: !0,
+        observer: "sizeChanged"
+      }
+    }, "sessionFrom", {
+      type: String,
+      value: "wxapp",
+      public: !0
+    }),
+    attached: function() {
+      var e = this;
+      if (this._isMobile(), 1) {
+        var t = void 0;
+        t = buttonTypes[this.type] ? buttonTypes[this.type] : buttonTypes["default-dark"], this.$.wrapper.style.backgroundImage = "url('" + t + "')", this.$.wrapper.addEventListener("click", function() {
+          e._isMobile() ? wx.enterContact({
+            sessionFrom: e.sessionFrom,
+            complete: function(e) {
+              console.log(e)
+            }
+          }) : alert("进入客服会话，sessionFrom: " + e.sessionFrom)
+        })
+      } else this._box = this._getBox(), console.log("insertContactButton", this._box), wx.insertContactButton({
+        position: this._box,
+        buttonType: this.type,
+        sessionFrom: this.sessionFrom,
+        complete: function(t) {
+          console.log("insertContactButton complete", t), e.contactButtonId = t.contactButtonId, document.addEventListener("pageReRender", e._pageReRender.bind(e), !1)
+        }
+      })
+    },
+    detached: function() {
+      this._isMobile(), 1, currentContactButton === this && (currentContactButton = null)
+    },
+    sizeChanged: function(e, t) {
+      this._box = this._getBox(), this.$.wrapper.style.width = this._box.width + "px", this.$.wrapper.style.height = this._box.height + "px", this._updateContactButton()
+    },
+    typeChanged: function(e, t) {
+      if (this._isMobile(), 1) {
+        var n = void 0;
+        n = buttonTypes[this.type] ? buttonTypes[this.type] : buttonTypes["default-dark"], this.$.wrapper.style.backgroundImage = "url('" + n + "')"
+      } else this._updateContactButton()
+    },
+    _updateContactButton: function() {
+      this._isMobile(), 1
+    },
+    _getBox: function() {
+      var e = this.$.wrapper.getBoundingClientRect(),
+        t = this.size;
+      "number" != typeof t && (t = MIN_SIZE), t = t > MAX_SIZE ? MAX_SIZE : t, t = t < MIN_SIZE ? MIN_SIZE : t;
+      var n = {
+        left: e.left + window.scrollX,
+        top: e.top + window.scrollY,
+        width: t,
+        height: t
+      };
+      return n
+    },
+    _pageReRender: function() {
+      this._updateContactButton()
+    }
+  }),
+  function() {
+    /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) && window.exparser.registerElement({
+      is: "wx-input",
+      template: '\n      <div id="wrapper" disabled$="{{disabled}}">\n        <input id="input" type$="{{_getType(type,password)}}" maxlength$="{{maxlength}}" value$="{{showValue}}" disabled$="{{disabled}}" >\n        <div id="placeholder" class$="{{_getPlaceholderClass(placeholderClass)}}" style$="{{_getPlaceholderStyle(placeholderStyle)}}" parse-text-content>{{placeholder}}</p>\n      </div>\n      ',
+      behaviors: ["wx-base", "wx-data-component"],
+      properties: {
+        focus: {
+          type: Boolean,
+          value: 0,
+          coerce: "_focusChange",
+          public: !0
+        },
+        autoFocus: {
+          type: Boolean,
+          value: !1,
+          public: !0
+        },
+        placeholder: {
+          type: String,
+          value: "",
+          observer: "_placeholderChange",
+          public: !0
+        },
+        placeholderStyle: {
+          type: String,
+          value: "",
+          public: !0
+        },
+        placeholderClass: {
+          type: String,
+          value: "",
+          public: !0
+        },
+        value: {
+          type: String,
+          value: "",
+          coerce: "defaultValueChange",
+          public: !0
+        },
+        showValue: {
+          type: String,
+          value: ""
+        },
+        maxlength: {
+          type: Number,
+          value: 140,
+          observer: "_maxlengthChanged",
+          public: !0
+        },
+        type: {
+          type: String,
+          value: "text",
+          public: !0
+        },
+        password: {
+          type: Boolean,
+          value: !1,
+          public: !0
+        },
+        disabled: {
+          type: Boolean,
+          value: !1,
+          public: !0
+        },
+        bindinput: {
+          type: String,
+          value: "",
+          public: !0
+        }
+      },
+      listeners: {
+        tap: "_inputFocus",
+        "input.focus": "_inputFocus",
+        "input.blur": "_inputBlur",
+        "input.input": "_inputKey"
+      },
+      resetFormData: function() {
+        this._keyboardShow && (this.__formResetCallback = !0, wx.hideKeyboard()), this.value = "", this.showValue = ""
+      },
+      getFormData: function(e) {
+        this._keyboardShow ? this.__formCallback = e : "function" == typeof e && e(this.value)
+      },
+      _formGetDataCallback: function() {
+        "function" == typeof this.__formCallback && this.__formCallback(this.value), this.__formCallback = void 0
+      },
+      _focusChange: function(e) {
+        return this._couldFocus(e), e
+      },
+      _couldFocus: function(e) {
+        var t = this;
+        !this._keyboardShow && this._attached && e && (window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame, window.requestAnimationFrame ? window.requestAnimationFrame(function() {
+          t._inputFocus()
+        }) : this._inputFocus())
+      },
+      _getPlaceholderClass: function(e) {
+        return "input-placeholder " + e
+      },
+      _maxlengthChanged: function(e, t) {
+        var n = this.value.slice(0, e);
+        n != this.value && (this.value = n)
+      },
+      _placeholderChange: function() {
+        this._checkPlaceholderStyle(this.value)
+      },
+      attached: function() {
+        var e = this;
+        this._checkPlaceholderStyle(this.value), this._attached = !0, this._value = this.value, this.updateInput(), window.__onAppRouteDone && this._couldFocus(this.autoFocus || this.focus), this.__routeDoneId = exparser.addListenerToElement(document, "routeDone", function() {
+          e._couldFocus(e.autoFocus || e.focus)
+        }), this.__setKeyboardValueId = exparser.addListenerToElement(document, "setKeyboardValue", function(t) {
+          if (e._keyboardShow) {
+            var n = t.detail.value,
+              i = t.detail.cursor;
+            "undefined" != typeof n && (e._value = n, e.value = n), "undefined" != typeof i && i != -1 && e.$.input.setSelectionRange(i, i)
+          }
+        }), this.__hideKeyboardId = exparser.addListenerToElement(document, "hideKeyboard", function(t) {
+          e._keyboardShow && e.$.input.blur()
+        }), this.__onDocumentTouchStart = this.onDocumentTouchStart.bind(this), this.__updateInput = this.updateInput.bind(this), this.__inputKeyUp = this._inputKeyUp.bind(this), this.$.input.addEventListener("keyup", this.__inputKeyUp), document.addEventListener("touchstart", this.__onDocumentTouchStart), document.addEventListener("pageReRender", this.__updateInput), (this.autoFocus || this.focus) && setTimeout(function() {
+          e._couldFocus(e.autoFocus || e.focus)
+        }, 500)
+      },
+      detached: function() {
+        document.removeEventListener("pageReRender", this.__updateInput), document.removeEventListener("touchstart", this.__onDocumentTouchStart), this.$.input.removeEventListener("keyup", this.__inputKeyUp), exparser.removeListenerFromElement(document, "routeDone", this.__routeDoneId), exparser.removeListenerFromElement(document, "hideKeyboard", this.__hideKeyboardId), exparser.removeListenerFromElement(document, "onKeyboardComplete", this.__onKeyboardCompleteId), exparser.removeListenerFromElement(document, "setKeyboardValue", this.__setKeyboardValueId)
+      },
+      onDocumentTouchStart: function() {
+        this._keyboardShow && this.$.input.blur()
+      },
+      _getType: function(e, t) {
+        return t || "password" == e ? "password" : "text"
+      },
+      _showValueChange: function(e) {
+        this.$.input.value = e
+      },
+      _inputFocus: function(e) {
+        this.disabled || this._keyboardShow || (this._keyboardShow = !0, this.triggerEvent("focus", {
+          value: this.value
+        }), this.$.input.focus())
+      },
+      _inputBlur: function(e) {
+        this._keyboardShow = !1, this.value = this._value, this._formGetDataCallback(), this.triggerEvent("change", {
+          value: this.value
+        }), this.triggerEvent("blur", {
+          value: this.value
+        }), this._checkPlaceholderStyle(this.value)
+      },
+      _inputKeyUp: function(e) {
+        if (13 == e.keyCode) return this.triggerEvent("confirm", {
+          value: this.value
+        }), void this.$.input.blur()
+      },
+      _inputKey: function(e) {
+        var t = e.target.value;
+        if (this._value = t, this._checkPlaceholderStyle(t), this.bindinput) {
+          var n = {
+            id: this.$$.id,
+            dataset: this.dataset,
+            offsetTop: this.$$.offsetTop,
+            offsetLeft: this.$$.offsetLeft
+          };
+          WeixinJSBridge.publish("SPECIAL_PAGE_EVENT", {
+            eventName: this.bindinput,
+            data: {
+              ext: {
+                setKeyboardValue: !0
+              },
+              data: {
+                type: "input",
+                timestamp: Date.now(),
+                detail: {
+                  value: e.target.value,
+                  cursor: this.$.input.selectionStart
+                },
+                target: n,
+                currentTarget: n,
+                touches: []
+              },
+              eventName: this.bindinput
+            }
+          })
+        }
+        return !1
+      },
+      updateInput: function() {
+        var e = window.getComputedStyle(this.$$),
+          t = this.$$.getBoundingClientRect(),
+          n = (["Left", "Right"].map(function(t) {
+            return parseFloat(e["border" + t + "Width"]) + parseFloat(e["padding" + t])
+          }), ["Top", "Bottom"].map(function(t) {
+            return parseFloat(e["border" + t + "Width"]) + parseFloat(e["padding" + t])
+          })),
+          i = this.$.input;
+        i.style.height = t.height - n[0] - n[1] + "px", i.style.lineHeight = i.style.height, i.style.color = e.color;
+        var o = this.$.placeholder;
+        o.style.height = t.height - n[0] - n[1] + "px", o.style.lineHeight = o.style.height
+      },
+      defaultValueChange: function(e, t) {
+        return this.maxlength > 0 && (e = e.slice(0, this.maxlength)), this._checkPlaceholderStyle(e), this._showValueChange(e), this._value = e, e
+      },
+      _getPlaceholderStyle: function(e) {
+        return e
+      },
+      _checkPlaceholderStyle: function(e) {
+        e ? (this.$.placeholder.classList.remove("input-placeholder"), this.$.placeholder.setAttribute("style", ""), this.$.placeholder.style.display = "none") : this.placeholder && (this.$.placeholder.classList.add("input-placeholder"), this.placeholderClass && this.$.placeholder.classList.add(this.placeholderClass), this.placeholderStyle && this.$.placeholder.setAttribute("style", this.placeholderStyle), this.$.placeholder.style.display = "", this.updateInput())
+      }
+    })
+  }();
+var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+  return typeof e
+} : function(e) {
+  return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+};
+! function() {
+  /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) || window.exparser.registerElement({
+    is: "wx-input",
+    template: '\n      <div id="wrapper" disabled$="{{disabled}}">\n        <input style="visibility:hidden" disabled/>\n        <div id="input" parse-text-content >{{showValue}}</div>\n        <div id="placeholder" class$="{{_getPlaceholderClass(placeholderClass)}}" style$="{{_getPlaceholderStyle(placeholderStyle)}}"></div>\n      </div>\n    ',
+    behaviors: ["wx-base", "wx-data-component"],
+    properties: {
+      focus: {
+        type: Boolean,
+        value: 0,
+        coerce: "_focusChange",
+        public: !0
+      },
+      autoFocus: {
+        type: Boolean,
+        value: !1,
+        public: !0
+      },
+      placeholder: {
+        type: String,
+        value: "",
+        observer: "_placeholderChange",
+        public: !0
+      },
+      placeholderStyle: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      placeholderClass: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      value: {
+        type: String,
+        value: "",
+        coerce: "defaultValueChange",
+        public: !0
+      },
+      showValue: {
+        type: String,
+        value: ""
+      },
+      maxlength: {
+        type: Number,
+        value: 140,
+        observer: "_maxlengthChanged",
+        public: !0
+      },
+      type: {
+        type: String,
+        value: "text",
+        public: !0
+      },
+      password: {
+        type: Boolean,
+        value: !1,
+        public: !0
+      },
+      disabled: {
+        type: Boolean,
+        value: !1,
+        public: !0
+      },
+      bindinput: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      cursorSpacing: {
+        type: Number,
+        value: 0,
+        public: !0
+      }
+    },
+    listeners: {
+      tap: "_inputFocus"
+    },
+    resetFormData: function() {
+      this._keyboardShow ? (this.__formResetCallback = !0, wx.hideKeyboard()) : (this.value = "", this._checkPlaceholderStyle(this.value))
+    },
+    getFormData: function(e) {
+      this._keyboardShow ? this.__formCallback = e : "function" == typeof e && e(this.value)
+    },
+    _focusChange: function(e) {
+      return this._couldFocus(e), e
+    },
+    _couldFocus: function(e) {
+      var t = this;
+      !this._keyboardShow && this._attached && e && window.requestAnimationFrame(function() {
+        t._inputFocus()
+      })
+    },
+    _getPlaceholderClass: function(e) {
+      return "input-placeholder " + e
+    },
+    _maxlengthChanged: function(e, t) {
+      var n = this.value.slice(0, e);
+      n != this.value && (this.value = n)
+    },
+    _placeholderChange: function() {
+      this._checkPlaceholderStyle(this.value)
+    },
+    attached: function() {
+      var e = this;
+      this._checkPlaceholderStyle(this.value), this._attached = !0, this._value = this.value, this.__routeDoneId = exparser.addListenerToElement(document, "routeDone", function() {
+        e.checkAutoFocus()
+      }), this.__onKeyboardCompleteId = exparser.addListenerToElement(document, "onKeyboardComplete", function(t) {
+        e._keyboardShow && t.detail.inputId == e._inputId && (e._value = t.detail.value, e.onKeyboardComplete())
+      }), this.__setKeyboardValueId = exparser.addListenerToElement(document, "setKeyboardValue", function(t) {
+        e._keyboardShow && t.detail.inputId == e._inputId && (e._value = t.detail.value)
+      }), this.__onKeyboardConfirmId = exparser.addListenerToElement(document, "onKeyboardConfirm", this.onKeyboardConfirm.bind(this)), this.__pageReRenderCallback = this.pageReRenderCallback.bind(this), this.__onDocumentTouchStart = this.onDocumentTouchStart.bind(this), document.addEventListener("touchstart", this.__onDocumentTouchStart), document.addEventListener("pageReRender", this.__pageReRenderCallback)
+    },
+    detached: function() {
+      document.removeEventListener("pageReRender", this.__pageReRenderCallback), document.removeEventListener("touchstart", this.__onDocumentTouchStart), exparser.removeListenerFromElement(document, "routeDone", this.__routeDoneId), exparser.removeListenerFromElement(document, "onKeyboardComplete", this.__onKeyboardCompleteId), exparser.removeListenerFromElement(document, "setKeyboardValue", this.__setKeyboardValueId), exparser.removeListenerFromElement(document, "onKeyboardConfirm", this.__onKeyboardConfirmId), this._keyboardShow && wx.hideKeyboard()
+    },
+    checkAutoFocus: function() {
+      this.__autoFocused || window.__onAppRouteDone && (this.__autoFocused = !0, this._couldFocus(this.autoFocus || this.focus))
+    },
+    onDocumentTouchStart: function() {
+      this._keyboardShow && wx.hideKeyboard()
+    },
+    onKeyboardConfirm: function(e) {
+      this._keyboardShow && e.detail.inputId == this._inputId && (this._value = e.detail.value, this.triggerEvent("confirm", {
+        value: this._value
+      }))
+    },
+    onKeyboardComplete: function() {
+      this.__formResetCallback && (this.value = "", this.__formResetCallback = void 0), "function" == typeof this.__formCallback && (this.__formCallback(this._value), this.__formCallback = void 0), this.triggerEvent("change", {
+        value: this._value
+      }), this.triggerEvent("blur", {
+        value: this._value
+      }), this._resetInputState()
+    },
+    getComputedStyle: function() {
+      var e = this.$$,
+        t = window.getComputedStyle(e),
+        n = e.getBoundingClientRect(),
+        i = ["Left", "Right"].map(function(e) {
+          return parseInt(t["border" + e + "Width"]) + parseInt(t["padding" + e])
+        }),
+        o = ["Top", "Bottom"].map(function(e) {
+          return parseInt(t["border" + e + "Width"]) + parseInt(t["padding" + e])
+        }),
+        r = parseInt(t.fontWeight);
+      isNaN(r) ? r = t.fontWeight : r < 500 ? r = "normal" : r >= 500 && (r = "bold");
+      var a = t.textAlign;
+      return ["left", "center", "right"].indexOf(a) < 0 && (a = "left"), {
+        width: n.width - i[0] - i[1],
+        height: n.height - o[0] - o[1],
+        left: n.left + i[0] + window.scrollX,
+        top: n.top + o[0] + window.scrollY,
+        fontFamily: t.fontFamily,
+        fontSize: parseFloat(t.fontSize) || 16,
+        fontWeight: r,
+        color: this._getHexColor(t.color),
+        backgroundColor: "#00000000",
+        marginBottom: this.cursorSpacing || parseFloat(t.marginBottom),
+        textAlign: a
+      }
+    },
+    getPlaceholderStyle: function() {
+      var e = this.$.placeholder,
+        t = window.getComputedStyle(e),
+        n = parseInt(t.fontWeight);
+      return isNaN(n) ? n = t.fontWeight : n < 500 ? n = "normal" : n >= 500 && (n = "bold"), {
+        fontSize: parseFloat(t.fontSize) || 16,
+        fontWeight: n,
+        color: this._getHexColor(t.color)
+      }
+    },
+    pageReRenderCallback: function() {
+      this.checkAutoFocus(), this._updateInput(), this.checkLineHeight()
+    },
+    _inputFocus: function(e) {
+      return !this.disabled && (this.triggerEvent("focus", {
+        value: this.value
+      }), !this._keyboardShow && (this._showNativeInput(), !1))
+    },
+    defaultValueChange: function(e, t) {
+      return this.maxlength > 0 && (e = e.slice(0, this.maxlength)), e != this.value && (this._inputId && this._keyboardShow ? WeixinJSBridge.invoke("updateInput", {
+        value: e || "",
+        inputId: this._inputId
+      }, function(e) {}) : this._checkPlaceholderStyle(e)), this._value = e, e
+    },
+    _showNativeInput: function(e) {
+      var t = this;
+      this.inputArgs = {
+        type: "password" == this.type ? "text" : this.type,
+        maxLength: this.maxlength,
+        defaultValue: this.value,
+        password: this.password || "password" == this.type,
+        style: this.getComputedStyle(),
+        data: this.formateEventTarget(),
+        placeholder: this.placeholder,
+        placeholderStyle: this.getPlaceholderStyle()
+      }, WeixinJSBridge.invoke("showKeyboard", this.inputArgs, function(e) {
+        /:ok/.test(e.errMsg) ? (t._inputId = e.inputId, t._keyboardShow = !0, t.showValue = " ") : console.info(e.errMsg)
+      })
+    },
+    _diff: function(e, t) {
+      var n = {},
+        i = !1;
+      for (var o in t) "[object Object]" === Object.prototype.toString.call(t[o]) ? JSON.stringify(t[o]) != JSON.stringify(e[o]) && (n[o] = t[o], i = !0) : e[o] != t[o] && (n[o] = t[o], i = !0);
+      return i ? n : void 0
+    },
+    formateEventTarget: function() {
+      var e = {
+        bindinput: this.bindinput,
+        target: {
+          id: this.$$.id,
+          dataset: this.dataset,
+          offsetTop: this.$$.offsetTop,
+          offsetLeft: this.$$.offsetLeft
+        },
+        setKeyboardValue: !0
+      };
+      return e.currentTarget = e.target, this.bindinput ? JSON.stringify(e) : ""
+    },
+    _updateInput: function() {
+      if (this._keyboardShow) {
+        var e = {
+            maxLength: this.maxlength,
+            password: this.password || "password" == this.type,
+            placeholder: this.placeholder,
+            style: this.getComputedStyle(),
+            data: this.formateEventTarget(),
+            placeholderStyle: this.getPlaceholderStyle()
+          },
+          t = this._diff(this.inputArgs, e);
+        t && (this.inputArgs = e, t.inputId = this._inputId, WeixinJSBridge.invoke("updateInput", t, function(e) {}))
+      }
+    },
+    _resetInputState: function() {
+      this._keyboardShow = !1, this._inputId = void 0, this.value = this._value || "", this._value = void 0, this._checkPlaceholderStyle(this.value)
+    },
+    _getHexColor: function(e) {
+      if (!e) return "#000000";
+      if (e.indexOf("#") >= 0) return e;
+      try {
+        var t, n, i = function() {
+          t = e.match(/\d+/g);
+          var i = [];
+          return t.map(function(e, t) {
+            if (t < 3) {
+              var n = parseInt(e).toString(16);
+              n = n.length > 1 ? n : "0" + n, i.push(n)
+            }
+          }), t.length > 3 && (n = parseFloat(t.slice(3).join(".")), 0 == n ? i.push("00") : n >= 1 ? i.push("ff") : (n = parseInt(255 * n).toString(16), n = n.length > 1 ? n : "0" + n, i.push(n))), {
+            v: "#" + i.join("")
+          }
+        }();
+        if ("object" === ("undefined" == typeof i ? "undefined" : _typeof(i))) return i.v
+      } catch (e) {
+        return "#000000"
+      }
+    },
+    _getPlaceholderStyle: function(e) {
+      return e + ";display:none;"
+    },
+    checkLineHeight: function() {
+      var e = this;
+      window.requestAnimationFrame(function() {
+        var t = window.getComputedStyle(e.$$),
+          n = e.$$.getBoundingClientRect(),
+          i = (["Left", "Right"].map(function(e) {
+            return parseFloat(t["border" + e + "Width"]) + parseFloat(t["padding" + e])
+          }), ["Top", "Bottom"].map(function(e) {
+            return parseFloat(t["border" + e + "Width"]) + parseFloat(t["padding" + e])
+          })),
+          o = n.height - i[0] - i[1];
+        if (o != e.__lastHeight) {
+          var r = e.$.input;
+          r.style.height = o + "px", r.style.lineHeight = o + "px", e.__lastHeight = o
+        }
+      })
+    },
+    _checkPlaceholderStyle: function(e) {
+      var t = e || " ",
+        n = this.$.input;
+      e ? ((this.password || "password" == this.type) && (t = e ? new Array(e.length + 1).join("●") : ""), this.showValue = t, this.$.input.classList.remove("input-placeholder"), this.placeholderClass && this.$.input.classList.remove(this.placeholderClass), n.setAttribute("style", ""), this.__lastHeight ? (n.style.height = this.__lastHeight + "px", n.style.lineHeight = this.__lastHeight + "px") : this.checkLineHeight()) : (this.placeholder && (this.$.input.classList.add("input-placeholder"), this.placeholderClass && this.$.input.classList.add(this.placeholderClass), this.placeholderStyle && (n.setAttribute("style", this.placeholderStyle), this.__lastHeight ? (n.style.height = this.__lastHeight + "px", n.style.lineHeight = this.__lastHeight + "px") : this.checkLineHeight()), t = this.placeholder), this.showValue = t)
+    }
+  })
+}(), window.exparser.registerElement({
+  is: "wx-label",
+  template: "\n    <slot></slot>\n  ",
+  properties: {
+    for: {
+      type: String,
+      public: !0
+    }
+  },
+  listeners: {
+    tap: "onTap"
+  },
+  behaviors: ["wx-base"],
+  _handleNode: function(e, t) {
+    return !!(e instanceof exparser.Element && e.hasBehavior("wx-label-target")) && (e.handleLabelTap(t), !0)
+  },
+  dfs: function(e, t) {
+    if (this._handleNode(e, t)) return !0;
+    if (!e.childNodes) return !1;
+    for (var n = 0; n < e.childNodes.length; ++n)
+      if (this.dfs(e.childNodes[n], t)) return !0;
+    return !1
+  },
+  onTap: function(e) {
+    for (var t = e.target; t instanceof exparser.Element && t !== this; t = t.parentNode)
+      if (t.hasBehavior("wx-label-target")) return;
+    if (this.for) {
+      var n = document.getElementById(this.for);
+      n && this._handleNode(n.__wxElement, e)
+    } else this.dfs(this, e)
   }
 });
 var touchEventNames = ["touchstart", "touchmove", "touchend", "touchcancel", "longtap"],
@@ -2792,19 +3711,18 @@ window.exparser.registerElement({
         }), t._ready(), document.addEventListener("pageReRender", t._pageReRenderCallback.bind(t))
       })
     }() : (WeixinJSBridge.publish("canvasInsert", {
-        canvasId: t.canvasId,
-        canvasNumber: t._canvasNumber
-      }), WeixinJSBridge.subscribe("canvas" + t._canvasNumber + "actionsChanged", function(e) {
-        var n = e.actions,
-          i = e.reserve;
-        t.actions = n, t.actionsChanged(n, i)
-      }), WeixinJSBridge.subscribe("invokeCanvasToDataUrl" + e._canvasNumber), function() {
-        var t = e.$.canvas.toDataURL().replace(/^data:image\/(jpg|png);base64,/, "");
-        WeixinJSBridge.publish("onCanvasToDataUrl_" + e._canvasNumber, {
-          dataUrl: t
-        })
-      }), t._ready(), document.addEventListener("pageReRender", t._pageReRenderCallback.bind(t)),
-      this.addTouchEventForWebview()))
+      canvasId: t.canvasId,
+      canvasNumber: t._canvasNumber
+    }), WeixinJSBridge.subscribe("canvas" + t._canvasNumber + "actionsChanged", function(e) {
+      var n = e.actions,
+        i = e.reserve;
+      t.actions = n, t.actionsChanged(n, i)
+    }), WeixinJSBridge.subscribe("invokeCanvasToDataUrl" + t._canvasNumber, function() {
+      var t = e.$.canvas.toDataURL().replace(/^data:image\/(jpg|png);base64,/, "");
+      WeixinJSBridge.publish("onCanvasToDataUrl_" + e._canvasNumber, {
+        dataUrl: t
+      })
+    }), t._ready(), document.addEventListener("pageReRender", t._pageReRenderCallback.bind(t)), this.addTouchEventForWebview())))
   },
   detached: function() {
     var e = __webviewId__ + "canvas" + this.canvasId;
@@ -2869,7 +3787,7 @@ window.exparser.registerElement({
     })
   },
   actionsChanged: function(e) {
-    var t = !(arguments.length <= 1 || void 0 === arguments[1]) && arguments[1];
+    var t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
     if (!this._isMobile() && e) {
       var n = this.$.canvas,
         i = n.getContext("2d");
@@ -2908,7 +3826,7 @@ window.exparser.registerElement({
             o.forEach(function(e, t) {
               "shadowColor" === u[t] ? i[u[t]] = resolveColor(e) : i[u[t]] = e
             })
-          } else "fontSize" === r ? i.font = i.font.replace(/\d+\.?\d*px/, o[0] + "px") : i[r] = o[0]
+          } else "fontSize" === r ? i.font = i.font.replace(/\d+\.?\d*px/, o[0] + "px") : i[r] = o[0];
         } else "fillPath" === n || "strokePath" === n ? (n = n.replace(/Path/, ""), i.beginPath(), o.forEach(function(e) {
           i[e.method].apply(i, e.data)
         }), i[n]()) : "fillText" === n ? i.fillText.apply(i, o) : "drawImage" === n ? ! function() {
@@ -2934,935 +3852,11 @@ window.exparser.registerElement({
       disableScroll: e
     }, function(e) {})
   }
-}), window.exparser.registerElement({
-  is: "wx-checkbox",
-  template: '\n    <div class="wx-checkbox-wrapper">\n      <div id="input" class="wx-checkbox-input" class.wx-checkbox-input-checked="{{checked}}" class.wx-checkbox-input-disabled="{{disabled}}" style.color="{{_getColor(checked,color)}}"></div>\n      <slot></slot>\n    </div>\n  ',
-  behaviors: ["wx-base", "wx-label-target", "wx-item", "wx-disabled"],
-  properties: {
-    color: {
-      type: String,
-      value: "#09BB07",
-      public: !0
-    }
-  },
-  listeners: {
-    tap: "_inputTap"
-  },
-  _getColor: function(e, t) {
-    return e ? t : ""
-  },
-  _inputTap: function() {
-    return !this.disabled && (this.checked = !this.checked, void this.changedByTap())
-  },
-  handleLabelTap: function() {
-    this._inputTap()
-  }
-}), window.exparser.registerElement({
-  is: "wx-checkbox-group",
-  template: "\n    <slot></slot>\n  ",
-  behaviors: ["wx-base", "wx-data-component", "wx-group"],
-  properties: {
-    value: {
-      type: Array,
-      value: []
-    }
-  },
-  addItem: function(e) {
-    e.checked && this.value.push(e.value)
-  },
-  removeItem: function(e) {
-    if (e.checked) {
-      var t = this.value.indexOf(e.value);
-      t >= 0 && this.value.splice(t, 1)
-    }
-  },
-  renameItem: function(e, t, n) {
-    if (e.checked) {
-      var i = this.value.indexOf(n);
-      i >= 0 && (this.value[i] = t)
-    }
-  },
-  changed: function(e) {
-    if (e.checked) this.value.push(e.value);
-    else {
-      var t = this.value.indexOf(e.value);
-      t >= 0 && this.value.splice(t, 1)
-    }
-  }
-});
-var MAX_SIZE = 27,
-  MIN_SIZE = 18,
-  buttonTypes = {
-    "default-dark": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAABRCAYAAABBuPE1AAAAAXNSR0IArs4c6QAAA1tJREFUeAHtm89rE0EcxZttbA00ePBc8CLkEEMlNId69uKtWKt/gqRevcejeBNRj/aiKNibHpVST4GQ5gc9F/RYEaE1BNLG9y1ZSNXa3eyb7Ya8hWUmuztv5vuZN9nJTnZqSpsIiIAIiIAIiMB4EEiVSqXLnU7neb/fv4Umz41Hs09t5X4qlfqYyWTK1Wr1+6lXOTiRHkBcdaB9HpJzMMQqYrK678bZAG/gxDjrdF7XecTkIapxH87/6pjYYzKQ2ggEBJIA0SQEUiBJBEgycqRAkgiQZORIgSQRIMnIkQJJIkCSkSMFkkSAJCNHCiSJAElGjhRIEgGSjBxJApkm6SRaJp/P9x008CsW2p41m80nSPty5OiE57E29LhQKDw0CYEcHeRxScB8IJARIQ6KzwskB+SxioY2CaZACiSJAElGjhRIEgGSjBwpkCQCJBk5UiBJBEgycqRAkgiQZORIIsh9klaSZGKPybPXKZJEgNSWD77OwsLCop93mXr2TgpgvkMlsfeig8AshrfZbLbsax8eHq75eZdpKox40LUPdMwv6K61Wq1XYfTZ18KNNwDyM55iX2BrD+u12+2Ui8WvnXQ6fader+8MVxZ3HhCvAuJ71xD9uKgg4cT1mZmZcq1WM0fGvhWLxUtHR0dXer3ebey2KHUxrkZQQEYdykG/Ms6C0u12z7rE2XkGyEQMZWeEAgpHmpDbUJ6dnV087+/DgLE6vWwkR9pQxl7GvwzWnbZujMRDgQS8b4jtB+7K9+TCk70camhPT09fy+Vy1wXxJET7FGpC/ndxzhHWXZvTmvAqNiEP5cjwVUxOCYEk9bVACiSJAElGjhRIEgGSTFIc+YUUT+wy+JGyZZUmAiR+ry+jQW+w/4ydxIgVWluxv8YKw7JJJGJCPmIsIxXD5P8+ADwN+sDXJttBKkqEI4M0lHUNwLyE1k3seyxN05k4kBY01pI28eBlEc5s2mfGNpEgDdz29vYuQC4huyGQEQngeeoB3Lnied4jSEV6O2xiHen3AVzZB9AKHhGuIH/gHw+bTjxIH1ij0djAnXwJMHf9Y2FSgRyihTt6E8vJdhPatMNIPw2d/m9WIP/AgzX5PcC06dELgLS1cW1RCFQqFZksCkCVFQEREAEREIHEEvgNdubEHW4rptkAAAAASUVORK5CYII=",
-    "default-light": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAABRCAYAAABBuPE1AAAAAXNSR0IArs4c6QAAAsJJREFUeAHtm71KA0EUhbOijT8o6APY2FgoCFYW9nYK/pSWkvTaig9hrY2iYKmdIOgLWGgrqIUgIpKoIOh6RjMQgpid3bOb3cwZOEyMd86d++UmG3fdUklDBERABERABESgGAQCs80wDIcxbUNzUD9U5FHD5k+gchAET1kVYkEeIOFSVkkzynMIkMsZ5SpZkFUkLHonNjOrAeRA85Np/WxBhmklaKcvQP7Ul8UeurJI4kMOgSS9ygIpkCQCJBt1pECSCJBs1JECSSJAslFHCiSJAMlGHSmQJAIkG3WkQJIIkGzUkQJJIkCyUUcKpBsBXOBLY9zCdB36PRVvMrhtqxjRjZcaUq5xw5trNimDvBNI0ptLBxuBJBEg2agjBZJEgGSjjhRIEgGSjTpSIEkESDbqSIEkESDZqCMFkkSAZKOOJIM0dwJ02si0JtuR5naKThvHtiCci5y2j9Oau+vG5frcKffZGIi2JlNapV5ffiZzpjnieEXcart3jj3MQB8R9xw7zLnOiJmuEDfubE5egD2MQQ8R95wozHnrEbLtIKbX2Zi0ALkHoUloC3qHMhn2M5JRxhtMKrhytxPHzFQbZ11e1rBAXqOgRUA0s5fDfv1JUvwuFk/7DNHAS9KR5q1sbuU1IL0fcUDeg9oztOJ7FzZ2z88/CDQ+0eoxjglDiKkC4merWJffF/1g4wzSBY5LbNFBMg42Lrw6NlYgSS+tQAokiQDJRh0pkCQCJJs8deQFqaZ22JznCeQ8COxDL+0gETOn2eseZPbu38CX/zUo8llz/wg5VAyQs9Aj1HI42PoZCoKj0GUrkn7ScawaEPugo/9gOlr6Gw6IAbQJff0F1F8yMSsHxAWo1gwzpp3fywBxArpphOk3kQTVA+IIdFaHeZrASksBsQfahqZEIyEBQMzTX34Jq9FyERABERABERCBXwLfe8eGVVx752oAAAAASUVORK5CYII="
-  };
-window.exparser.registerElement({
-    is: "wx-contact-button",
-    behaviors: ["wx-base", "wx-native"],
-    template: '\n    <div id="wrapper" class="wx-contact-button-wrapper">\n    </div>\n  ',
-    properties: _defineProperty({
-      sessionFrom: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      type: {
-        type: String,
-        value: "default-dark",
-        public: !0,
-        observer: "typeChanged"
-      },
-      size: {
-        type: Number,
-        value: 36,
-        public: !0,
-        observer: "sizeChanged"
-      }
-    }, "sessionFrom", {
-      type: String,
-      value: "wxapp",
-      public: !0
-    }),
-    attached: function() {
-      var e = this;
-      if (this._isMobile(), 1) {
-        var t = void 0;
-        t = buttonTypes[this.type] ? buttonTypes[this.type] : buttonTypes["default-dark"], this.$.wrapper.style.backgroundImage = "url('" + t + "')", this.$.wrapper.addEventListener("click", function() {
-          e._isMobile() ? wx.enterContact({
-            sessionFrom: e.sessionFrom,
-            complete: function(e) {
-              console.log(e)
-            }
-          }) : alert("进入客服会话，sessionFrom: " + e.sessionFrom)
-        })
-      } else this._box = this._getBox(), console.log("insertContactButton", this._box), wx.insertContactButton({
-        position: this._box,
-        buttonType: this.type,
-        sessionFrom: this.sessionFrom,
-        complete: function(t) {
-          console.log("insertContactButton complete", t), e.contactButtonId = t.contactButtonId, document.addEventListener("pageReRender", e._pageReRender.bind(e), !1)
-        }
-      })
-    },
-    detached: function() {
-      this._isMobile(), 1, currentContactButton === this && (currentContactButton = null)
-    },
-    sizeChanged: function(e, t) {
-      this._box = this._getBox(), this.$.wrapper.style.width = this._box.width + "px", this.$.wrapper.style.height = this._box.height + "px", this._updateContactButton()
-    },
-    typeChanged: function(e, t) {
-      if (this._isMobile(), 1) {
-        var n = void 0;
-        n = buttonTypes[this.type] ? buttonTypes[this.type] : buttonTypes["default-dark"], this.$.wrapper.style.backgroundImage = "url('" + n + "')"
-      } else this._updateContactButton()
-    },
-    _updateContactButton: function() {
-      this._isMobile(), 1
-    },
-    _getBox: function() {
-      var e = this.$.wrapper.getBoundingClientRect(),
-        t = this.size;
-      "number" != typeof t && (t = MIN_SIZE), t = t > MAX_SIZE ? MAX_SIZE : t, t = t < MIN_SIZE ? MIN_SIZE : t;
-      var n = {
-        left: e.left + window.scrollX,
-        top: e.top + window.scrollY,
-        width: t,
-        height: t
-      };
-      return n
-    },
-    _pageReRender: function() {
-      this._updateContactButton()
-    }
-  }), window.exparser.registerElement({
-    is: "wx-form",
-    template: '\n    <span id="wrapper"><slot></slot></span>\n  ',
-    behaviors: ["wx-base"],
-    properties: {
-      reportSubmit: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      }
-    },
-    listeners: {
-      "this.formSubmit": "submitHandler",
-      "this.formReset": "resetHandler"
-    },
-    resetDfs: function(e) {
-      if (e.childNodes)
-        for (var t = 0; t < e.childNodes.length; ++t) {
-          var n = e.childNodes[t];
-          n instanceof exparser.Element && (n.hasBehavior("wx-data-component") && n.resetFormData(), this.resetDfs(n))
-        }
-    },
-    getFormData: function(e, t) {
-      return e.name && e.hasBehavior("wx-data-component") ? "WX-INPUT" === e.__domElement.tagName || "WX-PICKER" === e.__domElement.tagName || "WX-TEXTAREA" === e.__domElement.tagName ? e.getFormData(function(e) {
-        t(e)
-      }) : t(e.getFormData()) : t()
-    },
-    asyncDfs: function(e, t) {
-      var n = this,
-        i = function() {
-          "function" == typeof t && t(), t = void 0
-        };
-      if (!e.childNodes) return i();
-      for (var o = e.childNodes.length, r = 0; r < e.childNodes.length; ++r) {
-        var a = e.childNodes[r];
-        a instanceof exparser.Element ? ! function(e) {
-          n.getFormData(e, function(t) {
-            "undefined" != typeof t && (n._data[e.name] = t), n.asyncDfs(e, function() {
-              0 == --o && i()
-            })
-          })
-        }(a) : --o
-      }
-      0 == o && i()
-    },
-    submitHandler: function(e) {
-      var t = this,
-        n = {
-          id: e.target.__domElement.id,
-          dataset: e.target.dataset,
-          offsetTop: e.target.__domElement.offsetTop,
-          offsetLeft: e.target.__domElement.offsetLeft
-        };
-      return this._data = Object.create(null), this.asyncDfs(this, function() {
-        t.reportSubmit ? t._isDevTools() ? t.triggerEvent("submit", {
-          value: t._data,
-          formId: "the formId is a mock one",
-          target: n
-        }) : WeixinJSBridge.invoke("reportSubmitForm", {}, function(e) {
-          t.triggerEvent("submit", {
-            value: t._data,
-            formId: e.formId,
-            target: n
-          })
-        }) : t.triggerEvent("submit", {
-          value: t._data,
-          target: n
-        })
-      }), !1
-    },
-    resetHandler: function(e) {
-      var t = {
-        id: e.target.__domElement.id,
-        dataset: e.target.dataset,
-        offsetTop: e.target.__domElement.offsetTop,
-        offsetLeft: e.target.__domElement.offsetLeft
-      };
-      return this._data = Object.create(null), this.resetDfs(this), this.triggerEvent("reset", {
-        target: t
-      }), !1
-    }
-  }), window.exparser.registerElement({
-    is: "wx-icon",
-    template: '<i class$="wx-icon-{{type}}" style.color="{{color}}" style.font-size="{{size}}px"></i>',
-    behaviors: ["wx-base"],
-    properties: {
-      type: {
-        type: String,
-        public: !0
-      },
-      size: {
-        type: Number,
-        value: 23,
-        public: !0
-      },
-      color: {
-        type: String,
-        public: !0
-      }
-    }
-  }), window.exparser.registerElement({
-    is: "wx-image",
-    template: '<div id="div"></div>',
-    behaviors: ["wx-base"],
-    properties: {
-      src: {
-        type: String,
-        observer: "srcChanged",
-        public: !0
-      },
-      mode: {
-        type: String,
-        observer: "modeChanged",
-        public: !0
-      },
-      _disableSizePositionRepeat: {
-        type: Boolean,
-        value: !1
-      },
-      backgroundSize: {
-        type: String,
-        observer: "backgroundSizeChanged",
-        value: "100% 100%",
-        public: !0
-      },
-      backgroundPosition: {
-        type: String,
-        observer: "backgroundPositionChanged",
-        public: !0
-      },
-      backgroundRepeat: {
-        type: String,
-        observer: "backgroundRepeatChanged",
-        value: "no-repeat",
-        public: !0
-      },
-      _img: {
-        type: Object
-      }
-    },
-    _publishError: function(e) {
-      this.triggerEvent("error", e)
-    },
-    _ready: function() {
-      if (!(this._img && this._img instanceof Image)) {
-        this._img = new Image;
-        var e = this;
-        this._img.onerror = function(t) {
-          t.stopPropagation();
-          var n = {
-            errMsg: "GET " + e._img.src + " 404 (Not Found)"
-          };
-          e._publishError(n)
-        }, this._img.onload = function(t) {
-          t.stopPropagation(), e.triggerEvent("load", {
-            width: this.width,
-            height: this.height
-          }), "widthFix" === e.mode && (e.rate = this.width / this.height, e.$$.style.height = e.$$.offsetWidth / e.rate + "px")
-        }, document.addEventListener("pageReRender", this._pageReRenderCallback.bind(this))
-      }
-    },
-    attached: function() {
-      this._ready(), this.backgroundSizeChanged(this.backgroundSize), this.backgroundRepeatChanged(this.backgroundRepeat)
-    },
-    detached: function() {
-      document.removeEventListener("pageReRender", this._pageReRenderCallback.bind(this))
-    },
-    _pageReRenderCallback: function() {
-      "widthFix" === this.mode && "undefined" != typeof this.rate && (this.$$.style.height = this.$$.offsetWidth / this.rate + "px")
-    },
-    _srcChanged: function(e) {
-      this._img.src = e, this.$.div.style.backgroundImage = "url('" + e + "')"
-    },
-    srcChanged: function(e, t) {
-      if (e) {
-        var n = (this.$.div, window.navigator.userAgent.toLowerCase()),
-          i = this;
-        this._ready();
-        var o = {
-          success: function(e) {
-            i._srcChanged(e.localData)
-          },
-          fail: function(e) {
-            i._publishError(e)
-          }
-        };
-        !/wechatdevtools/.test(n) && /iphone/.test(n) ? /^(http|https):\/\//.test(e) || /^\s*data:image\//.test(e) ? this._srcChanged(e) : /^wxfile:\/\//.test(e) ? (o.filePath = e, wx.getLocalImgData(o)) : (o.path = e, wx.getLocalImgData(o)) : !/wechatdevtools/.test(n) && /android/.test(n) ? /^wxfile:\/\//.test(e) || /^(http|https):\/\//.test(e) || /^\s*data:image\//.test(e) ? this._srcChanged(e) : wx.getCurrentRoute({
-          success: function(t) {
-            var n = wx.getRealRoute(t.route, e);
-            i._srcChanged(n)
-          }
-        }) : this._srcChanged(e.replace("wxfile://", "http://wxfile.open.weixin.qq.com/"))
-      }
-    },
-    _checkMode: function(e) {
-      for (var t = ["scaleToFill", "aspectFit", "aspectFill", "top", "bottom", "center", "left", "right", "top left", "top right", "bottom left", "bottom right"], n = !1, i = 0; i < t.length; i++)
-        if (e == t[i]) {
-          n = !0;
-          break
-        }
-      return n
-    },
-    modeChanged: function(e, t) {
-      if (!this._checkMode(e)) return void(this._disableSizePositionRepeat = !1);
-      switch (this._disableSizePositionRepeat = !0, this.$.div.style.backgroundSize = "auto auto", this.$.div.style.backgroundPosition = "0% 0%", this.$.div.style.backgroundRepeat = "no-repeat", e) {
-        case "scaleToFill":
-          this.$.div.style.backgroundSize = "100% 100%";
-          break;
-        case "aspectFit":
-          this.$.div.style.backgroundSize = "contain", this.$.div.style.backgroundPosition = "center center";
-          break;
-        case "aspectFill":
-          this.$.div.style.backgroundSize = "cover", this.$.div.style.backgroundPosition = "center center";
-          break;
-        case "widthFix":
-          this.$.div.style.backgroundSize = "100% 100%";
-          break;
-        case "top":
-          this.$.div.style.backgroundPosition = "top center";
-          break;
-        case "bottom":
-          this.$.div.style.backgroundPosition = "bottom center";
-          break;
-        case "center":
-          this.$.div.style.backgroundPosition = "center center";
-          break;
-        case "left":
-          this.$.div.style.backgroundPosition = "center left";
-          break;
-        case "right":
-          this.$.div.style.backgroundPosition = "center right";
-          break;
-        case "top left":
-          this.$.div.style.backgroundPosition = "top left";
-          break;
-        case "top right":
-          this.$.div.style.backgroundPosition = "top right";
-          break;
-        case "bottom left":
-          this.$.div.style.backgroundPosition = "bottom left";
-          break;
-        case "bottom right":
-          this.$.div.style.backgroundPosition = "bottom right"
-      }
-    },
-    backgroundSizeChanged: function(e, t) {
-      this._disableSizePositionRepeat || (this.$.div.style.backgroundSize = e)
-    },
-    backgroundPositionChanged: function(e, t) {
-      this._disableSizePositionRepeat || (this.$.div.style.backgroundPosition = e)
-    },
-    backgroundRepeatChanged: function(e, t) {
-      this._disableSizePositionRepeat || (this.$.div.style.backgroundRepeat = e)
-    }
-  }),
-  function() {
-    /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) && window.exparser.registerElement({
-      is: "wx-input",
-      template: '\n      <div id="wrapper" disabled$="{{disabled}}">\n        <input id="input" type$="{{_getType(type,password)}}" maxlength$="{{maxlength}}" value$="{{showValue}}" disabled$="{{disabled}}" >\n        <div id="placeholder" class$="{{_getPlaceholderClass(placeholderClass)}}" style$="{{_getPlaceholderStyle(placeholderStyle)}}" parse-text-content>{{placeholder}}</p>\n      </div>\n      ',
-      behaviors: ["wx-base", "wx-data-component"],
-      properties: {
-        focus: {
-          type: Boolean,
-          value: 0,
-          coerce: "_focusChange",
-          public: !0
-        },
-        autoFocus: {
-          type: Boolean,
-          value: !1,
-          public: !0
-        },
-        placeholder: {
-          type: String,
-          value: "",
-          observer: "_placeholderChange",
-          public: !0
-        },
-        placeholderStyle: {
-          type: String,
-          value: "",
-          public: !0
-        },
-        placeholderClass: {
-          type: String,
-          value: "",
-          public: !0
-        },
-        value: {
-          type: String,
-          value: "",
-          coerce: "defaultValueChange",
-          public: !0
-        },
-        showValue: {
-          type: String,
-          value: ""
-        },
-        maxlength: {
-          type: Number,
-          value: 140,
-          observer: "_maxlengthChanged",
-          public: !0
-        },
-        type: {
-          type: String,
-          value: "text",
-          public: !0
-        },
-        password: {
-          type: Boolean,
-          value: !1,
-          public: !0
-        },
-        disabled: {
-          type: Boolean,
-          value: !1,
-          public: !0
-        },
-        bindinput: {
-          type: String,
-          value: "",
-          public: !0
-        }
-      },
-      listeners: {
-        tap: "_inputFocus",
-        "input.focus": "_inputFocus",
-        "input.blur": "_inputBlur",
-        "input.input": "_inputKey"
-      },
-      resetFormData: function() {
-        this._keyboardShow && (this.__formResetCallback = !0, wx.hideKeyboard()), this.value = "", this.showValue = ""
-      },
-      getFormData: function(e) {
-        this._keyboardShow ? this.__formCallback = e : "function" == typeof e && e(this.value)
-      },
-      _formGetDataCallback: function() {
-        "function" == typeof this.__formCallback && this.__formCallback(this.value), this.__formCallback = void 0
-      },
-      _focusChange: function(e) {
-        return this._couldFocus(e), e
-      },
-      _couldFocus: function(e) {
-        var t = this;
-        !this._keyboardShow && this._attached && e && (window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame, window.requestAnimationFrame ? window.requestAnimationFrame(function() {
-          t._inputFocus()
-        }) : this._inputFocus())
-      },
-      _getPlaceholderClass: function(e) {
-        return "input-placeholder " + e
-      },
-      _maxlengthChanged: function(e, t) {
-        var n = this.value.slice(0, e);
-        n != this.value && (this.value = n)
-      },
-      _placeholderChange: function() {
-        this._checkPlaceholderStyle(this.value)
-      },
-      attached: function() {
-        var e = this;
-        this._checkPlaceholderStyle(this.value), this._attached = !0, this.updateInput(), window.__onAppRouteDone && this._couldFocus(this.autoFocus || this.focus), this.__routeDoneId = exparser.addListenerToElement(document, "routeDone", function() {
-          e._couldFocus(e.autoFocus || e.focus)
-        }), this.__setKeyboardValueId = exparser.addListenerToElement(document, "setKeyboardValue", function(t) {
-          if (e._keyboardShow) {
-            var n = t.detail.value,
-              i = t.detail.cursor;
-            "undefined" != typeof n && (e._value = n, e.value = n), "undefined" != typeof i && i != -1 && e.$.input.setSelectionRange(i, i)
-          }
-        }), this.__hideKeyboardId = exparser.addListenerToElement(document, "hideKeyboard", function(t) {
-          e._keyboardShow && e.$.input.blur()
-        }), this.__onDocumentTouchStart = this.onDocumentTouchStart.bind(this), this.__updateInput = this.updateInput.bind(this), this.__inputKeyUp = this._inputKeyUp.bind(this), this.$.input.addEventListener("keyup", this.__inputKeyUp), document.addEventListener("touchstart", this.__onDocumentTouchStart), document.addEventListener("pageReRender", this.__updateInput), (this.autoFocus || this.focus) && setTimeout(function() {
-          e._couldFocus(e.autoFocus || e.focus)
-        }, 500)
-      },
-      detached: function() {
-        document.removeEventListener("pageReRender", this.__updateInput), document.removeEventListener("touchstart", this.__onDocumentTouchStart), this.$.input.removeEventListener("keyup", this.__inputKeyUp), exparser.removeListenerFromElement(document, "routeDone", this.__routeDoneId), exparser.removeListenerFromElement(document, "hideKeyboard", this.__hideKeyboardId), exparser.removeListenerFromElement(document, "onKeyboardComplete", this.__onKeyboardCompleteId), exparser.removeListenerFromElement(document, "setKeyboardValue", this.__setKeyboardValueId)
-      },
-      onDocumentTouchStart: function() {
-        this._keyboardShow && this.$.input.blur()
-      },
-      _getType: function(e, t) {
-        return t || "password" == e ? "password" : "text"
-      },
-      _showValueChange: function(e) {
-        this.$.input.value = e
-      },
-      _inputFocus: function(e) {
-        this.disabled || this._keyboardShow || (this._keyboardShow = !0, this.triggerEvent("focus", {
-          value: this.value
-        }), this.$.input.focus())
-      },
-      _inputBlur: function(e) {
-        this._keyboardShow = !1, this.value = this._value, this._formGetDataCallback(), this.triggerEvent("change", {
-          value: this.value
-        }), this.triggerEvent("blur", {
-          value: this.value
-        }), this._checkPlaceholderStyle(this.value)
-      },
-      _inputKeyUp: function(e) {
-        if (13 == e.keyCode) return this.triggerEvent("confirm", {
-          value: this.value
-        }), void this.$.input.blur()
-      },
-      _inputKey: function(e) {
-        var t = e.target.value;
-        if (this._value = t, this._checkPlaceholderStyle(t), this.bindinput) {
-          var n = {
-            id: this.$$.id,
-            dataset: this.dataset,
-            offsetTop: this.$$.offsetTop,
-            offsetLeft: this.$$.offsetLeft
-          };
-          WeixinJSBridge.publish("SPECIAL_PAGE_EVENT", {
-            eventName: this.bindinput,
-            data: {
-              ext: {
-                setKeyboardValue: !0
-              },
-              data: {
-                type: "input",
-                timestamp: Date.now(),
-                detail: {
-                  value: e.target.value,
-                  cursor: this.$.input.selectionStart
-                },
-                target: n,
-                currentTarget: n,
-                touches: []
-              },
-              eventName: this.bindinput
-            }
-          })
-        }
-        return !1
-      },
-      updateInput: function() {
-        var e = window.getComputedStyle(this.$$),
-          t = this.$$.getBoundingClientRect(),
-          n = (["Left", "Right"].map(function(t) {
-            return parseFloat(e["border" + t + "Width"]) + parseFloat(e["padding" + t])
-          }), ["Top", "Bottom"].map(function(t) {
-            return parseFloat(e["border" + t + "Width"]) + parseFloat(e["padding" + t])
-          })),
-          i = this.$.input;
-        i.style.height = t.height - n[0] - n[1] + "px", i.style.lineHeight = i.style.height, i.style.color = e.color;
-        var o = this.$.placeholder;
-        o.style.height = t.height - n[0] - n[1] + "px", o.style.lineHeight = o.style.height
-      },
-      defaultValueChange: function(e, t) {
-        return this.maxlength > 0 && (e = e.slice(0, this.maxlength)), this._checkPlaceholderStyle(e), this._showValueChange(e), e
-      },
-      _getPlaceholderStyle: function(e) {
-        return e
-      },
-      _checkPlaceholderStyle: function(e) {
-        e ? (this.$.placeholder.classList.remove("input-placeholder"), this.$.placeholder.setAttribute("style", ""), this.$.placeholder.style.display = "none") : this.placeholder && (this.$.placeholder.classList.add("input-placeholder"), this.placeholderClass && this.$.placeholder.classList.add(this.placeholderClass), this.placeholderStyle && this.$.placeholder.setAttribute("style", this.placeholderStyle), this.$.placeholder.style.display = "", this.updateInput())
-      }
-    })
-  }();
-var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
-  return typeof e
-} : function(e) {
-  return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
-};
-! function() {
-  /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) || window.exparser.registerElement({
-    is: "wx-input",
-    template: '\n      <div id="wrapper" disabled$="{{disabled}}">\n        <input style="visibility:hidden" disabled/>\n        <div id="input" parse-text-content >{{showValue}}</div>\n        <div id="placeholder" class$="{{_getPlaceholderClass(placeholderClass)}}" style$="{{_getPlaceholderStyle(placeholderStyle)}}"></div>\n      </div>\n    ',
-    behaviors: ["wx-base", "wx-data-component"],
-    properties: {
-      focus: {
-        type: Boolean,
-        value: 0,
-        coerce: "_focusChange",
-        public: !0
-      },
-      autoFocus: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      },
-      placeholder: {
-        type: String,
-        value: "",
-        observer: "_placeholderChange",
-        public: !0
-      },
-      placeholderStyle: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      placeholderClass: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      value: {
-        type: String,
-        value: "",
-        coerce: "defaultValueChange",
-        public: !0
-      },
-      showValue: {
-        type: String,
-        value: ""
-      },
-      maxlength: {
-        type: Number,
-        value: 140,
-        observer: "_maxlengthChanged",
-        public: !0
-      },
-      type: {
-        type: String,
-        value: "text",
-        public: !0
-      },
-      password: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      },
-      disabled: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      },
-      bindinput: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      cursorSpacing: {
-        type: Number,
-        value: 0,
-        public: !0
-      }
-    },
-    listeners: {
-      tap: "_inputFocus"
-    },
-    resetFormData: function() {
-      this._keyboardShow ? (this.__formResetCallback = !0, wx.hideKeyboard()) : (this.value = "", this._checkPlaceholderStyle(this.value))
-    },
-    getFormData: function(e) {
-      this._keyboardShow ? this.__formCallback = e : "function" == typeof e && e(this.value)
-    },
-    _focusChange: function(e) {
-      return this._couldFocus(e), e
-    },
-    _couldFocus: function(e) {
-      var t = this;
-      !this._keyboardShow && this._attached && e && window.requestAnimationFrame(function() {
-        t._inputFocus()
-      })
-    },
-    _getPlaceholderClass: function(e) {
-      return "input-placeholder " + e
-    },
-    _maxlengthChanged: function(e, t) {
-      var n = this.value.slice(0, e);
-      n != this.value && (this.value = n)
-    },
-    _placeholderChange: function() {
-      this._checkPlaceholderStyle(this.value)
-    },
-    attached: function() {
-      var e = this;
-      this._checkPlaceholderStyle(this.value), this._attached = !0, this.__routeDoneId = exparser.addListenerToElement(document, "routeDone", function() {
-        e.checkAutoFocus()
-      }), this.__onKeyboardCompleteId = exparser.addListenerToElement(document, "onKeyboardComplete", function(t) {
-        e._keyboardShow && t.detail.inputId == e._inputId && (e._value = t.detail.value, e.onKeyboardComplete())
-      }), this.__setKeyboardValueId = exparser.addListenerToElement(document, "setKeyboardValue", function(t) {
-        e._keyboardShow && t.detail.inputId == e._inputId && (e._value = t.detail.value)
-      }), this.__onKeyboardConfirmId = exparser.addListenerToElement(document, "onKeyboardConfirm", this.onKeyboardConfirm.bind(this)), this.__pageReRenderCallback = this.pageReRenderCallback.bind(this), this.__onDocumentTouchStart = this.onDocumentTouchStart.bind(this), document.addEventListener("touchstart", this.__onDocumentTouchStart), document.addEventListener("pageReRender", this.__pageReRenderCallback)
-    },
-    detached: function() {
-      document.removeEventListener("pageReRender", this.__pageReRenderCallback), document.removeEventListener("touchstart", this.__onDocumentTouchStart), exparser.removeListenerFromElement(document, "routeDone", this.__routeDoneId), exparser.removeListenerFromElement(document, "onKeyboardComplete", this.__onKeyboardCompleteId), exparser.removeListenerFromElement(document, "setKeyboardValue", this.__setKeyboardValueId), exparser.removeListenerFromElement(document, "onKeyboardConfirm", this.__onKeyboardConfirmId), this._keyboardShow && wx.hideKeyboard()
-    },
-    checkAutoFocus: function() {
-      this.__autoFocused || window.__onAppRouteDone && (this.__autoFocused = !0, this._couldFocus(this.autoFocus || this.focus))
-    },
-    onDocumentTouchStart: function() {
-      this._keyboardShow && wx.hideKeyboard()
-    },
-    onKeyboardConfirm: function(e) {
-      this._keyboardShow && e.detail.inputId == this._inputId && (this._value = e.detail.value, this.triggerEvent("confirm", {
-        value: this._value
-      }))
-    },
-    onKeyboardComplete: function() {
-      this.__formResetCallback && (this.value = "", this.__formResetCallback = void 0), "function" == typeof this.__formCallback && (this.__formCallback(this._value), this.__formCallback = void 0), this.triggerEvent("change", {
-        value: this._value
-      }), this.triggerEvent("blur", {
-        value: this._value
-      }), this._resetInputState()
-    },
-    getComputedStyle: function() {
-      var e = this.$$,
-        t = window.getComputedStyle(e),
-        n = e.getBoundingClientRect(),
-        i = ["Left", "Right"].map(function(e) {
-          return parseInt(t["border" + e + "Width"]) + parseInt(t["padding" + e])
-        }),
-        o = ["Top", "Bottom"].map(function(e) {
-          return parseInt(t["border" + e + "Width"]) + parseInt(t["padding" + e])
-        }),
-        r = parseInt(t.fontWeight);
-      isNaN(r) ? r = t.fontWeight : r < 500 ? r = "normal" : r >= 500 && (r = "bold");
-      var a = t.textAlign;
-      return ["left", "center", "right"].indexOf(a) < 0 && (a = "left"), {
-        width: n.width - i[0] - i[1],
-        height: n.height - o[0] - o[1],
-        left: n.left + i[0] + window.scrollX,
-        top: n.top + o[0] + window.scrollY,
-        fontFamily: t.fontFamily,
-        fontSize: parseFloat(t.fontSize) || 16,
-        fontWeight: r,
-        color: this._getHexColor(t.color),
-        backgroundColor: "#00000000",
-        marginBottom: this.cursorSpacing || parseFloat(t.marginBottom),
-        textAlign: a
-      }
-    },
-    getPlaceholderStyle: function() {
-      var e = this.$.placeholder,
-        t = window.getComputedStyle(e),
-        n = parseInt(t.fontWeight);
-      return isNaN(n) ? n = t.fontWeight : n < 500 ? n = "normal" : n >= 500 && (n = "bold"), {
-        fontSize: parseFloat(t.fontSize) || 16,
-        fontWeight: n,
-        color: this._getHexColor(t.color)
-      }
-    },
-    pageReRenderCallback: function() {
-      this.checkAutoFocus(), this._updateInput(), this.checkLineHeight()
-    },
-    _inputFocus: function(e) {
-      return !this.disabled && (this.triggerEvent("focus", {
-        value: this.value
-      }), !this._keyboardShow && (this._showNativeInput(), !1))
-    },
-    defaultValueChange: function(e, t) {
-      return this.maxlength > 0 && (e = e.slice(0, this.maxlength)), e != this.value && (this._inputId && this._keyboardShow ? WeixinJSBridge.invoke("updateInput", {
-        value: e || "",
-        inputId: this._inputId
-      }, function(e) {}) : this._checkPlaceholderStyle(e)), e
-    },
-    _showNativeInput: function(e) {
-      var t = this;
-      this.inputArgs = {
-        type: "password" == this.type ? "text" : this.type,
-        maxLength: this.maxlength,
-        defaultValue: this.value,
-        password: this.password || "password" == this.type,
-        style: this.getComputedStyle(),
-        data: this.formateEventTarget(),
-        placeholder: this.placeholder,
-        placeholderStyle: this.getPlaceholderStyle()
-      }, WeixinJSBridge.invoke("showKeyboard", this.inputArgs, function(e) {
-        /:ok/.test(e.errMsg) ? (t._inputId = e.inputId, t._keyboardShow = !0, t.showValue = " ") : console.info(e.errMsg)
-      })
-    },
-    _diff: function(e, t) {
-      var n = {},
-        i = !1;
-      for (var o in t) "[object Object]" === Object.prototype.toString.call(t[o]) ? JSON.stringify(t[o]) != JSON.stringify(e[o]) && (n[o] = t[o], i = !0) : e[o] != t[o] && (n[o] = t[o], i = !0);
-      return i ? n : void 0
-    },
-    formateEventTarget: function() {
-      var e = {
-        bindinput: this.bindinput,
-        target: {
-          id: this.$$.id,
-          dataset: this.dataset,
-          offsetTop: this.$$.offsetTop,
-          offsetLeft: this.$$.offsetLeft
-        },
-        setKeyboardValue: !0
-      };
-      return e.currentTarget = e.target, this.bindinput ? JSON.stringify(e) : ""
-    },
-    _updateInput: function() {
-      if (this._keyboardShow) {
-        var e = {
-            maxLength: this.maxlength,
-            password: this.password || "password" == this.type,
-            placeholder: this.placeholder,
-            style: this.getComputedStyle(),
-            data: this.formateEventTarget(),
-            placeholderStyle: this.getPlaceholderStyle()
-          },
-          t = this._diff(this.inputArgs, e);
-        t && (this.inputArgs = e, t.inputId = this._inputId, WeixinJSBridge.invoke("updateInput", t, function(e) {}))
-      }
-    },
-    _resetInputState: function() {
-      this._keyboardShow = !1, this._inputId = void 0, this.value = this._value || "", this._value = void 0, this._checkPlaceholderStyle(this.value)
-    },
-    _getHexColor: function(e) {
-      if (!e) return "#000000";
-      if (e.indexOf("#") >= 0) return e;
-      try {
-        var t, n, i = function() {
-          t = e.match(/\d+/g);
-          var i = [];
-          return t.map(function(e, t) {
-            if (t < 3) {
-              var n = parseInt(e).toString(16);
-              n = n.length > 1 ? n : "0" + n, i.push(n)
-            }
-          }), t.length > 3 && (n = parseFloat(t.slice(3).join(".")), 0 == n ? i.push("00") : n >= 1 ? i.push("ff") : (n = parseInt(255 * n).toString(16), n = n.length > 1 ? n : "0" + n, i.push(n))), {
-            v: "#" + i.join("")
-          }
-        }();
-        if ("object" === ("undefined" == typeof i ? "undefined" : _typeof(i))) return i.v
-      } catch (e) {
-        return "#000000"
-      }
-    },
-    _getPlaceholderStyle: function(e) {
-      return e + ";display:none;"
-    },
-    checkLineHeight: function() {
-      var e = this;
-      window.requestAnimationFrame(function() {
-        var t = window.getComputedStyle(e.$$),
-          n = e.$$.getBoundingClientRect(),
-          i = (["Left", "Right"].map(function(e) {
-            return parseFloat(t["border" + e + "Width"]) + parseFloat(t["padding" + e])
-          }), ["Top", "Bottom"].map(function(e) {
-            return parseFloat(t["border" + e + "Width"]) + parseFloat(t["padding" + e])
-          })),
-          o = n.height - i[0] - i[1];
-        if (o != e.__lastHeight) {
-          var r = e.$.input;
-          r.style.height = o + "px", r.style.lineHeight = o + "px", e.__lastHeight = o
-        }
-      })
-    },
-    _checkPlaceholderStyle: function(e) {
-      var t = e || " ",
-        n = this.$.input;
-      e ? ((this.password || "password" == this.type) && (t = e ? new Array(e.length + 1).join("●") : ""), this.showValue = t, this.$.input.classList.remove("input-placeholder"), this.placeholderClass && this.$.input.classList.remove(this.placeholderClass), n.setAttribute("style", ""), this.__lastHeight ? (n.style.height = this.__lastHeight + "px", n.style.lineHeight = this.__lastHeight + "px") : this.checkLineHeight()) : (this.placeholder && (this.$.input.classList.add("input-placeholder"), this.placeholderClass && this.$.input.classList.add(this.placeholderClass), this.placeholderStyle && (n.setAttribute("style", this.placeholderStyle), this.__lastHeight ? (n.style.height = this.__lastHeight + "px", n.style.lineHeight = this.__lastHeight + "px") : this.checkLineHeight()),
-        t = this.placeholder), this.showValue = t)
-    }
-  })
-}(), window.exparser.registerElement({
-  is: "wx-label",
-  template: "\n    <slot></slot>\n  ",
-  properties: {
-    for: {
-      type: String,
-      public: !0
-    }
-  },
-  listeners: {
-    tap: "onTap"
-  },
-  behaviors: ["wx-base"],
-  _handleNode: function(e, t) {
-    return !!(e instanceof exparser.Element && e.hasBehavior("wx-label-target")) && (e.handleLabelTap(t), !0)
-  },
-  dfs: function(e, t) {
-    if (this._handleNode(e, t)) return !0;
-    if (!e.childNodes) return !1;
-    for (var n = 0; n < e.childNodes.length; ++n)
-      if (this.dfs(e.childNodes[n], t)) return !0;
-    return !1
-  },
-  onTap: function(e) {
-    for (var t = e.target; t instanceof exparser.Element && t !== this; t = t.parentNode)
-      if (t.hasBehavior("wx-label-target")) return;
-    if (this.for) {
-      var n = document.getElementById(this.for);
-      n && this._handleNode(n.__wxElement, e)
-    } else this.dfs(this, e)
-  }
-}), window.exparser.registerElement({
-  is: "wx-loading",
-  template: '\n    <div class="wx-loading-mask" style$="background-color: transparent;"></div>\n    <div class="wx-loading">\n      <i class="wx-loading-icon"></i><p class="wx-loading-content"><slot></slot></p>\n    </div>\n  ',
-  behaviors: ["wx-base"]
 });
 var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
   return typeof e
 } : function(e) {
-  return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+  return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
 };
 ! function() {
   "wechatdevtools" === wx.getPlatform() && (window.addEventListener("DOMContentLoaded", function() {
@@ -4156,7 +4150,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       }, "经度") : this._map.setCenter(new qq.maps.LatLng(this.latitude, e))) : void this._delay("longitudeChanged", e, t)
     },
     scaleChanged: function() {
-      var e = arguments.length <= 0 || void 0 === arguments[0] ? 16 : arguments[0],
+      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 16,
         t = arguments[1];
       if (e) return this._isReady ? void(this._isMobile() ? this._update({
         centerLatitude: this.latitude,
@@ -4166,7 +4160,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     coversChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? wx.getCurrentRoute({
         success: function(n) {
@@ -4188,7 +4182,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     markersChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? wx.getCurrentRoute({
         success: function(n) {
@@ -4221,7 +4215,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     linesChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? this._canInvokeNewFeature && WeixinJSBridge.invoke("addMapLines", {
         mapId: this._mapId,
@@ -4243,7 +4237,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     circlesChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? this._canInvokeNewFeature && WeixinJSBridge.invoke("addMapCircles", {
         mapId: this._mapId,
@@ -4263,7 +4257,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     pointsChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       if (!this._isReady) return void this._delay("pointsChanged", t, n);
       if (this._isMobile()) this._canInvokeNewFeature && WeixinJSBridge.invoke("includeMapPoints", {
@@ -4285,7 +4279,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     controlsChanged: function() {
       var e = this,
-        t = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? this._canInvokeNewFeature && wx.getCurrentRoute({
         success: function(n) {
@@ -4312,7 +4306,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     showLocationChanged: function() {
       var e = this,
-        t = !(arguments.length <= 0 || void 0 === arguments[0]) && arguments[0],
+        t = arguments.length > 0 && void 0 !== arguments[0] && arguments[0],
         n = arguments[1];
       return this._isReady ? void(this._isMobile() ? this._update({
         showLocation: t
@@ -4337,23 +4331,9 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       }, function(e) {}), this.__pageReRenderCallback && document.removeEventListener("pageReRender", this.__pageReRenderCallback))
     }
   }), window.exparser.registerElement({
-    is: "wx-mask",
-    template: '\n    <div class="wx-mask" id="mask" style="display: none;">\n  ',
-    behaviors: ["wx-base"],
-    properties: {
-      hidden: {
-        type: Boolean,
-        value: !0,
-        observer: "hiddenChange",
-        public: !0
-      }
-    },
-    hiddenChange: function(e) {
-      var t = this.$.mask;
-      e === !0 ? (setTimeout(function() {
-        t.style.display = "none"
-      }, 300), this.$.mask.classList.add("wx-mask-transparent")) : (t.style.display = "block", t.focus(), t.classList.remove("wx-mask-transparent"))
-    }
+    is: "wx-loading",
+    template: '\n    <div class="wx-loading-mask" style$="background-color: transparent;"></div>\n    <div class="wx-loading">\n      <i class="wx-loading-icon"></i><p class="wx-loading-content"><slot></slot></p>\n    </div>\n  ',
+    behaviors: ["wx-base"]
   }), window.exparser.registerElement({
     is: "wx-modal",
     template: '\n    <div id="mask" class="wx-modal-mask"></div>\n    <div class="wx-modal-dialog">\n      <div class="wx-modal-dialog-hd">\n        <strong parse-text-content>{{title}}</strong>\n      </div>\n      <div class="wx-modal-dialog-bd">\n        <slot></slot>\n      </div>\n      <div class="wx-modal-dialog-ft">\n        <a hidden$="{{noCancel}}" id="cancel" class="wx-modal-btn-default" parse-text-content>{{cancelText}}</a>\n        <a id="confirm" class="wx-modal-btn-primary" parse-text-content>{{confirmText}}</a>\n      </div>\n    </div>\n  ',
@@ -4389,70 +4369,6 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     },
     _handleCancel: function() {
       this.triggerEvent("cancel")
-    }
-  }), window.exparser.registerElement({
-    is: "wx-navigator",
-    behaviors: ["wx-base", "wx-hover"],
-    template: "<slot></slot>",
-    properties: {
-      url: {
-        type: String,
-        public: !0
-      },
-      redirect: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      },
-      openType: {
-        type: String,
-        value: "navigate",
-        public: !0
-      },
-      hoverClass: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      hoverStyle: {
-        type: String,
-        value: "",
-        public: !0
-      },
-      hover: {
-        type: Boolean,
-        value: !0
-      },
-      hoverStayTime: {
-        type: Number,
-        value: 600,
-        public: !0
-      }
-    },
-    listeners: {
-      tap: "navigateTo"
-    },
-    navigateTo: function() {
-      if (!this.url) return void console.error("navigator should have url attribute");
-      if (this.redirect) return void wx.redirectTo({
-        url: this.url
-      });
-      switch (this.openType) {
-        case "navigate":
-          return void wx.navigateTo({
-            url: this.url
-          });
-        case "redirect":
-          return void wx.redirectTo({
-            url: this.url
-          });
-        case "switchTab":
-          return void wx.switchTab({
-            url: this.url
-          });
-        default:
-          return void console.error("navigator: invalid openType " + this.openType)
-      }
     }
   }), window.exparser.registerElement({
     is: "wx-picker",
@@ -4568,6 +4484,185 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       this.__pickerShow = !1
     }
   }), window.exparser.registerElement({
+    is: "wx-mask",
+    template: '\n    <div class="wx-mask" id="mask" style="display: none;">\n  ',
+    behaviors: ["wx-base"],
+    properties: {
+      hidden: {
+        type: Boolean,
+        value: !0,
+        observer: "hiddenChange",
+        public: !0
+      }
+    },
+    hiddenChange: function(e) {
+      var t = this.$.mask;
+      e === !0 ? (setTimeout(function() {
+        t.style.display = "none"
+      }, 300), this.$.mask.classList.add("wx-mask-transparent")) : (t.style.display = "block", t.focus(), t.classList.remove("wx-mask-transparent"))
+    }
+  }), window.exparser.registerElement({
+    is: "wx-progress",
+    template: '\n    <div class="wx-progress-bar" style.height="{{strokeWidth}}px">\n      <div class="wx-progress-inner-bar" style.width="{{curPercent}}%" style.background-color="{{color}}"></div>\n    </div>\n    <p class="wx-progress-info" parse-text-content hidden$="{{!showInfo}}">\n      {{curPercent}}%\n    </p>\n  ',
+    behaviors: ["wx-base"],
+    properties: {
+      percent: {
+        type: Number,
+        observer: "percentChange",
+        public: !0
+      },
+      curPercent: {
+        type: Number
+      },
+      showInfo: {
+        type: Boolean,
+        value: !1,
+        public: !0
+      },
+      strokeWidth: {
+        type: Number,
+        value: 6,
+        public: !0
+      },
+      color: {
+        type: String,
+        value: "#09BB07",
+        public: !0
+      },
+      active: {
+        type: Boolean,
+        value: !1,
+        public: !0,
+        observer: "activeAnimation"
+      }
+    },
+    percentChange: function(e) {
+      e > 100 && (this.percent = 100), e < 0 && (this.percent = 0), this.__timerId && clearInterval(this.__timerId), this.activeAnimation(this.active)
+    },
+    activeAnimation: function(e) {
+      if (!isNaN(this.percent))
+        if (e) {
+          var t = function() {
+            return this.percent <= this.curPercent + 1 ? (this.curPercent = this.percent, void clearInterval(this.__timerId)) : void++this.curPercent
+          };
+          this.curPercent = 0, this.__timerId = setInterval(t.bind(this), 30), t.call(this)
+        } else this.curPercent = this.percent
+    },
+    detached: function() {
+      this.__timerId && clearInterval(this.__timerId)
+    }
+  }), window.exparser.registerElement({
+    is: "wx-radio",
+    template: '\n    <div class="wx-radio-wrapper">\n      <div id="input" class="wx-radio-input" class.wx-radio-input-checked="{{checked}}" class.wx-radio-input-disabled="{{disabled}}" style.background-color="{{_getColor(checked,color)}}" style.border-color="{{_getColor(checked,color)}}"></div>\n      <slot></slot>\n    </div>\n  ',
+    behaviors: ["wx-base", "wx-label-target", "wx-disabled", "wx-item"],
+    properties: {
+      color: {
+        type: String,
+        value: "#09BB07",
+        public: !0
+      }
+    },
+    listeners: {
+      tap: "_inputTap"
+    },
+    _getColor: function(e, t) {
+      return e ? t : ""
+    },
+    _inputTap: function() {
+      return !this.disabled && void(this.checked || (this.checked = !0, this.changedByTap()))
+    },
+    handleLabelTap: function() {
+      this._inputTap()
+    }
+  }), window.exparser.registerElement({
+    is: "wx-navigator",
+    behaviors: ["wx-base", "wx-hover"],
+    template: "<slot></slot>",
+    properties: {
+      url: {
+        type: String,
+        public: !0
+      },
+      redirect: {
+        type: Boolean,
+        value: !1,
+        public: !0
+      },
+      openType: {
+        type: String,
+        value: "navigate",
+        public: !0
+      },
+      hoverClass: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      hoverStyle: {
+        type: String,
+        value: "",
+        public: !0
+      },
+      hover: {
+        type: Boolean,
+        value: !0
+      },
+      hoverStayTime: {
+        type: Number,
+        value: 600,
+        public: !0
+      }
+    },
+    listeners: {
+      tap: "navigateTo"
+    },
+    navigateTo: function() {
+      if (!this.url) return void console.error("navigator should have url attribute");
+      if (this.redirect) return void wx.redirectTo({
+        url: this.url
+      });
+      switch (this.openType) {
+        case "navigate":
+          return void wx.navigateTo({
+            url: this.url
+          });
+        case "redirect":
+          return void wx.redirectTo({
+            url: this.url
+          });
+        case "switchTab":
+          return void wx.switchTab({
+            url: this.url
+          });
+        default:
+          return void console.error("navigator: invalid openType " + this.openType)
+      }
+    }
+  }), window.exparser.registerElement({
+    is: "wx-radio-group",
+    template: "\n    <slot></slot>\n  ",
+    behaviors: ["wx-base", "wx-data-component", "wx-group"],
+    properties: {
+      value: {
+        type: String
+      }
+    },
+    created: function() {
+      this._selectedItem = null
+    },
+    addItem: function(e) {
+      e.checked && (this._selectedItem && (this._selectedItem.checked = !1), this.value = e.value, this._selectedItem = e)
+    },
+    removeItem: function(e) {
+      this._selectedItem === e && (this.value = "", this._selectedItem = null)
+    },
+    renameItem: function(e, t) {
+      this._selectedItem === e && (this.value = t)
+    },
+    changed: function(e) {
+      this._selectedItem === e ? this.removeItem(e) : this.addItem(e)
+    }
+  }), window.exparser.registerElement({
     is: "wx-picker-view",
     template: '<div id="wrapper" class="wrapper"><slot></slot></div>',
     behaviors: ["wx-base", "wx-data-component"],
@@ -4614,7 +4709,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       })
     },
     _valueChanged: function() {
-      var e = arguments.length <= 0 || void 0 === arguments[0] ? [] : arguments[0];
+      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
       (this._columns || []).forEach(function(t, n) {
         t._setCurrent(e[n] || 0), t._update()
       })
@@ -4966,102 +5061,159 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         }
       }
     })
+  }(),
+  function() {
+    var e = 1,
+      t = null,
+      n = [],
+      i = function(i, o) {
+        var r = e++;
+        n.push({
+          id: r,
+          self: i,
+          func: o,
+          frames: 2
+        });
+        var a = function e() {
+          t = null;
+          for (var i = 0; i < n.length; i++) {
+            var o = n[i];
+            o.frames--, o.frames || (o.func.call(o.self), n.splice(i--, 1))
+          }
+          t = n.length ? requestAnimationFrame(e) : null
+        };
+        return t || (t = requestAnimationFrame(a)), r
+      },
+      o = function(e) {
+        for (var t = 0; t < n.length; t++)
+          if (n[t].id === e) return void n.splice(t, 1)
+      };
+    window.exparser.registerElement({
+      is: "wx-swiper-item",
+      template: "\n    <slot></slot>\n  ",
+      properties: {},
+      listeners: {
+        "this.wxSwiperItemChanged": "_invalidChild"
+      },
+      behaviors: ["wx-base"],
+      _invalidChild: function(e) {
+        if (e.target !== this) return !1
+      },
+      attached: function() {
+        this._pendingTimeoutId = 0, this._pendingTransform = "", this._relatedSwiper = null, this.triggerEvent("wxSwiperItemChanged", void 0, {
+          bubbles: !0
+        })
+      },
+      detached: function() {
+        this._clearTransform(), this._relatedSwiper && (this._relatedSwiper.triggerEvent("wxSwiperItemChanged"), this._relatedSwiper = null)
+      },
+      _setTransform: function(e, t, n) {
+        n ? (console.info(arguments), this.$$.style.transitionDuration = "0ms", this.$$.style["-webkit-transform"] = n, this.$$.style.transform = n, this._pendingTransform = t, this._pendingTimeoutId = i(this, function() {
+          this.$$.style.transitionDuration = e, this.$$.style["-webkit-transform"] = t, this.$$.style.transform = t
+        })) : (this._clearTransform(), this.$$.style.transitionDuration = e, this.$$.style["-webkit-transform"] = t, this.$$.style.transform = t)
+      },
+      _clearTransform: function() {
+        this.$$.style.transitionDuration = "0ms", this._pendingTimeoutId && (this.$$.style["-webkit-transform"] = this._pendingTransform, this.$$.style.transform = this._pendingTransform, o(this._pendingTimeoutId), this._pendingTimeoutId = 0)
+      }
+    })
   }(), window.exparser.registerElement({
-    is: "wx-progress",
-    template: '\n    <div class="wx-progress-bar" style.height="{{strokeWidth}}px">\n      <div class="wx-progress-inner-bar" style.width="{{curPercent}}%" style.background-color="{{color}}"></div>\n    </div>\n    <p class="wx-progress-info" parse-text-content hidden$="{{!showInfo}}">\n      {{curPercent}}%\n    </p>\n  ',
-    behaviors: ["wx-base"],
+    is: "wx-switch",
+    template: '\n    <div class="wx-switch-wrapper">\n      <div hidden$="{{!isSwitch(type)}}" id="switchInput" type="checkbox" class="wx-switch-input" class.wx-switch-input-checked="{{checked}}" class.wx-switch-input-disabled="{{disabled}}" style.background-color="{{color}}" style.border-color="{{_getSwitchBorderColor(checked,color)}}"></div>\n      <div hidden$="{{!isCheckbox(type)}}" id="checkboxInput" type="checkbox" class="wx-checkbox-input" class.wx-checkbox-input-checked="{{checked}}" class.wx-checkbox-input-disabled="{{disabled}}" style.color="{{color}}"></div>\n    </div>\n  ',
     properties: {
-      percent: {
-        type: Number,
-        observer: "percentChange",
-        public: !0
-      },
-      curPercent: {
-        type: Number
-      },
-      showInfo: {
+      checked: {
         type: Boolean,
         value: !1,
         public: !0
       },
-      strokeWidth: {
-        type: Number,
-        value: 6,
+      type: {
+        type: String,
+        value: "switch",
         public: !0
       },
       color: {
         type: String,
-        value: "#09BB07",
-        public: !0
-      },
-      active: {
-        type: Boolean,
-        value: !1,
-        public: !0,
-        observer: "activeAnimation"
-      }
-    },
-    percentChange: function(e) {
-      e > 100 && (this.percent = 100), e < 0 && (this.percent = 0), this.__timerId && clearInterval(this.__timerId), this.activeAnimation(this.active)
-    },
-    activeAnimation: function(e) {
-      if (!isNaN(this.percent))
-        if (e) {
-          var t = function() {
-            return this.percent <= this.curPercent + 1 ? (this.curPercent = this.percent, void clearInterval(this.__timerId)) : void++this.curPercent
-          };
-          this.curPercent = 0, this.__timerId = setInterval(t.bind(this), 30), t.call(this)
-        } else this.curPercent = this.percent
-    },
-    detached: function() {
-      this.__timerId && clearInterval(this.__timerId)
-    }
-  }), window.exparser.registerElement({
-    is: "wx-radio",
-    template: '\n    <div class="wx-radio-wrapper">\n      <div id="input" class="wx-radio-input" class.wx-radio-input-checked="{{checked}}" class.wx-radio-input-disabled="{{disabled}}" style.background-color="{{_getColor(checked,color)}}" style.border-color="{{_getColor(checked,color)}}"></div>\n      <slot></slot>\n    </div>\n  ',
-    behaviors: ["wx-base", "wx-label-target", "wx-disabled", "wx-item"],
-    properties: {
-      color: {
-        type: String,
-        value: "#09BB07",
+        value: "#04BE02",
         public: !0
       }
     },
+    behaviors: ["wx-base", "wx-label-target", "wx-disabled", "wx-data-component"],
     listeners: {
-      tap: "_inputTap"
+      "switchInput.tap": "onInputChange",
+      "checkboxInput.tap": "onInputChange"
     },
-    _getColor: function(e, t) {
+    _getSwitchBorderColor: function(e, t) {
       return e ? t : ""
     },
-    _inputTap: function() {
-      return !this.disabled && void(this.checked || (this.checked = !0, this.changedByTap()))
+    handleLabelTap: function(e) {
+      this.disabled || (this.checked = !this.checked)
     },
-    handleLabelTap: function() {
-      this._inputTap()
+    onInputChange: function(e) {
+      return this.checked = !this.checked, this.disabled ? void(this.checked = !this.checked) : void this.triggerEvent("change", {
+        value: this.checked
+      })
+    },
+    isSwitch: function(e) {
+      return "checkbox" !== e
+    },
+    isCheckbox: function(e) {
+      return "checkbox" === e
+    },
+    getFormData: function() {
+      return this.checked
+    },
+    resetFormData: function() {
+      this.checked = !1
     }
   }), window.exparser.registerElement({
-    is: "wx-radio-group",
-    template: "\n    <slot></slot>\n  ",
-    behaviors: ["wx-base", "wx-data-component", "wx-group"],
+    is: "wx-text",
+    template: '\n    <span id="raw" style="display:none;"><slot></slot></span>\n    <span id="main"></span>\n  ',
+    behaviors: ["wx-base"],
     properties: {
-      value: {
-        type: String
+      style: {
+        type: String,
+        public: !0,
+        observer: "_styleChanged"
+      },
+      class: {
+        type: String, public: !0, observer: "_classChanged"
+      },
+      selectable: {
+        type: Boolean,
+        value: !1,
+        public: !0
       }
     },
+    _styleChanged: function(e) {
+      this.$$.setAttribute("style", e)
+    },
+    _classChanged: function(e) {
+      this.$$.setAttribute("class", e)
+    },
+    _htmlEncode: function(e) {
+      return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/\'/g, "&apos;")
+    },
+    _update: function() {
+      for (var e = this.$.raw, t = document.createDocumentFragment(), n = 0, i = e.childNodes.length; n < i; n++) {
+        var o = e.childNodes.item(n);
+        if (o.nodeType === o.TEXT_NODE) {
+          var r = document.createElement("span");
+          r.innerHTML = this._htmlEncode(o.textContent).replace(/\n/g, "<br>"), t.appendChild(r)
+        } else o.nodeType === o.ELEMENT_NODE && "WX-TEXT" === o.tagName && t.appendChild(o.cloneNode(!0))
+      }
+      this.$.main.innerHTML = "", this.$.main.appendChild(t)
+    },
     created: function() {
-      this._selectedItem = null
+      this._observer = exparser.Observer.create(function() {
+        this._update()
+      }), this._observer.observe(this, {
+        childList: !0,
+        subtree: !0,
+        characterData: !0,
+        properties: !0
+      })
     },
-    addItem: function(e) {
-      e.checked && (this._selectedItem && (this._selectedItem.checked = !1), this.value = e.value, this._selectedItem = e)
-    },
-    removeItem: function(e) {
-      this._selectedItem === e && (this.value = "", this._selectedItem = null)
-    },
-    renameItem: function(e, t) {
-      this._selectedItem === e && (this.value = t)
-    },
-    changed: function(e) {
-      this._selectedItem === e ? this.removeItem(e) : this.addItem(e)
+    attached: function() {
+      this._update()
     }
   }), window.exparser.registerElement({
     is: "wx-scroll-view",
@@ -5200,6 +5352,42 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
         if (Number(e[0]) >= 0 && Number(e[0]) <= 9) return console.group('scroll-into-view="' + e + '" 有误'), console.warn("id属性不能以数字开头"), void console.groupEnd();
         var t = this.$$.querySelector("#" + e);
         t && (this.$.main.scrollTop = t.offsetTop)
+      }
+    }
+  }), window.exparser.registerElement({
+    is: "wx-toast",
+    template: '\n    <div class="wx-toast-mask" id="mask" style$="{{_getMaskStyle(mask)}}"></div>\n    <div class="wx-toast">\n      <i class$="wx-toast-icon wx-icon-{{icon}}" style.color="#FFFFFF" style.font-size="55px" style.display="block"></i>\n      <p class="wx-toast-content"><slot></slot></p>\n    </div>\n  ',
+    behaviors: ["wx-base", "wx-mask-behavior"],
+    properties: {
+      icon: {
+        type: String,
+        value: "success_no_circle",
+        public: !0
+      },
+      hidden: {
+        type: Boolean,
+        value: !1,
+        public: !0,
+        observer: "hiddenChange"
+      },
+      duration: {
+        type: Number,
+        value: 1500,
+        public: !0,
+        observer: "durationChange"
+      }
+    },
+    durationChange: function(e, t) {
+      this.timer && (clearTimeout(this.timer), this.hiddenChange(this.hidden))
+    },
+    hiddenChange: function(e) {
+      if (!e && 0 != this.duration) {
+        var t = this;
+        this.timer = setTimeout(function() {
+          t.triggerEvent("change", {
+            value: t.hidden
+          })
+        }, this.duration)
       }
     }
   }), window.exparser.registerElement({
@@ -5492,160 +5680,6 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
     }
   }),
   function() {
-    var e = 1,
-      t = null,
-      n = [],
-      i = function(i, o) {
-        var r = e++;
-        n.push({
-          id: r,
-          self: i,
-          func: o,
-          frames: 2
-        });
-        var a = function e() {
-          t = null;
-          for (var i = 0; i < n.length; i++) {
-            var o = n[i];
-            o.frames--, o.frames || (o.func.call(o.self), n.splice(i--, 1))
-          }
-          t = n.length ? requestAnimationFrame(e) : null
-        };
-        return t || (t = requestAnimationFrame(a)), r
-      },
-      o = function(e) {
-        for (var t = 0; t < n.length; t++)
-          if (n[t].id === e) return void n.splice(t, 1)
-      };
-    window.exparser.registerElement({
-      is: "wx-swiper-item",
-      template: "\n    <slot></slot>\n  ",
-      properties: {},
-      listeners: {
-        "this.wxSwiperItemChanged": "_invalidChild"
-      },
-      behaviors: ["wx-base"],
-      _invalidChild: function(e) {
-        if (e.target !== this) return !1
-      },
-      attached: function() {
-        this._pendingTimeoutId = 0, this._pendingTransform = "", this._relatedSwiper = null, this.triggerEvent("wxSwiperItemChanged", void 0, {
-          bubbles: !0
-        })
-      },
-      detached: function() {
-        this._clearTransform(), this._relatedSwiper && (this._relatedSwiper.triggerEvent("wxSwiperItemChanged"), this._relatedSwiper = null)
-      },
-      _setTransform: function(e, t, n) {
-        n ? (console.info(arguments), this.$$.style.transitionDuration = "0ms", this.$$.style["-webkit-transform"] = n, this.$$.style.transform = n, this._pendingTransform = t, this._pendingTimeoutId = i(this, function() {
-          this.$$.style.transitionDuration = e, this.$$.style["-webkit-transform"] = t, this.$$.style.transform = t
-        })) : (this._clearTransform(), this.$$.style.transitionDuration = e, this.$$.style["-webkit-transform"] = t, this.$$.style.transform = t)
-      },
-      _clearTransform: function() {
-        this.$$.style.transitionDuration = "0ms", this._pendingTimeoutId && (this.$$.style["-webkit-transform"] = this._pendingTransform, this.$$.style.transform = this._pendingTransform, o(this._pendingTimeoutId), this._pendingTimeoutId = 0)
-      }
-    })
-  }(), window.exparser.registerElement({
-    is: "wx-switch",
-    template: '\n    <div class="wx-switch-wrapper">\n      <div hidden$="{{!isSwitch(type)}}" id="switchInput" type="checkbox" class="wx-switch-input" class.wx-switch-input-checked="{{checked}}" class.wx-switch-input-disabled="{{disabled}}" style.background-color="{{color}}" style.border-color="{{_getSwitchBorderColor(checked,color)}}"></div>\n      <div hidden$="{{!isCheckbox(type)}}" id="checkboxInput" type="checkbox" class="wx-checkbox-input" class.wx-checkbox-input-checked="{{checked}}" class.wx-checkbox-input-disabled="{{disabled}}" style.color="{{color}}"></div>\n    </div>\n  ',
-    properties: {
-      checked: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      },
-      type: {
-        type: String,
-        value: "switch",
-        public: !0
-      },
-      color: {
-        type: String,
-        value: "#04BE02",
-        public: !0
-      }
-    },
-    behaviors: ["wx-base", "wx-label-target", "wx-disabled", "wx-data-component"],
-    listeners: {
-      "switchInput.tap": "onInputChange",
-      "checkboxInput.tap": "onInputChange"
-    },
-    _getSwitchBorderColor: function(e, t) {
-      return e ? t : ""
-    },
-    handleLabelTap: function(e) {
-      this.disabled || (this.checked = !this.checked)
-    },
-    onInputChange: function(e) {
-      return this.checked = !this.checked, this.disabled ? void(this.checked = !this.checked) : void this.triggerEvent("change", {
-        value: this.checked
-      })
-    },
-    isSwitch: function(e) {
-      return "checkbox" !== e
-    },
-    isCheckbox: function(e) {
-      return "checkbox" === e
-    },
-    getFormData: function() {
-      return this.checked
-    },
-    resetFormData: function() {
-      this.checked = !1
-    }
-  }), window.exparser.registerElement({
-    is: "wx-text",
-    template: '\n    <span id="raw" style="display:none;"><slot></slot></span>\n    <span id="main"></span>\n  ',
-    behaviors: ["wx-base"],
-    properties: {
-      style: {
-        type: String,
-        public: !0,
-        observer: "_styleChanged"
-      },
-      class: {
-        type: String, public: !0, observer: "_classChanged"
-      },
-      selectable: {
-        type: Boolean,
-        value: !1,
-        public: !0
-      }
-    },
-    _styleChanged: function(e) {
-      this.$$.setAttribute("style", e)
-    },
-    _classChanged: function(e) {
-      this.$$.setAttribute("class", e)
-    },
-    _htmlEncode: function(e) {
-      return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/\'/g, "&apos;")
-    },
-    _update: function() {
-      for (var e = this.$.raw, t = document.createDocumentFragment(), n = 0, i = e.childNodes.length; n < i; n++) {
-        var o = e.childNodes.item(n);
-        if (o.nodeType === o.TEXT_NODE) {
-          var r = document.createElement("span");
-          r.innerHTML = this._htmlEncode(o.textContent).replace(/\n/g, "<br>"), t.appendChild(r)
-        } else o.nodeType === o.ELEMENT_NODE && "WX-TEXT" === o.tagName && t.appendChild(o.cloneNode(!0))
-      }
-      this.$.main.innerHTML = "", this.$.main.appendChild(t)
-    },
-    created: function() {
-      this._observer = exparser.Observer.create(function() {
-        this._update()
-      }), this._observer.observe(this, {
-        childList: !0,
-        subtree: !0,
-        characterData: !0,
-        properties: !0
-      })
-    },
-    attached: function() {
-      this._update()
-    }
-  }),
-  function() {
     /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) && window.exparser.registerElement({
       is: "wx-textarea",
       behaviors: ["wx-base", "wx-data-component"],
@@ -5873,7 +5907,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
 var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
   return typeof e
 } : function(e) {
-  return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+  return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
 };
 ! function() {
   /wechatdevtools/.test(window.navigator.userAgent.toLowerCase()) || window.exparser.registerElement({
@@ -6000,7 +6034,8 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       }))
     },
     onKeyboardComplete: function(e) {
-      e.detail.inputId === this._inputId && (this.value = e.detail.value, this.__formResetCallback && (this.value = "", this.__formResetCallback = void 0), "function" == typeof this.__formCallback && this.__formCallback(this.value), this.triggerEvent("blur", {
+      e.detail.inputId === this._inputId && (this.value = e.detail.value, this.__formResetCallback && (this.value = "",
+        this.__formResetCallback = void 0), "function" == typeof this.__formCallback && this.__formCallback(this.value), this.triggerEvent("blur", {
         value: this.value
       }), this.resetInputState())
     },
@@ -6023,8 +6058,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
               var n = parseInt(e).toString(16);
               n = n.length > 1 ? n : "0" + n, i.push(n)
             }
-          }), t.length > 3 && (n = parseFloat(t.slice(3).join(".")),
-            0 == n ? i.push("00") : n >= 1 ? i.push("ff") : (n = parseInt(255 * n).toString(16), n = n.length > 1 ? n : "0" + n, i.push(n))), {
+          }), t.length > 3 && (n = parseFloat(t.slice(3).join(".")), 0 == n ? i.push("00") : n >= 1 ? i.push("ff") : (n = parseInt(255 * n).toString(16), n = n.length > 1 ? n : "0" + n, i.push(n))), {
             v: "#" + i.join("")
           }
         }();
@@ -6154,43 +6188,7 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
       return e.currentTarget = e.target, this.bindinput ? JSON.stringify(e) : ""
     }
   })
-}(), window.exparser.registerElement({
-  is: "wx-toast",
-  template: '\n    <div class="wx-toast-mask" id="mask" style$="{{_getMaskStyle(mask)}}"></div>\n    <div class="wx-toast">\n      <i class$="wx-toast-icon wx-icon-{{icon}}" style.color="#FFFFFF" style.font-size="55px" style.display="block"></i>\n      <p class="wx-toast-content"><slot></slot></p>\n    </div>\n  ',
-  behaviors: ["wx-base", "wx-mask-behavior"],
-  properties: {
-    icon: {
-      type: String,
-      value: "success_no_circle",
-      public: !0
-    },
-    hidden: {
-      type: Boolean,
-      value: !1,
-      public: !0,
-      observer: "hiddenChange"
-    },
-    duration: {
-      type: Number,
-      value: 1500,
-      public: !0,
-      observer: "durationChange"
-    }
-  },
-  durationChange: function(e, t) {
-    this.timer && (clearTimeout(this.timer), this.hiddenChange(this.hidden))
-  },
-  hiddenChange: function(e) {
-    if (!e && 0 != this.duration) {
-      var t = this;
-      this.timer = setTimeout(function() {
-        t.triggerEvent("change", {
-          value: t.hidden
-        })
-      }, this.duration)
-    }
-  }
-});
+}();
 var _slicedToArray = function() {
     function e(e, t) {
       var n = [],
@@ -6219,7 +6217,7 @@ var _slicedToArray = function() {
   _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
     return typeof e
   } : function(e) {
-    return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+    return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
   };
 "ios" !== wx.getPlatform() && window.exparser.registerElement({
   is: "wx-video",
@@ -6501,7 +6499,7 @@ var _slicedToArray = function() {
   _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
     return typeof e
   } : function(e) {
-    return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+    return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
   };
 "ios" === wx.getPlatform() && window.exparser.registerElement({
     is: "wx-video",
@@ -6982,12 +6980,19 @@ var _slicedToArray = function() {
         }
     }));
     var S = function(e) {
-      var t = Date.now();
-      y.firstRender ? (E(e), o("reRenderTime", t, Date.now(), e.data)) : (o("firstGetData", C.funcReady, Date.now(), e.data), k(e), o("firstRenderTime", t, Date.now(), e.data), e.options && e.options.firstRender || (console.error("firstRender not the data from Page.data"), Reporter.errorReport({
-        key: "webviewScriptError",
-        error: new Error("firstRender not the data from Page.data"),
-        extend: "firstRender not the data from Page.data"
-      })), y.firstRender = !0), document.dispatchEvent(new CustomEvent("pageReRender", {}))
+      if (y.firstRender) setTimeout(function() {
+        var t = Date.now();
+        E(e), o("reRenderTime", t, Date.now())
+      }, 0);
+      else {
+        var t = Date.now();
+        o("firstGetData", C.funcReady, Date.now()), k(e), o("firstRenderTime", t, Date.now()), e.options && e.options.firstRender || (console.error("firstRender not the data from Page.data"), Reporter.errorReport({
+          key: "webviewScriptError",
+          error: new Error("firstRender not the data from Page.data"),
+          extend: "firstRender not the data from Page.data"
+        })), y.firstRender = !0
+      }
+      document.dispatchEvent(new CustomEvent("pageReRender", {}))
     }
   }, function(e, t, n) {
     "use strict";
@@ -7060,7 +7065,7 @@ var _slicedToArray = function() {
       o = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       r = n(3),
       a = (t.isObject = function(e) {
@@ -7145,7 +7150,7 @@ var _slicedToArray = function() {
     var i = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
       } : function(e) {
-        return e && "function" == typeof Symbol && e.constructor === Symbol ? "symbol" : typeof e
+        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
       },
       o = n(2),
       r = n(5),
@@ -7196,7 +7201,8 @@ var _slicedToArray = function() {
             var h = (0, r.dashToCamelCase)(n.substring(5).toLowerCase());
             e.dataset[h] = l
           }
-          void 0 === l ? u(e, n) : c ? a.INLINE_STYLE.indexOf(n) !== -1 ? e[n] = (0, o.transformRpx)(l, !0) : e[n] = l : "bind" === n.slice(0, 4) ? d(e, n.slice(4), l) : "catch" === n.slice(0, 5) ? d(e, n.slice(5), l, !0) : "on" === n.slice(0, 2) ? d(e, n.slice(2), l) : a.ATTRIBUTE_NAME.indexOf(n) !== -1 || s.test(n) ? "style" === n ? ! function() {
+          void 0 === l ? u(e, n) : c ? a.INLINE_STYLE.indexOf(n) !== -1 ? e[n] = (0,
+            o.transformRpx)(l, !0) : e[n] = l : "bind" === n.slice(0, 4) ? d(e, n.slice(4), l) : "catch" === n.slice(0, 5) ? d(e, n.slice(5), l, !0) : "on" === n.slice(0, 2) ? d(e, n.slice(2), l) : a.ATTRIBUTE_NAME.indexOf(n) !== -1 || s.test(n) ? "style" === n ? ! function() {
             var t = e.animationStyle || {},
               i = t.transition,
               r = t.transform,
@@ -7798,7 +7804,7 @@ var _slicedToArray = function() {
         document.addEventListener("DOMContentLoaded", function() {
           var e = window.innerWidth > 0 ? window.innerWidth : screen.width;
           document.documentElement.style.fontSize = e / i.RPX_RATE + "px"
-        }, 1e1)
+        }, 1e3)
       });
     t.init = function() {
       window.__webview_engine_version__ = .02, o()
@@ -7817,7 +7823,7 @@ var _slicedToArray = function() {
     window.document && "complete" === window.document.readyState ? t() : window.onload = t
   }('html {\n  -webkit-user-select: none;\n          user-select: none;\n  height: 100%;\n  width: 100%;\n}\nbody {\n  -webkit-user-select: none;\n          user-select: none;\n  width: 100%;\n  overflow-x: hidden;\n}\nwx-action-sheet-item {\n  background-color: #FFFFFF;\n  position: relative;\n  padding: 10px 0;\n  text-align: center;\n  font-size: 18px;\n  display: block;\n}\nwx-action-sheet-item:before {\n  content: " ";\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 1px;\n  border-top: 1px solid #D9D9D9;\n  color: #D9D9D9;\n  -webkit-transform-origin: 0 0;\n  transform-origin: 0 0;\n  -webkit-transform: scaleY(0.5);\n  transform: scaleY(0.5);\n}\nwx-action-sheet-item:active {\n  background-color: #ECECEC;\n}\nwx-action-sheet .wx-action-sheet {\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  -webkit-transform: translate(0, 100%);\n          transform: translate(0, 100%);\n  -webkit-backface-visibility: hidden;\n          backface-visibility: hidden;\n  z-index: 5000;\n  width: 100%;\n  background-color: #FFFFFF;\n  transition: -webkit-transform .3s;\n  transition: transform .3s;\n  transition: transform .3s, -webkit-transform .3s;\n}\nwx-action-sheet .wx-action-sheet-show {\n  -webkit-transform: translate(0, 0);\n          transform: translate(0, 0);\n}\nwx-action-sheet .wx-action-sheet-menu {\n  background-color: #FFFFFF;\n}\nwx-action-sheet .wx-action-sheet-mask {\n  position: fixed;\n  z-index: 1000;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  transition: background-color 0.3s;\n  background-color: rgba(0, 0, 0, 0.6);\n}\nwx-audio {\n  display: inline-block;\n  line-height: 0;\n}\nwx-audio[hidden] {\n  display: none;\n}\nwx-audio > .wx-audio-default {\n  max-width: 100%;\n  min-width: 302px;\n  height: 65px;\n  background: #fcfcfc;\n  border: 1px solid #e0e0e0;\n  border-radius: 2.5px;\n  display: inline-block;\n  overflow: hidden;\n}\nwx-audio > .wx-audio-default > .wx-audio-left {\n  width: 65px;\n  height: 65px;\n  float: left;\n  background-color: #e6e6e6;\n  background-size: 100% 100%;\n  background-position: 50% 50%;\n}\nwx-audio > .wx-audio-default > .wx-audio-left > .wx-audio-button {\n  width: 24px;\n  height: 24px;\n  margin: 20.5px;\n  background-size: cover;\n}\nwx-audio > .wx-audio-default > .wx-audio-left > .wx-audio-button.play {\n  background-image: url(\'data:image/png;base64,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\');\n}\nwx-audio > .wx-audio-default > .wx-audio-left > .wx-audio-button.pause {\n  background-image: url(\'data:image/png;base64,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\');\n}\nwx-audio > .wx-audio-default > .wx-audio-right {\n  box-sizing: border-box;\n  height: 65px;\n  margin-left: 65px;\n  padding: 11px 16.5px 13.5px 15px;\n  overflow: hidden;\n}\nwx-audio > .wx-audio-default > .wx-audio-right > .wx-audio-info {\n  margin-right: 70px;\n  overflow: hidden;\n}\nwx-audio > .wx-audio-default > .wx-audio-right > .wx-audio-info > .wx-audio-name {\n  height: 22.5px;\n  line-height: 22.5px;\n  margin-bottom: 3.5px;\n  font-size: 14px;\n  color: #353535;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\nwx-audio > .wx-audio-default > .wx-audio-right > .wx-audio-info > .wx-audio-author {\n  height: 14.5px;\n  line-height: 14.5px;\n  font-size: 12px;\n  color: #888888;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\nwx-audio > .wx-audio-default > .wx-audio-right > .wx-audio-time {\n  margin-top: 3.5px;\n  height: 16.5px;\n  font-size: 12px;\n  color: #888888;\n  float: right;\n}\nwx-button {\n  position: relative;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  padding-left: 14px;\n  padding-right: 14px;\n  box-sizing: border-box;\n  font-size: 18px;\n  text-align: center;\n  text-decoration: none;\n  line-height: 2.55555556;\n  border-radius: 5px;\n  -webkit-tap-highlight-color: transparent;\n  overflow: hidden;\n  color: #000000;\n  background-color: #F8F8F8;\n}\nwx-button[hidden] {\n  display: none !important;\n}\nwx-button:after {\n  content: " ";\n  width: 200%;\n  height: 200%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  -webkit-transform: scale(0.5);\n          transform: scale(0.5);\n  -webkit-transform-origin: 0 0;\n          transform-origin: 0 0;\n  box-sizing: border-box;\n  border-radius: 10px;\n}\nwx-button[type=default] {\n  color: #000000;\n  background-color: #F8F8F8;\n}\nwx-button[type=primary] {\n  color: #FFFFFF;\n  background-color: #1AAD19;\n}\nwx-button[type=warn] {\n  color: #FFFFFF;\n  background-color: #E64340;\n}\nwx-button[type=warn]:not([disabled]):visited {\n  color: #FFFFFF;\n}\nwx-button[type=warn]:not([disabled]):active {\n  color: rgba(255, 255, 255, 0.6);\n  background-color: #CE3C39;\n}\nwx-button[disabled] {\n  color: rgba(255, 255, 255, 0.6);\n}\nwx-button[disabled][type=default],\nwx-button[disabled]:not([type]) {\n  color: rgba(0, 0, 0, 0.3);\n  background-color: #F7F7F7;\n}\nwx-button[disabled][type=primary] {\n  background-color: #9ED99D;\n}\nwx-button[disabled][type=warn] {\n  background-color: #EC8B89;\n}\nwx-button[type=primary][plain] {\n  color: #1aad19;\n  border: 1px solid #1aad19;\n  background-color: transparent;\n}\nwx-button[type=primary][plain]:not([disabled]):active {\n  color: rgba(26, 173, 25, 0.6);\n  border-color: rgba(26, 173, 25, 0.6);\n  background-color: transparent;\n}\nwx-button[type=primary][plain][disabled] {\n  color: rgba(0, 0, 0, 0.2);\n  border-color: rgba(0, 0, 0, 0.2);\n}\nwx-button[type=primary][plain]:after {\n  border-width: 0;\n}\nwx-button[type=default][plain] {\n  color: #353535;\n  border: 1px solid #353535;\n  background-color: transparent;\n}\nwx-button[type=default][plain]:not([disabled]):active {\n  color: rgba(53, 53, 53, 0.6);\n  border-color: rgba(53, 53, 53, 0.6);\n  background-color: transparent;\n}\nwx-button[type=default][plain][disabled] {\n  color: rgba(0, 0, 0, 0.2);\n  border-color: rgba(0, 0, 0, 0.2);\n}\nwx-button[type=default][plain]:after {\n  border-width: 0;\n}\nwx-button[plain] {\n  color: #353535;\n  border: 1px solid #353535;\n  background-color: transparent;\n}\nwx-button[plain]:not([disabled]):active {\n  color: rgba(53, 53, 53, 0.6);\n  border-color: rgba(53, 53, 53, 0.6);\n  background-color: transparent;\n}\nwx-button[plain][disabled] {\n  color: rgba(0, 0, 0, 0.2);\n  border-color: rgba(0, 0, 0, 0.2);\n}\nwx-button[plain]:after {\n  border-width: 0;\n}\nwx-button[type=warn][plain] {\n  color: #e64340;\n  border: 1px solid #e64340;\n  background-color: transparent;\n}\nwx-button[type=warn][plain]:not([disabled]):active {\n  color: rgba(230, 67, 64, 0.6);\n  border-color: rgba(230, 67, 64, 0.6);\n  background-color: transparent;\n}\nwx-button[type=warn][plain][disabled] {\n  color: rgba(0, 0, 0, 0.2);\n  border-color: rgba(0, 0, 0, 0.2);\n}\nwx-button[type=warn][plain]:after {\n  border-width: 0;\n}\nwx-button[size=mini] {\n  display: inline-block;\n  line-height: 2.3;\n  font-size: 13px;\n  padding: 0 1.34em;\n}\nwx-button[loading]:before {\n  content: " ";\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  vertical-align: middle;\n  -webkit-animation: wx-button-loading-animate 1s steps(12, end) infinite;\n          animation: wx-button-loading-animate 1s steps(12, end) infinite;\n  background: transparent url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iciIgd2lkdGg9JzEyMHB4JyBoZWlnaHQ9JzEyMHB4JyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICAgIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJub25lIiBjbGFzcz0iYmsiPjwvcmVjdD4KICAgIDxyZWN0IHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjRTlFOUU5JwogICAgICAgICAgdHJhbnNmb3JtPSdyb3RhdGUoMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+CiAgICA8L3JlY3Q+CiAgICA8cmVjdCB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nIzk4OTY5NycKICAgICAgICAgIHRyYW5zZm9ybT0ncm90YXRlKDMwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4KICAgICAgICAgICAgICAgICByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyM5Qjk5OUEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSg2MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+CiAgICAgICAgICAgICAgICAgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz4KICAgIDwvcmVjdD4KICAgIDxyZWN0IHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjQTNBMUEyJwogICAgICAgICAgdHJhbnNmb3JtPSdyb3RhdGUoOTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNBQkE5QUEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxMjAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNCMkIyQjInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxNTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNCQUI4QjknCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxODAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNDMkMwQzEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyMTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNDQkNCQ0InCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyNDAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNEMkQyRDInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyNzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNEQURBREEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgzMDAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNFMkUyRTInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgzMzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0Pgo8L3N2Zz4=) no-repeat;\n  background-size: 100%;\n}\nwx-button[loading][type=primary] {\n  color: rgba(255, 255, 255, 0.6);\n  background-color: #179B16;\n}\nwx-button[loading][type=primary][plain] {\n  color: #1aad19;\n  background-color: transparent;\n}\nwx-button[loading][type=default] {\n  color: rgba(0, 0, 0, 0.6);\n  background-color: #DEDEDE;\n}\nwx-button[loading][type=default][plain] {\n  color: #353535;\n  background-color: transparent;\n}\nwx-button[loading][type=warn] {\n  color: rgba(255, 255, 255, 0.6);\n  background-color: #CE3C39;\n}\nwx-button[loading][type=warn][plain] {\n  color: #e64340;\n  background-color: transparent;\n}\n@-webkit-keyframes wx-button-loading-animate {\n  0% {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n            transform: rotate3d(0, 0, 1, 0deg);\n  }\n  100% {\n    -webkit-transform: rotate3d(0, 0, 1, 360deg);\n            transform: rotate3d(0, 0, 1, 360deg);\n  }\n}\n@keyframes wx-button-loading-animate {\n  0% {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n            transform: rotate3d(0, 0, 1, 0deg);\n  }\n  100% {\n    -webkit-transform: rotate3d(0, 0, 1, 360deg);\n            transform: rotate3d(0, 0, 1, 360deg);\n  }\n}\n.button-hover {\n  background-color: rgba(0, 0, 0, 0.1);\n}\n.button-hover[type=primary] {\n  background-color: #179B16;\n}\n.button-hover[type=default] {\n  background-color: #DEDEDE;\n}\nwx-canvas {\n  width: 300px;\n  height: 150px;\n  display: block;\n}\nwx-checkbox {\n  -webkit-tap-highlight-color: transparent;\n  display: inline-block;\n}\nwx-checkbox[hidden] {\n  display: none;\n}\nwx-checkbox .wx-checkbox-wrapper {\n  display: -webkit-inline-flex;\n  display: inline-flex;\n  -webkit-align-items: center;\n          align-items: center;\n  vertical-align: middle;\n}\nwx-checkbox .wx-checkbox-input {\n  margin-right: 5px;\n  -webkit-appearance: none;\n          appearance: none;\n  outline: 0;\n  border: 1px solid #D1D1D1;\n  background-color: #FFFFFF;\n  border-radius: 3px;\n  width: 22px;\n  height: 22px;\n  position: relative;\n}\nwx-checkbox .wx-checkbox-input.wx-checkbox-input-checked {\n  color: #09BB07;\n}\nwx-checkbox .wx-checkbox-input.wx-checkbox-input-checked:before {\n  font: normal normal normal 14px/1 "weui";\n  content: "\\EA08";\n  font-size: 22px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -48%) scale(0.73);\n  -webkit-transform: translate(-50%, -48%) scale(0.73);\n}\nwx-checkbox .wx-checkbox-input.wx-checkbox-input-disabled {\n  background-color: #E1E1E1;\n}\nwx-checkbox .wx-checkbox-input.wx-checkbox-input-disabled:before {\n  color: #ADADAD;\n}\nwx-checkbox-group {\n  display: block;\n}\nwx-checkbox-group[hidden] {\n  display: none;\n}\nwx-icon {\n  display: inline-block;\n  font-size: 0;\n}\nwx-icon[hidden] {\n  display: none;\n}\nwx-icon i {\n  font: normal normal normal 14px/1 "weui";\n}\n@font-face {\n  font-weight: normal;\n  font-style: normal;\n  font-family: "weui";\n  src: url(\'data:application/octet-stream;base64,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\') format(\'truetype\');\n}\n[class^="wx-icon-"]:before,\n[class*=" wx-icon-"]:before {\n  margin: 0;\n}\n.wx-icon-success {\n  color: #09BB07;\n}\n.wx-icon-success:before {\n  content: "\\EA06";\n}\n.wx-icon-info {\n  color: #10AEFF;\n}\n.wx-icon-info:before {\n  content: "\\EA03";\n}\n.wx-icon-warn {\n  color: #F76260;\n}\n.wx-icon-warn:before {\n  content: "\\EA0B";\n}\n.wx-icon-waiting {\n  color: #10AEFF;\n}\n.wx-icon-waiting:before {\n  content: "\\EA09";\n}\n.wx-icon-safe_success {\n  color: #09BB07;\n}\n.wx-icon-safe_success:before {\n  content: "\\EA04";\n}\n.wx-icon-safe_warn {\n  color: #FFBE00;\n}\n.wx-icon-safe_warn:before {\n  content: "\\EA05";\n}\n.wx-icon-success_circle {\n  color: #09BB07;\n}\n.wx-icon-success_circle:before {\n  content: "\\EA07";\n}\n.wx-icon-success_no_circle {\n  color: #09BB07;\n}\n.wx-icon-success_no_circle:before {\n  content: "\\EA08";\n}\n.wx-icon-waiting_circle {\n  color: #10AEFF;\n}\n.wx-icon-waiting_circle:before {\n  content: "\\EA0A";\n}\n.wx-icon-circle {\n  color: #C9C9C9;\n}\n.wx-icon-circle:before {\n  content: "\\EA01";\n}\n.wx-icon-download {\n  color: #09BB07;\n}\n.wx-icon-download:before {\n  content: "\\EA02";\n}\n.wx-icon-info_circle {\n  color: #09BB07;\n}\n.wx-icon-info_circle:before {\n  content: "\\EA0C";\n}\n.wx-icon-cancel {\n  color: #F43530;\n}\n.wx-icon-cancel:before {\n  content: "\\EA0D";\n}\n.wx-icon-search {\n  color: #B2B2B2;\n}\n.wx-icon-search:before {\n  content: "\\EA0E";\n}\n.wx-icon-clear {\n  color: #B2B2B2;\n}\n.wx-icon-clear:before {\n  content: "\\EA0F";\n}\n[class^="wx-icon-"]:before,\n[class*=" wx-icon-"]:before {\n  box-sizing: border-box;\n}\nwx-image {\n  width: 320px;\n  height: 240px;\n  display: inline-block;\n  overflow: hidden;\n}\nwx-image[hidden] {\n  display: none;\n}\nwx-image > div {\n  width: 100%;\n  height: 100%;\n}\nwx-image > img {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  display: block;\n}\n.input-placeholder {\n  color: gray;\n}\nwx-input {\n  display: block;\n  height: 1.4rem;\n  text-overflow: clip;\n  overflow: hidden;\n  white-space: nowrap;\n  font-family: UICTFontTextStyleBody;\n  min-height: 1.4rem;\n}\nwx-input input {\n  position: relative;\n  min-height: 1.4rem;\n  border: none;\n  height: inherit;\n  width: 100%;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: UICTFontTextStyleBody;\n  color: inherit;\n  background: transparent;\n  display: inherit;\n  padding: 0;\n  margin: 0;\n  outline: none;\n  vertical-align: middle;\n  text-align: inherit;\n  overflow: inherit;\n  white-space: inherit;\n  text-overflow: inherit;\n  -webkit-tap-highlight-color: transparent;\n  z-index: 100;\n}\nwx-input[disabled] div {\n  color: grey;\n}\nwx-input[hidden] {\n  display: none;\n}\nwx-input div {\n  position: relative;\n  min-height: 1.4rem;\n  text-overflow: inherit;\n  border: none;\n  height: inherit;\n  width: inherit;\n  font-size: inherit;\n  font-weight: inherit;\n  font-family: UICTFontTextStyleBody;\n  color: inherit;\n  background: inherit;\n  padding: 0;\n  margin: 0;\n  outline: none;\n  text-align: inherit;\n  -webkit-tap-highlight-color: transparent;\n}\nwx-input div[type=password] div {\n  color: black;\n}\nwx-input div div {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  line-height: 100%;\n  height: inherit;\n  min-height: 1.4rem;\n  white-space: nowrap;\n  text-align: inherit;\n  overflow: hidden;\n  vertical-align: middle;\n  z-index: 1;\n}\n.wx-loading {\n  position: fixed;\n  z-index: 2000000000;\n  width: 7.6em;\n  min-height: 7.6em;\n  top: 180px;\n  left: 50%;\n  margin-left: -3.8em;\n  background: rgba(40, 40, 40, 0.75);\n  text-align: center;\n  border-radius: 5px;\n  color: #FFFFFF;\n  font-size: 16px;\n  line-height: normal;\n}\n.wx-loading-icon {\n  margin: 30px 0 10px;\n  width: 38px;\n  height: 38px;\n  vertical-align: baseline;\n  display: inline-block;\n  -webkit-animation: weuiLoading 1s steps(12, end) infinite;\n          animation: weuiLoading 1s steps(12, end) infinite;\n  background: transparent url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iciIgd2lkdGg9JzEyMHB4JyBoZWlnaHQ9JzEyMHB4JyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICAgIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJub25lIiBjbGFzcz0iYmsiPjwvcmVjdD4KICAgIDxyZWN0IHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjRTlFOUU5JwogICAgICAgICAgdHJhbnNmb3JtPSdyb3RhdGUoMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+CiAgICA8L3JlY3Q+CiAgICA8cmVjdCB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nIzk4OTY5NycKICAgICAgICAgIHRyYW5zZm9ybT0ncm90YXRlKDMwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4KICAgICAgICAgICAgICAgICByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyM5Qjk5OUEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSg2MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+CiAgICAgICAgICAgICAgICAgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz4KICAgIDwvcmVjdD4KICAgIDxyZWN0IHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjQTNBMUEyJwogICAgICAgICAgdHJhbnNmb3JtPSdyb3RhdGUoOTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNBQkE5QUEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxMjAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNCMkIyQjInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxNTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNCQUI4QjknCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgxODAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNDMkMwQzEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyMTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNDQkNCQ0InCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyNDAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNEMkQyRDInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgyNzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNEQURBREEnCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgzMDAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0PgogICAgPHJlY3QgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNFMkUyRTInCiAgICAgICAgICB0cmFuc2Zvcm09J3JvdGF0ZSgzMzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPgogICAgPC9yZWN0Pgo8L3N2Zz4=) no-repeat;\n  background-size: 100%;\n}\n.wx-loading-content {\n  margin: 0 0 15px;\n}\n.wx-loading-mask {\n  position: fixed;\n  z-index: 1000;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n@-webkit-keyframes weuiLoading {\n  0% {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n  }\n  100% {\n    -webkit-transform: rotate3d(0, 0, 1, 360deg);\n  }\n}\n@keyframes weuiLoading {\n  0% {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n  }\n  100% {\n    -webkit-transform: rotate3d(0, 0, 1, 360deg);\n  }\n}\nwx-map {\n  position: relative;\n  width: 300px;\n  height: 150px;\n  display: block;\n}\n.wx-mask {\n  position: fixed;\n  z-index: inherit;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  transition: background-color 0.3s;\n  background-color: inherit;\n}\n.wx-mask[show=false] {\n  display: none;\n}\n.wx-mask-transparent {\n  background-color: rgba(0, 0, 0, 0);\n}\nwx-mask {\n  z-index: 1000;\n  position: fixed;\n  background-color: rgba(0, 0, 0, 0.6);\n}\nwx-modal .wx-modal-mask {\n  z-index: inherit;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  transition: background-color 0.3s;\n  background-color: inherit;\n  z-index: 1000;\n  position: fixed;\n  background-color: rgba(0, 0, 0, 0.6);\n  -webkit-animation: fadeIn ease .3s forwards;\n          animation: fadeIn ease .3s forwards;\n}\nwx-modal .wx-modal-dialog {\n  position: fixed;\n  z-index: 5000;\n  width: 85%;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  background-color: #FAFAFC;\n  text-align: center;\n  border-radius: 3px;\n  overflow: hidden;\n}\nwx-modal .wx-modal-dialog-hd {\n  padding: 1.2em 20px .5em;\n}\nwx-modal .wx-modal-dialog-hd strong {\n  font-weight: normal;\n  font-size: 17px;\n}\nwx-modal .wx-modal-dialog-bd {\n  text-align: left;\n  padding: 0 20px;\n  font-size: 15px;\n  color: #888;\n  word-wrap: break-word;\n  word-break: break-all;\n}\nwx-modal .wx-modal-dialog-ft {\n  position: relative;\n  line-height: 42px;\n  margin-top: 20px;\n  font-size: 17px;\n  display: -webkit-flex;\n  display: flex;\n}\nwx-modal .wx-modal-dialog-ft:before {\n  content: " ";\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 1px;\n  border-top: 1px solid #D5D5D6;\n  color: #D5D5D6;\n  -webkit-transform-origin: 0 0;\n          transform-origin: 0 0;\n  -webkit-transform: scaleY(0.5);\n          transform: scaleY(0.5);\n}\nwx-modal .wx-modal-dialog-ft a {\n  position: relative;\n  display: block;\n  -webkit-flex: 1;\n          flex: 1;\n  text-decoration: none;\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n}\nwx-modal .wx-modal-dialog-ft a[hidden] {\n  display: none;\n}\nwx-modal .wx-modal-dialog-ft a:active {\n  background-color: #eee;\n}\nwx-modal .wx-modal-btn-primary {\n  color: #3CC51F;\n}\nwx-modal .wx-modal-btn-default {\n  color: #000000;\n}\nwx-modal .wx-modal-btn-default:before {\n  content: " ";\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: 1px;\n  height: 100%;\n  border-right: 1px solid #D5D5D6;\n  color: #D5D5D6;\n  -webkit-transform-origin: 100% 0;\n          transform-origin: 100% 0;\n  -webkit-transform: scaleX(0.5);\n          transform: scaleX(0.5);\n}\n@media screen and (min-width: 1024px) {\n  wx-modal .wx-modal-dialog {\n    width: 35%;\n  }\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\nwx-picker {\n  display: block;\n}\nwx-picker-view {\n  display: block;\n}\nwx-picker-view .wrapper {\n  display: -webkit-flex;\n  display: flex;\n  position: relative;\n  overflow: hidden;\n}\nwx-picker-view[hidden] {\n  display: none;\n}\nwx-picker-view-column {\n  -webkit-flex: 1;\n  flex: 1;\n  position: relative;\n  height: 100%;\n  overflow: hidden;\n}\n.wx-picker__mask {\n  transform: translateZ(0);\n  -webkit-transform: translateZ(0);\n}\n.wx-picker__indicator,\n.wx-picker__mask {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  z-index: 3;\n}\n.wx-picker__mask {\n  top: 0;\n  height: 100%;\n  margin: 0 auto;\n  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), linear-gradient(0deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));\n  background-position: top,bottom;\n  background-size: 100% 102px;\n  background-repeat: no-repeat;\n}\n.wx-picker__indicator {\n  height: 34px;\n  top: 102px;\n}\n.wx-picker__indicator,\n.wx-picker__mask {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  z-index: 3;\n  pointer-events: none;\n}\n.wx-picker__content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n}\n.wx-picker__indicator:after,\n.wx-picker__indicator:before {\n  content: " ";\n  position: absolute;\n  left: 0;\n  right: 0;\n  height: 1px;\n  color: #e5e5e5;\n}\n.wx-picker__indicator:before {\n  top: 0;\n  border-top: 1px solid #e5e5e5;\n  -webkit-transform-origin: 0 0;\n  transform-origin: 0 0;\n  -webkit-transform: scaleY(0.5);\n  transform: scaleY(0.5);\n}\n.wx-picker__indicator:after {\n  bottom: 0;\n  border-bottom: 1px solid #e5e5e5;\n  -webkit-transform-origin: 0 100%;\n  transform-origin: 0 100%;\n  -webkit-transform: scaleY(0.5);\n  transform: scaleY(0.5);\n}\n.wx-picker__indicator:after,\n.wx-picker__indicator:before {\n  content: " ";\n  position: absolute;\n  left: 0;\n  right: 0;\n  height: 1px;\n  color: #e5e5e5;\n}\nwx-progress {\n  display: -webkit-flex;\n  display: flex;\n  -webkit-align-items: center;\n          align-items: center;\n}\nwx-progress[hidden] {\n  display: none;\n}\n.wx-progress-bar {\n  background-color: #EBEBEB;\n  -webkit-flex: 1;\n          flex: 1;\n}\n.wx-progress-inner-bar {\n  width: 0;\n  height: 100%;\n}\n.wx-progress-info {\n  margin-top: 0;\n  margin-bottom: 0;\n  min-width: 2em;\n  margin-left: 15px;\n  font-size: 16px;\n}\nwx-radio {\n  -webkit-tap-highlight-color: transparent;\n  display: inline-block;\n}\nwx-radio[hidden] {\n  display: none;\n}\nwx-radio .wx-radio-wrapper {\n  display: -webkit-inline-flex;\n  display: inline-flex;\n  -webkit-align-items: center;\n          align-items: center;\n  vertical-align: middle;\n}\nwx-radio .wx-radio-input {\n  -webkit-appearance: none;\n          appearance: none;\n  margin-right: 5px;\n  outline: 0;\n  border: 1px solid #D1D1D1;\n  background-color: #ffffff;\n  border-radius: 50%;\n  width: 22px;\n  height: 22px;\n  position: relative;\n}\nwx-radio .wx-radio-input.wx-radio-input-checked {\n  background-color: #09BB07;\n  border-color: #09BB07;\n}\nwx-radio .wx-radio-input.wx-radio-input-checked:before {\n  font: normal normal normal 14px/1 "weui";\n  content: "\\EA08";\n  color: #ffffff;\n  font-size: 18px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -48%) scale(0.73);\n  -webkit-transform: translate(-50%, -48%) scale(0.73);\n}\nwx-radio .wx-radio-input.wx-radio-input-disabled {\n  background-color: #E1E1E1;\n  border-color: #D1D1D1;\n}\nwx-radio .wx-radio-input.wx-radio-input-disabled:before {\n  color: #ADADAD;\n}\nwx-radio-group {\n  display: block;\n}\nwx-radio-group[hidden] {\n  display: none;\n}\nwx-scroll-view {\n  display: block;\n  width: 100%;\n}\nwx-scroll-view[hidden] {\n  display: none;\n}\n.wx-scroll-view {\n  position: relative;\n  -webkit-overflow-scrolling: touch;\n  height: 100%;\n}\nwx-swiper {\n  display: block;\n  height: 150px;\n}\nwx-swiper[hidden] {\n  display: none;\n}\nwx-swiper .wx-swiper-wrapper {\n  overflow: hidden;\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\nwx-swiper .wx-swiper-slides {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n}\nwx-swiper .wx-swiper-slides-tracking {\n  transition: none;\n}\nwx-swiper .wx-swiper-dots {\n  position: absolute;\n  font-size: 20px;\n  line-height: 20px;\n}\nwx-swiper .wx-swiper-dots-horizontal {\n  left: 50%;\n  bottom: 0;\n  text-align: center;\n  white-space: nowrap;\n  height: 24px;\n  -webkit-transform: translate(-50%, 0);\n  transform: translate(-50%, 0);\n}\nwx-swiper .wx-swiper-dots-vertical {\n  right: 0;\n  top: 50%;\n  text-align: right;\n  width: 24px;\n  -webkit-transform: translate(0, -50%);\n  transform: translate(0, -50%);\n}\nwx-swiper .wx-swiper-dot {\n  display: inline-block;\n  width: 24px;\n  text-align: center;\n  cursor: pointer;\n  color: grey;\n  transition-property: color;\n  transition-timing-function: ease;\n}\nwx-swiper .wx-swiper-dot-active {\n  color: black;\n}\nwx-swiper .wx-swiper-dot::before {\n  content: "\\2022";\n}\nwx-swiper-item {\n  display: block;\n  overflow: hidden;\n  transition-property: -webkit-transform;\n  transition-property: transform;\n  transition-property: transform, -webkit-transform;\n  transition-timing-function: ease;\n  will-change: transform;\n}\nwx-swiper-item[hidden] {\n  display: none;\n}\nwx-slider {\n  margin: 10px 18px;\n  padding: 0;\n  display: block;\n}\nwx-slider[hidden] {\n  display: none;\n}\nwx-slider .wx-slider-wrapper {\n  display: -webkit-flex;\n  display: flex;\n  -webkit-align-items: center;\n          align-items: center;\n  min-height: 16px;\n}\nwx-slider .wx-slider-tap-area {\n  -webkit-flex: 1;\n          flex: 1;\n  padding: 8px 0;\n}\nwx-slider .wx-slider-handle-wrapper {\n  position: relative;\n  height: 2px;\n  border-radius: 5px;\n  background-color: #e9e9e9;\n  cursor: pointer;\n  transition: background-color 0.3s ease;\n  -webkit-tap-highlight-color: transparent;\n}\nwx-slider .wx-slider-track {\n  height: 100%;\n  border-radius: 6px;\n  background-color: #1aad19;\n  transition: background-color 0.3s ease;\n}\nwx-slider .wx-slider-handle {\n  position: absolute;\n  width: 28px;\n  height: 28px;\n  left: 50%;\n  top: 50%;\n  margin-left: -14px;\n  margin-top: -14px;\n  cursor: pointer;\n  border-radius: 50%;\n  background-color: #fff;\n  z-index: 2;\n  transition: border-color 0.3s ease;\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n}\nwx-slider .wx-slider-step {\n  position: absolute;\n  width: 100%;\n  height: 2px;\n  background: transparent;\n  z-index: 1;\n}\nwx-slider .wx-slider-value {\n  color: #888;\n  font-size: 14px;\n  margin-left: 1em;\n}\nwx-slider .wx-slider-disabled .wx-slider-track {\n  background-color: #ccc;\n}\nwx-slider .wx-slider-disabled .wx-slider-handle {\n  background-color: #FFF;\n  border-color: #ccc;\n}\n* {\n  margin: 0;\n}\nwx-switch {\n  -webkit-tap-highlight-color: transparent;\n  display: inline-block;\n}\nwx-switch[hidden] {\n  display: none;\n}\nwx-switch .wx-switch-wrapper {\n  display: -webkit-inline-flex;\n  display: inline-flex;\n  -webkit-align-items: center;\n          align-items: center;\n  vertical-align: middle;\n}\nwx-switch .wx-switch-input {\n  -webkit-appearance: none;\n          appearance: none;\n  position: relative;\n  width: 52px;\n  height: 32px;\n  margin-right: 5px;\n  border: 1px solid #DFDFDF;\n  outline: 0;\n  border-radius: 16px;\n  box-sizing: border-box;\n  background-color: #DFDFDF;\n  transition: background-color 0.1s, border 0.1s;\n}\nwx-switch .wx-switch-input:before {\n  content: " ";\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 50px;\n  height: 30px;\n  border-radius: 15px;\n  background-color: #FDFDFD;\n  transition: -webkit-transform .3s;\n  transition: transform .3s;\n  transition: transform .3s, -webkit-transform .3s;\n}\nwx-switch .wx-switch-input:after {\n  content: " ";\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 30px;\n  height: 30px;\n  border-radius: 15px;\n  background-color: #FFFFFF;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);\n  transition: -webkit-transform .3s;\n  transition: transform .3s;\n  transition: transform .3s, -webkit-transform .3s;\n}\nwx-switch .wx-switch-input.wx-switch-input-checked {\n  border-color: #04BE02;\n  background-color: #04BE02;\n}\nwx-switch .wx-switch-input.wx-switch-input-checked:before {\n  -webkit-transform: scale(0);\n          transform: scale(0);\n}\nwx-switch .wx-switch-input.wx-switch-input-checked:after {\n  -webkit-transform: translateX(20px);\n          transform: translateX(20px);\n}\nwx-switch .wx-checkbox-input {\n  margin-right: 5px;\n  -webkit-appearance: none;\n          appearance: none;\n  outline: 0;\n  border: 1px solid #D1D1D1;\n  background-color: #FFFFFF;\n  border-radius: 3px;\n  width: 22px;\n  height: 22px;\n  position: relative;\n  color: #09BB07;\n}\nwx-switch .wx-checkbox-input.wx-checkbox-input-checked:before {\n  font: normal normal normal 14px/1 "weui";\n  content: "\\EA08";\n  color: inherit;\n  font-size: 22px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -48%) scale(0.73);\n  -webkit-transform: translate(-50%, -48%) scale(0.73);\n}\nwx-switch .wx-checkbox-input.wx-checkbox-input-disabled {\n  background-color: #E1E1E1;\n}\nwx-switch .wx-checkbox-input.wx-checkbox-input-disabled:before {\n  color: #ADADAD;\n}\nwx-text[selectable] {\n  user-select: text;\n  -webkit-user-select: text;\n}\n.wx-toast {\n  position: fixed;\n  z-index: 2000000000;\n  width: 7.6em;\n  min-height: 7.6em;\n  top: 180px;\n  left: 50%;\n  margin-left: -3.8em;\n  background: rgba(40, 40, 40, 0.75);\n  text-align: center;\n  border-radius: 5px;\n  color: #FFFFFF;\n  font-size: 16px;\n  line-height: normal;\n}\n.wx-toast-icon {\n  margin-top: 14px;\n  margin-bottom: 8px;\n  font-family: weui;\n  font-style: normal;\n}\n.wx-toast-content {\n  margin: 0 0 15px;\n}\n.wx-toast-mask {\n  position: fixed;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.6);\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\nwx-video {\n  width: 300px;\n  height: 225px;\n  display: inline-block;\n  line-height: 0;\n  overflow: hidden;\n}\nwx-video[hidden] {\n  display: none;\n}\nwx-video .wx-video-container {\n  width: 100%;\n  height: 100%;\n  background-color: black;\n  display: inline-block;\n  position: relative;\n}\nwx-video video {\n  width: 100%;\n  height: 100%;\n}\nwx-video .wx-video-bar {\n  height: 44px;\n  background-color: rgba(0, 0, 0, 0.5);\n  overflow: hidden;\n  position: absolute;\n  bottom: 0;\n  right: 0;\n  display: -webkit-flex;\n  display: flex;\n  -webkit-align-items: center;\n          align-items: center;\n  padding: 0 10px;\n}\nwx-video .wx-video-bar.full {\n  left: 0;\n}\nwx-video .wx-video-bar.part {\n  margin: 5px;\n  border-radius: 5px;\n  height: 34px;\n}\nwx-video .wx-video-bar > .wx-video-controls {\n  display: -webkit-flex;\n  display: flex;\n  -webkit-flex-grow: 1;\n          flex-grow: 1;\n  margin: 0 8.5px;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-button {\n  width: 13px;\n  height: 15px;\n  margin: 14.5px 12.5px 14.5px 0;\n  background-size: cover;\n  background-position: 50% 50%;\n  background-repeat: no-repeat;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-button.play {\n  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAeCAYAAAAy2w7YAAAAAXNSR0IArs4c6QAAAWhJREFUSA1j+P///0cgBoHjQGzCQCsAtgJB/AMy5wCxGNXtQ9iBwvoA5BUCMQvVLEQxHpNzDSjkRhXLMM3GKrIeKKpEkYVYjcUu+AMo3ALE3GRZiN1MvKKPgbIRJFuG10j8koeA0gZEW4jfLIKyf4EqpgOxMEELCRpFnIJ3QGU5QMyM00LizCFa1SWgSkeslhFtBGkKVwGVy6FYSJp+klR/A6quB2JOkIWMIK0oNlOf8xBoZDE9LAI7nYn6HsBq4l96WHQEaLUpAyiOaASeAM2NgvuPBpaACt82IEYtfKls0UagecpwXyAzqGTRdaA57sjmYrAptAjUsCkGYlYMg9EFyLQI1IiZB8Ti6Obh5JNh0QmgHlOcBuKSIMGi50C18UDMiMssvOJEWPQLqKYbiHnxGkRIkoBF24DyaoTMIEoeh0W3geI+RBlArCI0iz4D+RVAzEasfqLVAQ19AcSg5LoYiKWI1kiiQgCMBLnEEcfDSgAAAABJRU5ErkJggg==\');\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-button.pause {\n  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAAAXNSR0IArs4c6QAAAFlJREFUSA3tksEKACAIQ7X//5zq98wOgQayum8QaGweHhMzG/6OujzKAymn+0LMqivu1XznWmX8/echTIyMyAgTwA72iIwwAexgj8gIE8CO3aMRbDPMaEy5BRGaKcZv8YxRAAAAAElFTkSuQmCC\');\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-progress {\n  height: 2px;\n  margin: 21px 12px;\n  background-color: rgba(255, 255, 255, 0.5);\n  position: relative;\n  -webkit-flex-grow: 2;\n          flex-grow: 2;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-progress > .wx-video-ball {\n  width: 16px;\n  height: 16px;\n  padding: 14px;\n  position: absolute;\n  top: -21px;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-progress > .wx-video-ball > .wx-video-inner {\n  width: 100%;\n  height: 100%;\n  background-color: #ffffff;\n  border-radius: 50%;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-progress > .wx-video-inner {\n  width: 0;\n  height: 100%;\n  background-color: #ffffff;\n}\nwx-video .wx-video-bar > .wx-video-controls > .wx-video-time {\n  height: 14.5px;\n  line-height: 14.5px;\n  margin-top: 15px;\n  margin-bottom: 14.5px;\n  font-size: 12px;\n  color: #cbcbcb;\n}\nwx-video .wx-video-bar > .wx-video-danmu-btn {\n  white-space: nowrap;\n  line-height: 1;\n  padding: 2px 10px;\n  border: 1px solid #fff;\n  border-radius: 5px;\n  font-size: 13px;\n  color: #fff;\n  margin: 0 8.5px;\n}\nwx-video .wx-video-bar > .wx-video-danmu-btn.active {\n  border-color: #48c23d;\n  color: #48c23d;\n}\nwx-video .wx-video-bar > .wx-video-fullscreen {\n  width: 17px;\n  height: 17px;\n  /*margin: 13.5px 16px 13.5px 17px;*/\n  margin: 0 8.5px;\n  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAQRJREFUWAnt1d0NwiAQB/CmS7hHX5zFxLF0Ah2hE/lg7BT4PyMJUj6Oyt299BIioZT7ARYG59wLpTXmoXOMGO/QecxtwyWW4o42AupGALkFdX1MkHxE3Q7jIbQPqNthQogpJoZkMLRlsn/gFMQEk4OoY0oQVUwNoobhQFQwgMxUKFkt0C8+Zy61d8SeR5iHWCLOwF/MCb8Tp//ex3QFsE1HlCfKFUX2OijNFMnPKD7k76YcBoL402Zh8B77+MjlXrVvwfglXA32b0MrRgxCE2nBiEJaMOIQLkYFwsGoQWoYVUgJow4pYD4Weq4ayBqfwDYQmnUK0301kITujuawu65/l2B5A4z3Qe+Ut7EBAAAAAElFTkSuQmCC\');\n  background-size: cover;\n  background-position: 50% 50%;\n  background-repeat: no-repeat;\n}\nwx-video .wx-video-danmu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  margin-bottom: 44px;\n}\nwx-video .wx-video-danmu > .wx-video-danmu-item {\n  line-height: 1;\n  position: absolute;\n  color: #ffffff;\n  white-space: nowrap;\n  left: 100%;\n  transition: 3s linear;\n}\nwx-view {\n  display: block;\n}\nwx-view[hidden] {\n  display: none;\n}\n.navigator-hover {\n  background-color: rgba(0, 0, 0, 0.1);\n  opacity: 0.7;\n}\nwx-navigator {\n  height: auto;\n  width: auto;\n  display: block;\n}\nwx-navigator[hidden] {\n  display: none;\n}\nwx-action-sheet-cancel {\n  background-color: #FFFFFF;\n  font-size: 18px;\n}\nwx-action-sheet-cancel .wx-action-sheet-middle {\n  background-color: #EFEFF4;\n  height: 6px;\n  width: 100%;\n}\nwx-action-sheet-cancel .wx-action-sheet-cancel {\n  background-color: inherit;\n  position: relative;\n  padding: 10px 0;\n  text-align: center;\n  font-size: inherit;\n  display: block;\n}\nwx-action-sheet-cancel .wx-action-sheet-cancel:before {\n  content: " ";\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  border-top: 1px solid #D9D9D9;\n  color: #D9D9D9;\n  -webkit-transform-origin: 0 0;\n  transform-origin: 0 0;\n  -webkit-transform: scaleY(0.5);\n  transform: scaleY(0.5);\n}\nwx-action-sheet-cancel .wx-action-sheet-cancel:active {\n  background-color: #ECECEC;\n}\n.textarea-placeholder {\n  color: grey;\n}\nwx-textarea {\n  width: 300px;\n  height: 150px;\n  display: block;\n  position: relative;\n}\nwx-textarea textarea {\n  outline: none;\n  border: none;\n  resize: none;\n  background-color: transparent;\n  line-height: 1.2;\n  z-index: 2;\n  position: absolute;\n  padding: 0;\n  font-family: inherit;\n  background: transparent;\n}\nwx-textarea .compute {\n  color: transparent;\n  top: 0;\n  z-index: 0;\n}\nwx-textarea div {\n  word-break: break-all;\n  line-height: 1.2;\n  font-family: inherit;\n  position: absolute;\n}\n/*wx-share-button {*/\n/*display: inline-block;*/\n/*line-height: 0;*/\n/*z-index: 9999999999;*/\n/*-webkit-tap-highlight-color: transparent;*/\n/*>.wx-share-button-wrapper {*/\n/*width: 36px;*/\n/*height: 36px;*/\n/*display: inline-block;*/\n/*background-size: 100% 100%;*/\n/*background-repeat: no-repeat;*/\n/*-webkit-tap-highlight-color: transparent;*/\n/*}*/\n/*}*/\nwx-contact-button {\n  display: inline-block;\n  line-height: 0;\n  z-index: 9999999999;\n}\nwx-contact-button > .wx-contact-button-wrapper {\n  width: 36px;\n  height: 36px;\n  display: inline-block;\n  background-size: 100% 100%;\n  background-repeat: no-repeat;\n  -webkit-tap-highlight-color: transparent;\n}\n\n/*# sourceMappingURL=wx-components.css.map */'),
   wx.version = {
-    updateTime: "2016.12.18 20:39:33",
+    updateTime: "2016.12.22 20:03:49",
     info: "",
     version: 30
   };;
