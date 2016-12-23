@@ -13,7 +13,8 @@
     "features/modal",
     "features/toast",
     "features/switchTab",
-    "features/systemInfo"
+    "features/systemInfo",
+    "features/imagePreview"
   ],
   "window": {
     "enablePullDownRefresh": true,

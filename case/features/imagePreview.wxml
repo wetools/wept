@@ -1,0 +1,3 @@
+<view>
+  <button type="default" size="default" bindtap="previewImage">previewImage</button>
+</view>
