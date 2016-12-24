@@ -1,5 +1,7 @@
 # WEPT (Wechat app page development tool)
 
+**小程序官方调整了内部架构实现，请暂时不要使用 WEPT 0.7.0**
+
 [![NPM version](https://img.shields.io/npm/v/wept.svg)](https://www.npmjs.com/package/wept)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
