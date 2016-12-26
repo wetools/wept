@@ -91,5 +91,7 @@ export function onNavigate(data, type = 'navigateTo') {
   //  ext: merge.recursive(true, {}, data),
   //  webviewID: SERVICE_ID
   //})
-  lifeSycleEvent(view.path, view.query,type)
+  view.onReady(() => {
+    lifeSycleEvent(view.path, view.query,type)
+  })
 }

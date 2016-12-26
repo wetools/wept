@@ -1,6 +1,7 @@
 <view>
 
 <view class="group">
+  <navigator url="setData" class="navigator" hover-class="navigator-hover">setData</navigator>
   <navigator url="canvas" class="navigator" hover-class="navigator-hover">canvas</navigator>
   <navigator url="disableScroll" class="navigator" hover-class="navigator-hover">disableScroll</navigator>
   <navigator url="downloadFile" class="navigator" hover-class="navigator-hover">downloadFile</navigator>

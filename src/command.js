@@ -25,7 +25,7 @@ import Preview from './component/preview'
 import confirm from './component/confirm'
 import Toast from './component/toast'
 import mask from './component/mask'
-import {getRedirectData, validPath, dataURItoBlob} from './util'
+import {getRedirectData, validPath, dataURItoBlob, toNumber} from './util'
 
 let appData = {} //eslint-disable-line
 let fileIndex = 0
@@ -99,7 +99,7 @@ export function stopPullDownRefresh(data) {
 // publish event to views
 export function publish(data) {
   let all_ids = viewManage.getViewIds()
-  let ids = data.webviewIds || all_ids
+  let ids = toNumber(data.webviewIds) || all_ids
   data.act = 'sendMsgFromAppService'
   let obj = {
     msg: data,

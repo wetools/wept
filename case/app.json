@@ -1,6 +1,7 @@
 {
   "pages": [
     "features/index",
+    "features/setData",
     "features/tab",
     "features/canvas",
     "features/disableScroll",

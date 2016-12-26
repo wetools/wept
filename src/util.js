@@ -115,3 +115,9 @@ export function range(n, start = 0, suffix = '') {
   }
   return arr
 }
+
+export function toNumber(arr) {
+  if (Array.isArray(arr)) return arr.map(n => Number(n))
+  if (typeof arr === 'string') return Number(arr)
+  return arr
+}

@@ -2,6 +2,7 @@ import Bus from './bus'
 import merge from 'merge'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
+import throttle from 'throttleit'
 
 function isMap(path) {
   return /^http(s)?:\/\/(apis\.map|3gimg\.qq\.com)/.test(path)
@@ -41,17 +42,26 @@ export default class View extends Emitter {
         return self.getConfig()
       }
     })
-    Bus.on('ready', viewId => {
-      if (viewId == id) {
-        this.ready = true
-        let cbs = this.readyCallbacks
-        for (let cb of cbs) {
-          cb()
+    if (this.isMap) {
+      this.el.contentWindow.addEventListener('load', () => {
+        this._onReady()
+      })
+    } else {
+      Bus.on('ready', viewId => {
+        if (viewId == id) {
+          this._onReady()
         }
-        this.readyCallbacks = null
-      }
-    })
+      })
+    }
     this.readyCallbacks = []
+  }
+  _onReady() {
+    this.ready = true
+    let cbs = this.readyCallbacks
+    for (let cb of cbs) {
+      cb()
+    }
+    this.readyCallbacks = null
   }
   onReady(cb) {
     if (this.ready) return cb()
