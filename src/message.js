@@ -51,6 +51,8 @@ function sdk(data) {
     } else if (n == 'onKeyboardComplete') {
       showConsole(msg.sdkName, 'REGISTER_SDK')
     } else if (n == 'getPublicLibVersion'
+            || n == 'onKeyboardConfirm'
+            || n == 'disableScrollBounce'
             || n == 'onTextAreaHeightChange'
             || n == 'onKeyboardShow') {
       //do nothing

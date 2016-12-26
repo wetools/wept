@@ -17,6 +17,11 @@
         return ua +' appservice webview/10000'
       }
     })
+    Object.defineProperty(console, 'warn', {
+      get : function() {
+        return function() {}
+      }
+    })
   })()
   </script>
   <script src="/script/bridge.js?v={{= _.version}}" type="text/javascript"></script>
