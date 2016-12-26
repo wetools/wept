@@ -25,6 +25,7 @@ import Preview from './component/preview'
 import confirm from './component/confirm'
 import Toast from './component/toast'
 import mask from './component/mask'
+import qrscan from './component/qrscan'
 import {getRedirectData, validPath, dataURItoBlob, toNumber} from './util'
 
 let appData = {} //eslint-disable-line
@@ -113,7 +114,13 @@ export function publish(data) {
 }
 
 export function scanCode(data) {
-  console.warn('WEPT 暂不支持')
+  qrscan().then(val => {
+    onSuccess(data, {
+      result: val
+    })
+  }, () => {
+    onCancel(data)
+  })
 }
 
 export function WEBVIEW_READY (data) {

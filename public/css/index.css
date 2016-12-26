@@ -489,7 +489,16 @@ xpopup
   transition-duration: 0.3s;
 }
 .cd-popup-container p {
-  padding: 3em 1em;
+  padding: 1em;
+}
+.cd-popup-container input {
+  outline: none;
+  box-shadow: none;
+  line-height: 40px;
+  width: 100%;
+  display: block;
+  font-size: 30px;
+  overflow: hidden;
 }
 .cd-popup-container .cd-buttons:after {
   content: "";
