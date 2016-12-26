@@ -1,0 +1,5 @@
+<view>
+  <view>{{name}}</view>
+  <view>{{gender}}</view>
+  <button size="default" bindtap="changeData">changeData</button>
+</view>
