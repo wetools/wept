@@ -1,10 +1,10 @@
 # WEPT (Wechat app page development tool)
 
-**小程序官方调整了内部架构实现，请暂时不要使用 WEPT 0.7.0**
-
 [![NPM version](https://img.shields.io/npm/v/wept.svg)](https://www.npmjs.com/package/wept)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
+
+**[0.7.0 测试版已支持 122100 大部分新版 API](https://github.com/chemzqm/wept/wiki/122100-%E6%96%B0%E7%89%88-API-%E6%94%AF%E6%8C%81%E6%83%85%E5%86%B5)**
 
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
