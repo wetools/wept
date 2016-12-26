@@ -1,5 +1,5 @@
 import merge from 'merge'
-import {parsePath} from './util'
+import {parsePath, isTabbar} from './util'
 import Bus from './bus'
 import {currentView} from './viewManage'
 
@@ -80,6 +80,11 @@ export function onBack() {
 export function onNavigate(data, type = 'navigateTo') {
   if (!data.args.url) throw new Error('url not found')
   let view = currentView()
+  if ((type == 'navigateTo' || type == 'redirectTo')
+      && isTabbar(view.url)) {
+    console.error('wx.navigateTo wx.redirectTo 不允许跳转到 tabbar 页面，请使用 wx.switchTab')
+    return
+  }
   //message({
   //  to: 'appservice',
   //  msg: {
