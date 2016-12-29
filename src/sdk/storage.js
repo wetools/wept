@@ -97,6 +97,4 @@ let storage = {
 
 Emitter(storage)
 
-window.__storage = storage
-
 export default storage
