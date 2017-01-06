@@ -1,3 +1,12 @@
+# 0.7.0
+
+* 同步到微信 1 月 5 日版本： 130400
+* BUG 修复：
+  * `wx.canvasToTempFilePath` 无法正确保存图片
+  * wxml 中支持 import/include 不使用 wxml 后缀
+  * `wx.uploadFile` 返回 data 为服务端返回字符串
+  * 切换为地图页面时显示 header
+
 # 0.7.0-beta
 
 * 使用 122100 官方代码，支持除 scanCode 外 API 调用
