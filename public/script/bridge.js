@@ -826,7 +826,7 @@
 
     function i(e) {
       console.warn('请注意，WEPT 不会检测 https 以及安全域名')
-      return false;
+      return true;
     }
     Object.defineProperty(t, "__esModule", {
       value: !0

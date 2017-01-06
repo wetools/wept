@@ -44,7 +44,7 @@ class Header extends Component {
     let hide = top && util.isTabbar(curr.url)
     if (curr.isMap) {
       this.setState({
-        hide: true,
+        hide: false,
         backgroundColor: 'rgb(0, 0, 0)',
         color: '#ffffff',
         title: '位置',
