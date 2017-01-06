@@ -610,12 +610,15 @@ export function uploadFile(data) {
   if (!file) return onError(data, `${args.filePath} not found`)
 
   let headers = args.header || {}
+  if (headers.Referer || headers.rederer) {
+    console.warn('请注意，微信官方不允许设置请求 Referer')
+  }
   let formData = args.formData || {}
   let xhr = new XMLHttpRequest()
   xhr.open('POST', '/remoteProxy')
   xhr.onload = function () {
     if (xhr.status / 100 | 0 == 2) {
-      onSuccess(data, {statusCode: xhr.status})
+      onSuccess(data, {statusCode: xhr.status, data: xhr.responseText})
     } else {
       onError(data, `request error ${xhr.status}`)
     }
