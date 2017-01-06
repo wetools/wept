@@ -2,7 +2,6 @@ import Bus from './bus'
 import merge from 'merge'
 import Emitter from 'emitter'
 import {uid, createFrame, parsePath} from './util'
-import throttle from 'throttleit'
 
 function isMap(path) {
   return /^http(s)?:\/\/(apis\.map|3gimg\.qq\.com)/.test(path)
