@@ -169,6 +169,10 @@
       i["default"].sendMsgToNW({
         sdkName: "__show-new-feature-check"
       })
+    }, window.hhdmb = function() {
+      i["default"].sendMsgToNW({
+        sdkName: "__hhdmbadmb"
+      })
     };
     var u = function() {
         return s
@@ -733,6 +737,7 @@
             errMsg: "request:fail"
           })
         };
+        l.setRequestHeader('X-Remote', t.url);
         var v = 0;
         for (var g in r) "content-type" === g.toLowerCase() && v++;
         v >= 2 && delete r["content-type"];
@@ -747,7 +752,6 @@
             errMsg: "request:fail"
           })
         }, p));
-        l.setRequestHeader('X-Remote', t.url);
         var w = "string" == typeof t.data ? t.data : null;
         try {
           l.send(w)
@@ -821,8 +825,8 @@
     }
 
     function i(e) {
-      console.warn('请注意：WEPT 请求时没有检查安全域名')
-      return true
+      console.warn('请注意，WEPT 不会检测 https 以及安全域名')
+      return false;
     }
     Object.defineProperty(t, "__esModule", {
       value: !0
@@ -848,25 +852,8 @@
     }
 
     function r(e, t) {
-      if (a["default"].isTourist()) return console.group(new Date + " 无 AppID 关联"), console.warn("工具未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.groupEnd(), !0;
-      if (!__wxConfig.urlCheck) return console.group(new Date + " 配置中关闭 URL 校验"), console.warn("开发者主动关闭 URL 检查，工具未检查安全域名"), console.groupEnd(), !0;
-      try {
-        var n = function() {
-          var n = [];
-          n = "download" === t ? u.NetworkConfig.DownloadDomain : "upload" === t ? u.NetworkConfig.UploadDomain : "webscoket" === t ? u.NetworkConfig.WsRequestDomain : u.NetworkConfig.RequestDomain;
-          for (var o = 0; o < n.length; o++)
-            if (e && 0 === e.indexOf(n[o])) return {
-              v: !0
-            };
-          var r = [];
-          n.forEach(function(e) {
-            r.push([e])
-          }), console.group(new Date + " 合法域名校验出错"), console.error(" " + e + " 不在以下合法域名列表中，请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.table(r), console.groupEnd()
-        }();
-        if ("object" === ("undefined" == typeof n ? "undefined" : i(n))) return n.v
-      } catch (o) {
-        return console.error(o), !1
-      }
+      console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html")
+      return !0;
     }
     var i = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
@@ -924,7 +911,7 @@
     "use strict";
 
     function n() {
-      var e = ["Promise", "chrome", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
+      var e = ["chrome", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
       e.forEach(function(e) {
         window[e] = void 0
       }), window.addEventListener("load", function(e) {

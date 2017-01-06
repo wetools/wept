@@ -58,7 +58,7 @@
         command: n,
         ext: i
       };
-      o.comefrom = "webframe", o.webviewID = g.webviewID, o = JSON.parse(JSON.stringify(o)), "backgroundjs" === e && (o.__id = D, D++), window.parent.postMessage(o, "*")
+      o.comefrom = "webframe", o.webviewID = p.webviewID, o = JSON.parse(JSON.stringify(o)), "backgroundjs" === e && (o.__id = D, D++), window.parent.postMessage(o, "*")
     }
 
     function r(e) {
@@ -73,7 +73,7 @@
           url: location.href,
           title: document.title,
           desc: document.title,
-          img_url: document.images.length ? document.images[0].src : p.DEFAULT_SHARE_IMG_URL,
+          img_url: document.images.length ? document.images[0].src : g.DEFAULT_SHARE_IMG_URL,
           link: void 0
         };
       a("backgroundjs", i, M, o)
@@ -88,7 +88,7 @@
         e.forEach(function(e) {
           (t.defaultPurview[e] || t.purviewFormGetA8key[e] || t.purviewFromPreVerify[e]) && (0 === o.length ? i.push(o) : 6 === o.length && (o = [], i.push(o)), o.push((0, m.getSdkDisplayName)(e)))
         }), m.isWeapp || (console.group(new Date + " 当前页面通过 wx.config 获取到的 JSSDK 权限如下"), console.table(i), console.groupEnd())
-      }(), R[e] && R[e].fn ? R[e].fn(t) : p.registerMethod[e] && r(p.registerMethod[e])
+      }(), R[e] && R[e].fn ? R[e].fn(t) : g.registerMethod[e] && r(g.registerMethod[e])
     }
 
     function s(e, t, n) {
@@ -128,8 +128,8 @@
       return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
     };
     t["default"] = c;
-    var p = n(2),
-      g = n(3),
+    var g = n(2),
+      p = n(3),
       m = n(4),
       f = n(5),
       I = o(f),
@@ -142,7 +142,7 @@
       S = "SHAKE_HANDS",
       k = "COMMAND_GET_TITLE",
       b = "WEBVIEW_READY";
-    (0, I["default"])(g.isAndroid ? "Android" : "iPhone");
+    (0, I["default"])(p.isAndroid ? "Android" : "iPhone");
     var D = 0,
       C = {},
       R = C._debugCache = {},
@@ -151,9 +151,9 @@
     C.invoke = function(e) {
       var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
         n = arguments[2];
-      return y[e] ? void y[e](t, n) : void(p.NotInvokeSdk[e] || /^__sys/.test(e) || ((0, m.isPrivateSdk)(e) ? (t.__id = +new Date, Q[t.__id] = n) : R[e] = {
+      return y[e] ? void y[e](t, n) : g.NotInvokeSdk[e] || /^__sys/.test(e) ? void 0 : ((0, m.isPrivateSdk)(e) ? (t.__id = +new Date, Q[t.__id] = n) : R[e] = {
         fn: n
-      }, m.isWeapp || (console.group(new Date + " wx." + (0, m.getSdkDisplayName)(e) + " begin"), console.debug((0, m.getSdkArgs)(e, t)), console.groupEnd()), r(e, t)))
+      }, m.isWeapp || (console.group(new Date + " wx." + (0, m.getSdkDisplayName)(e) + " begin"), console.debug((0, m.getSdkArgs)(e, t)), console.groupEnd()), "disableScrollBounce" === e ? void v["default"].togglePullDownRefresh(t.disable) : void r(e, t))
     }, C.on = function(e, t) {
       R[e] = {
         fn: t
@@ -191,7 +191,7 @@
         if (i) {
           var o = t.command,
             r = t.ext;
-          if ("webframe" === t.to && o && g.webviewID === t.webviewID && "INIT_DEVTOOLS_SUCCESS" !== o) {
+          if ("webframe" === t.to && o && p.webviewID === t.webviewID && "INIT_DEVTOOLS_SUCCESS" !== o) {
             if ("MSG_FROM_APPSERVICE" === o) return void u(i);
             if ("COMMAND_GET_TITLE" === o) {
               var d = {
@@ -202,10 +202,10 @@
             var A = i.sdkName,
               c = i.res || {};
             if ((0, m.isPrivateSdk)(A)) {
-              var p = r.args;
-              return void Q[p.__id](c)
+              var g = r.args;
+              return void Q[g.__id](c)
             }
-            g.isAndroid && ("checkJsApi" === A ? c.checkResult = JSON.stringify(c.checkResult) : "chooseImage" === A && (c.localIds = JSON.stringify(c.localIds))), "GET_JSSDK_RES" !== o && "INVOKE_SDK" !== o || s(A, c, r), "STOP_PULL_DOWN_REFRESH" === o && v["default"].reset()
+            p.isAndroid && ("checkJsApi" === A ? c.checkResult = JSON.stringify(c.checkResult) : "chooseImage" === A && (c.localIds = JSON.stringify(c.localIds))), "GET_JSSDK_RES" !== o && "INVOKE_SDK" !== o || s(A, c, r), "STOP_PULL_DOWN_REFRESH" === o && v["default"].reset()
           }
         }
       }
@@ -217,7 +217,6 @@
     });
     var n = {
         reportKeyValue: !0,
-        initReady: !0,
         reportIDKey: !0,
         systemLog: !0
       },
@@ -335,54 +334,60 @@
     }
 
     function o() {
-      if (!v) {
-        v = document.createElement("div");
+      if (!E) {
+        E = document.createElement("div");
         var e = document.createElement("i");
-        "dark" === __wxConfig.window.backgroundTextStyle ? e.style.backgroundImage = "url(" + c["default"] + ")" : e.style.backgroundImage = "url(" + p["default"] + ")", e.style.width = "32px", e.style.position = "absolute", e.style.height = "6px", e.style.left = "50%", e.style.bottom = "20px", e.style.backgroundRepeat = "no-repeat", e.style.marginLeft = "-16px", e.style.backgroundSize = "cover", v.appendChild(e), v.style.width = "100%", v.style.position = "fixed", v.style.top = "0px", v.style.backgroundColor = __wxConfig.window.backgroundColor, document.body.insertBefore(v, document.body.firstChild)
+        "dark" === __wxConfig.window.backgroundTextStyle ? e.style.backgroundImage = "url(" + l["default"] + ")" : e.style.backgroundImage = "url(" + p["default"] + ")", e.style.width = "32px", e.style.position = "absolute", e.style.height = "6px", e.style.left = "50%", e.style.bottom = "20px", e.style.backgroundRepeat = "no-repeat", e.style.marginLeft = "-16px", e.style.backgroundSize = "cover", E.appendChild(e), E.style.width = "100%", E.style.position = "fixed", E.style.top = "0px", E.style.backgroundColor = __wxConfig.window.backgroundColor, document.body.insertBefore(E, document.body.firstChild)
       }
     }
 
     function a() {
       window.addEventListener("touchstart", function(e) {
-        0 == window.scrollY && (o(), f = !0, I = e.touches[0].pageY, window.document.body.style.transition = "all linear 0", v.style.transition = "all linear 0")
+        0 == window.scrollY && (o(), I = !0, h = e.touches[0].pageY, window.document.body.style.transition = "all linear 0", E.style.transition = "all linear 0")
       }, !0)
     }
 
     function r() {
       window.addEventListener("touchmove", function(e) {
-        f && __wxConfig.window.enablePullDownRefresh && (h = e.touches[0].pageY - I, h = Math.max(0, h), h = Math.min(g, h), window.document.body.style.marginTop = h + "px", v.style.height = h + "px")
+        I && __wxConfig.window.enablePullDownRefresh && !M && (v = e.touches[0].pageY - h, v = Math.max(0, v), v = Math.min(m, v), window.document.body.style.marginTop = v + "px", E.style.height = v + "px")
       })
     }
 
     function d() {
       window.addEventListener("touchend", function(e) {
-        f = !1, h > m ? ("function" == typeof E && E(), h = m, window.document.body.style.marginTop = h + "px", v.style.height = h + "px", setTimeout(s, 3e3)) : s()
+        I = !1, v > f ? ("function" == typeof y && y(), v = f, window.document.body.style.marginTop = v + "px", E.style.height = v + "px", setTimeout(s, 3e3)) : s()
       })
     }
 
     function s() {
-      window.document.body.style.transition = "all linear 0.3s", window.document.body.style.marginTop = "0px", v && (v.style.transition = "all linear 0.3s", v.style.height = "0px")
+      window.document.body.style.transition = "all linear 0.3s", window.document.body.style.marginTop = "0px", E && (E.style.transition = "all linear 0.3s", E.style.height = "0px")
+    }
+
+    function u(e) {
+      M = e
     }
     Object.defineProperty(t, "__esModule", {
       value: !0
     });
-    var u = n(3),
-      A = n(7),
-      c = i(A),
-      l = n(8),
-      p = i(l),
-      g = 100,
-      m = 50,
-      f = !1,
-      I = 0,
+    var A = n(3),
+      c = n(7),
+      l = i(c),
+      g = n(8),
+      p = i(g),
+      m = 100,
+      f = 50,
+      I = !1,
       h = 0,
-      v = null,
-      E = null;
+      v = 0,
+      E = null,
+      y = null,
+      M = !1;
     t["default"] = {
       register: function(e) {
-        u.isWeapp && (u.isAndroid || u.isiPhone) && window.__wxConfig && window.__wxConfig.window && window.__wxConfig.window.enablePullDownRefresh && (E = e, a(), r(), d())
+        A.isWeapp && (A.isAndroid || A.isiPhone) && window.__wxConfig && window.__wxConfig.window && window.__wxConfig.window.enablePullDownRefresh && (y = e, a(), r(), d())
       },
-      reset: s
+      reset: s,
+      togglePullDownRefresh: u
     }
   }, function(e, t) {
     "use strict";
@@ -475,9 +480,9 @@
     var A = n(10),
       c = i(A),
       l = n(11),
-      p = i(l),
-      g = n(12),
-      m = i(g),
+      g = i(l),
+      p = n(12),
+      m = i(p),
       f = n(13),
       I = i(f),
       h = {},
@@ -495,7 +500,7 @@
           a = t.position,
           r = t.data,
           d = t.sessionFrom;
-        "default-light" === i ? e.src = "contact" === n ? I["default"] : p["default"] : e.src = "contact" === n ? m["default"] : c["default"], e.style.top = a.top + "px", e.style.left = a.left + "px", e.style.width = a.width + "px", e.style.height = a.height + "px", e.style.zIndex = 1e8, e.dataset.data = r, e.dataset.sessionFrom = d, o && (e.style.display = "none")
+        "default-light" === i ? e.src = "contact" === n ? I["default"] : g["default"] : e.src = "contact" === n ? m["default"] : c["default"], e.style.top = a.top + "px", e.style.left = a.left + "px", e.style.width = a.width + "px", e.style.height = a.height + "px", e.style.zIndex = 1e8, e.dataset.data = r, e.dataset.sessionFrom = d, o && (e.style.display = "none")
       };
     t.insertShareButton = o, t.updateShareButton = a, t.removeShareButton = r, t.insertContactButton = d, t.updateContactButton = s, t.removeContactButton = u
   }, function(e, t) {
@@ -525,7 +530,7 @@
     }
 
     function o() {
-      window.EditBridge = p;
+      window.EditBridge = g;
       var e = document.createEvent("UIEvent");
       e.initEvent("EditBridgeReady", !1, !1), document.dispatchEvent(e), n("contentscript", "SHAKE_HANDS", {})
     }
@@ -555,22 +560,22 @@
             a = t.ext;
           if ("RETURN_RES" === i) {
             var d = parseInt(o.ret),
-              p = a.callID;
-            0 === d ? l[p](null, o.res) : l[p](o.ret, {})
+              g = a.callID;
+            0 === d ? l[g](null, o.res) : l[g](o.ret, {})
           } else if ("FILE_CHANGE" === i) {
-            var g = o.eventType,
+            var p = o.eventType,
               m = o.fileName,
               f = o.info;
-            s && s(g, m, f)
+            s && s(p, m, f)
           } else "WINDOW_CHANGE" === i ? u && u(o.eventType) : "WEBVIEW_SHOW_CHANGE" === i ? A && A(o.editWebview) : "OPEN_FILE" === i && c && c(o)
         }
       }
     });
     var s, u, A, c, l = {},
-      p = {};
-    p.on = function(e, t) {
+      g = {};
+    g.on = function(e, t) {
       "FILE_CHANGE" === e && (s = t), "WINDOW_CHANGE" === e && (u = t), "WEBVIEW_SHOW_CHANGE" === e && (A = t), "OPEN_FILE" === e && (c = t)
-    }, p.getFileList = function(e, t) {
+    }, g.getFileList = function(e, t) {
       var o = void 0,
         a = void 0;
       t ? (o = e, a = t) : (o = {}, a = e);
@@ -580,14 +585,14 @@
       }, {
         callID: r
       })
-    }, p.getFile = function(e, t) {
+    }, g.getFile = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "GET_FILE_DATA", {
         path: e
       }, {
         callID: o
       })
-    }, p.saveFile = function(e, t, o) {
+    }, g.saveFile = function(e, t, o) {
       var a = i();
       l[a] = o, n("backgroundjs", "SAVE_FILE_DATA", {
         path: e,
@@ -595,21 +600,21 @@
       }, {
         callID: a
       })
-    }, p.addFile = function(e, t) {
+    }, g.addFile = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "ADD_FILE", {
         path: e
       }, {
         callID: o
       })
-    }, p.delFile = function(e, t) {
+    }, g.delFile = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "DEL_FILE", {
         path: e
       }, {
         callID: o
       })
-    }, p.rename = function(e, t, o) {
+    }, g.rename = function(e, t, o) {
       var a = i();
       l[a] = o, n("backgroundjs", "RENAME_FILE", {
         oldPath: e,
@@ -617,33 +622,33 @@
       }, {
         callID: a
       })
-    }, p.mkdir = function(e, t) {
+    }, g.mkdir = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "MAKE_DIR", {
         path: e
       }, {
         callID: o
       })
-    }, p.rmdir = function(e, t) {
+    }, g.rmdir = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "RM_DIR", {
         path: e
       }, {
         callID: o
       })
-    }, p.getProjectInfo = function(e) {
+    }, g.getProjectInfo = function(e) {
       var t = i();
       l[t] = e, n("backgroundjs", "GET_PROJECT_INFO", {}, {
         callID: t
       })
-    }, p.setEditWebview = function(e, t) {
+    }, g.setEditWebview = function(e, t) {
       var o = i();
       l[o] = t, n("backgroundjs", "SET_EDIT_WEBVIEW", {
         editWebview: e
       }, {
         callID: o
       })
-    }, p.findStr = function(e, t, o) {
+    }, g.findStr = function(e, t, o) {
       "function" == typeof t && (o = t, t = {
         cwd: "."
       }), t.cwd || (t.cwd = ".");
@@ -654,13 +659,13 @@
       }, {
         callID: a
       })
-    }, p.showFileInFolder = function(e) {
+    }, g.showFileInFolder = function(e) {
       var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
       n("backgroundjs", "SHOW_ITEM_IN_FOLDER", {
         options: t,
         filePath: e
       })
-    }, p.formatCode = function(e) {
+    }, g.formatCode = function(e) {
       var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
         o = arguments[2],
         a = i();
