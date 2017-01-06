@@ -13,7 +13,7 @@ router.post('/upload', function* () {
   }, this)
   let file = form.files.file
   this.body = {file_path: file.path}
-  this.content = 'json'
+  this.type = 'json'
 })
 
 router.get('/', function* () {
@@ -22,7 +22,6 @@ router.get('/', function* () {
 })
 
 router.post('/post', body(), function* () {
-
   this.body = this.request.fields
   this.type = 'json'
 })

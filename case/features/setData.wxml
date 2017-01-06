@@ -1,5 +1,6 @@
 <view>
   <view>{{name}}</view>
   <view>{{gender}}</view>
+  <input type="text" value="{{male}}" />
   <button size="default" bindtap="changeData">changeData</button>
 </view>
