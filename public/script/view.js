@@ -4003,7 +4003,9 @@ var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator 
 };
 ! function() {
   "wechatdevtools" === wx.getPlatform() && (window.addEventListener("DOMContentLoaded", function() {
+    if (window.parent.__wxConfig__.nomap) return
     var e = document.createElement("script");
+    e.async = true;
     e.type = "text/javascript", e.src = "https://map.qq.com/api/js?v=2.exp&callback=__map_jssdk_init", document.body.appendChild(e)
   }), window.__map_jssdk_id = 0, window.__map_jssdk_ready = !1, window.__map_jssdk_callback = [], window.__map_jssdk_init = function() {
     for (__map_jssdk_ready = !0; __map_jssdk_callback.length;) {
