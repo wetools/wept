@@ -1,6 +1,6 @@
 {
   "name": "wept",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Wechat app page development tool",
   "main": "build/server.js",
   "bin": "./bin/wept",
