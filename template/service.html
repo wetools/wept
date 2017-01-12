@@ -17,32 +17,9 @@
         return ua +' appservice webview/10000'
       }
     })
-    Object.defineProperty(console, 'warn', {
-      get : function() {
-        return function() {}
-      }
-    })
   })()
   </script>
   <script src="/script/bridge.js?v={{= _.version}}" type="text/javascript"></script>
-  <script>
-    WeixinJSBridge.subscribe('reload', function (data) {
-      var xhr = new XMLHttpRequest()
-      var p = data.path
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            var text = xhr.responseText
-            var path = p.replace(/\.js$/, '')
-            var code = 'window.__wxRoute="' + path + '";' + text
-            __eval(code)
-          }
-        }
-      }
-      xhr.open('GET', '/generateJavascript?path=' + encodeURIComponent(p))
-      xhr.send()
-    })
-  </script>
   <script src="/script/service.js?v={{= _.version}}" type="text/javascript"></script>
   <script src="/service.js"></script>
 </head>
