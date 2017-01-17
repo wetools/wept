@@ -57,6 +57,7 @@ export function navigateTo(path) {
 
 export function switchTo(path) {
   let p = normalize(path)
+  if (!util.isTabbar(p)) throw new Error(`Can't switchTab ${path} not in tabbar config`)
   let find = false
   Object.keys(views).forEach(key => {
     let view = views[key]
@@ -68,10 +69,13 @@ export function switchTo(path) {
     }
   })
   if (!find) {
-    return Toast(`无法找到存在的 ${path} 页面`, {type: 'error'})
+    let v = curr = new View(p)
+    curr.pid = null
+    views[v.id] = v
+  } else {
+    curr = find
+    curr.show()
   }
-  curr = find
-  curr.show()
   Nprogress.done()
   onRoute()
 }
