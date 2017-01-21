@@ -47,6 +47,7 @@
     "update-notifier": "^1.0.2"
   },
   "devDependencies": {
+    "stack-source-map": "^1.0.6",
     "request-component": "0.0.4",
     "autoscale-canvas": "0.0.3",
     "classnames": "^2.2.5",

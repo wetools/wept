@@ -9,6 +9,7 @@ import tabbar from './tabbar'
 import debounce from 'debounce'
 import * as nativeMethods from './native'
 require('./message')
+require('stack-source-map')()
 
 let ua = navigator.userAgent
 Object.defineProperty(navigator, 'userAgent', {
