@@ -648,7 +648,7 @@ export function downloadFile(data) {
   let xhr = new XMLHttpRequest()
   xhr.responseType = 'arraybuffer'
   let headers = args.header || {}
-  xhr.open('GET', '/remoteProxy?' + encodeURIComponent(args.url), true)
+  xhr.open('GET', '/remoteProxy?url=' + encodeURIComponent(args.url), true)
   xhr.onload = function () {
     if (xhr.status / 100 | 0 == 2 || xhr.status == 304) {
       let b = new Blob([xhr.response], {type: xhr.getResponseHeader("Content-Type")});
@@ -669,7 +669,6 @@ export function downloadFile(data) {
   for (key in headers) {
     xhr.setRequestHeader(key, headers[key]);
   }
-  xhr.setRequestHeader('X-Remote', args.url);
   xhr.send(null)
 }
 
