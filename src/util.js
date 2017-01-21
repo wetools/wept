@@ -9,6 +9,7 @@ export function createFrame(id, src, hidden, parent = document.body) {
   let el = document.createElement('iframe')
   el.setAttribute('src', src)
   el.setAttribute('id', id)
+  el.setAttribute('name', id)
   el.setAttribute('seamless', "seamless")
   el.setAttribute('sandbox', "allow-scripts allow-same-origin allow-forms allow-modals")
   el.setAttribute('frameborder', "0")

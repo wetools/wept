@@ -1,3 +1,4 @@
+/*global __wxConfig__*/
 import Nprogress from 'nprogress'
 import filePicker from 'file-picker'
 import merge from 'merge'
@@ -31,6 +32,40 @@ import {getRedirectData, validPath, dataURItoBlob, toNumber} from './util'
 let appData = {} //eslint-disable-line
 let fileIndex = 0
 let fileStore = {}
+
+Bus.on('reload', view => {
+  let p = view.path
+  let data = appData[p]
+  if (!data) throw new Error('AppData not found for ' + p)
+  let win = __wxConfig__.window
+  let winConfig = win.pages[p] || {}
+  let ptr = winConfig.enablePullDownRefresh || false
+  view.postMessage({
+    act: "sendMsgFromAppService",
+    id: Math.random(),
+    msg: {
+      eventName: "appDataChange",
+      data: {
+        data:{
+          data: data,
+          ext: {
+            webviewId: view.id,
+            enablePullDownRefresh: ptr
+          },
+          options: {
+            firstRender: true
+          }
+        }
+      },
+      sdkName: "publish",
+      to: "backgroundjs",
+      comefrom: "webframe",
+      command: "COMMAND_FROM_ASJS"
+    },
+    command: "MSG_FROM_APPSERVICE",
+  })
+  console.info('Reloaded ' + view.url)
+})
 
 export function getPublicLibVersion() {
   //ignore
@@ -126,7 +161,7 @@ export function scanCode(data) {
 }
 
 export function WEBVIEW_READY (data) {
-  console.log(data)
+  //console.log(data)
 }
 
 export function redirectTo(data) {

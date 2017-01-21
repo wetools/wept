@@ -1,5 +1,4 @@
 import Nprogress from 'nprogress'
-import Toast from './component/toast'
 import * as util from './util'
 import Bus from './bus'
 import View from './view'

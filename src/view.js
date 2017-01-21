@@ -24,23 +24,6 @@ export default class View extends Emitter {
     let url = external ? path : `/app/${o.path}.wxml?w=${width}&r=${ratio}`
     this.el = createFrame(`view-${id}`, url, false, root)
     this.ready = false
-    let ua = window.navigator.userAgent
-    Object.defineProperty(this.el.contentWindow.navigator, 'userAgent', {
-      get : function () {
-        return `${ua} wechatdevtools webview/${id}`
-      }
-    })
-    Object.defineProperty(this.el.contentWindow.console, 'warn', {
-      get : function () {
-        return function () {}
-      }
-    })
-    let self = this
-    Object.defineProperty(this.el.contentWindow, '__wxConfig', {
-      get: function () {
-        return self.getConfig()
-      }
-    })
     if (this.isMap) {
       this.el.contentWindow.addEventListener('load', () => {
         this._onReady()
@@ -55,8 +38,12 @@ export default class View extends Emitter {
     this.readyCallbacks = []
   }
   _onReady() {
-    this.ready = true
     let cbs = this.readyCallbacks
+    if (!cbs) {
+      Bus.emit('reload', this)
+      return
+    }
+    this.ready = true
     for (let cb of cbs) {
       cb()
     }
@@ -73,22 +60,8 @@ export default class View extends Emitter {
       latitude: data.latlng.lat,
       longitude: data.latlng.lng
     }
+    // TODO implement map location
     console.log(this.location)
-  }
-  getConfig() {
-    let win = window.__wxConfig__.window
-    let obj = {
-      backgroundTextStyle: win.backgroundTextStyle || 'dark',
-      backgroundColor: win.backgroundColor || '#fff',
-      enablePullDownRefresh: win.enablePullDownRefresh || false
-    }
-    let winConfig = win.pages[this.path] || {}
-    Object.keys(obj).forEach(function (key) {
-      if (winConfig.hasOwnProperty(key)) {
-        obj[key] = winConfig[key]
-      }
-    })
-    return { window: obj }
   }
   hide() {
     this.el.style.display = 'none'
@@ -98,6 +71,7 @@ export default class View extends Emitter {
   }
   destroy() {
     this.emit('destroy')
+    this.off()
     this.el.parentNode.removeChild(this.el)
   }
   postMessage(data) {
@@ -125,37 +99,8 @@ export default class View extends Emitter {
       this.el.contentWindow.resizeWxss(width, ratio)
     }
   }
-  reloadWxml(path, isGlobal) {
-    if (!isGlobal && path !== this.path) return
+  reloadWxml() {
     // load generateFn and notify view
-    //this.el.contentWindow.__gen()
-    let root = this.el
-    let p = this.path
-    let xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var text = xhr.responseText
-          var func = new Function(text + '\n return $gwx("./' + p + '.wxml")')
-          root.contentWindow.__generateFunc__ = func()
-          this.postMessage({
-            msg: {
-              eventName: "appDataChange",
-              data: {
-                data:{}
-              },
-              sdkName: "publish",
-              to: "backgroundjs",
-              comefrom: "webframe",
-              command: "COMMAND_FROM_ASJS"
-            },
-            command: "MSG_FROM_APPSERVICE",
-          })
-          console.info('Hot apply: ' + p + '.wxml')
-        }
-      }
-    }
-    xhr.open('GET', '/generateFunc?path=' + encodeURIComponent(p))
-    xhr.send()
+    this.el.contentWindow.location.reload()
   }
 }

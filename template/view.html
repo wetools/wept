@@ -4,7 +4,43 @@
   <link href="https://res.wx.qq.com/mpres/htmledition/images/favicon218877.ico" rel="Shortcut Icon">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-  <script> var __path__ = '{{= _.path}}'</script>
+  <script>
+  Object.defineProperty(console, 'warn', {
+    get : function () {
+      return function () {}
+    }
+  })
+  Object.defineProperty(console, 'debug', {
+    get : function () {
+      return function () {}
+    }
+  })
+  ;(function() {
+    var id = window.name.replace(/^view-/, '')
+    var ua = window.navigator.userAgent
+    Object.defineProperty(navigator, 'userAgent', {
+      get : function () {
+        return ua + ' weapp wechatdevtools webview/' + id
+      }
+    })
+  })()
+  var __path__ = '{{= _.path}}'
+  ;(function() {
+    var win = window.parent.__wxConfig__.window
+    var obj = {
+      backgroundTextStyle: win.backgroundTextStyle || 'dark',
+      backgroundColor: win.backgroundColor || '#fff',
+      enablePullDownRefresh: win.enablePullDownRefresh || false
+    }
+    var winConfig = win.pages[__path__] || {}
+    Object.keys(obj).forEach(function (key) {
+      if (winConfig.hasOwnProperty(key)) {
+        obj[key] = winConfig[key]
+      }
+    })
+    window.__wxConfig = {window: obj}
+  })()
+  </script>
   <script src="/script/ViewBridge.js?v={{= _.version}}" async type="text/javascript"></script>
   <script src="/script/view.js?v={{= _.version}}" type="text/javascript"></script>
   <script>

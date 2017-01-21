@@ -66,20 +66,19 @@ socket.onmessage = function (e) {
     } else {
       let path = p.replace(/\.(\w+)$/, '')
       let isGlobal = pages.indexOf(path) == -1
-      if (/\.json$/.test(p)) {
-        onReloadJson(p, isGlobal, data.content)
-      } else if (/\.wxss$/.test(p)) {
+      if (isGlobal || /\.(js|json)$/.test(p) ) {
+        window.location.reload()
+        return
+      }
+      if (/\.wxss$/.test(p)) {
         eachView(view => {
-          view.reloadWxss(p)
+          if (path == view.path) view.reloadWxss(p)
         })
       } else if (/\.wxml$/.test(p)) {
         eachView(view => {
-          view.reloadWxml(path, isGlobal)
+          if (path == view.path) view.reloadWxml(path, isGlobal)
         })
-      } else if (/\.js$/.test(p)) {
-        onReloadJavascript(p, isGlobal)
       }
-      // ignore unknow filetype
     }
   }
 }
