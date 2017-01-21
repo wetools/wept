@@ -707,7 +707,10 @@
         var s, l = new XMLHttpRequest,
           d = t.method || "POST",
           p = (t.complete, u.appconfig.networkTimeout && u.appconfig.networkTimeout.request);
-        l.open(d, '/remoteProxy', !0), l.onreadystatechange = function() {
+        var ms = t.url.match(/^https?:\/\/[^\/]+/)
+        var host = ms ? ms[0] : ''
+        var url = t.url.replace(host, '')
+        l.open(d, url, !0), l.onreadystatechange = function() {
           if (3 == l.readyState, 4 == l.readyState) {
             l.onreadystatechange = null;
             var e = l.status;
@@ -737,7 +740,7 @@
             errMsg: "request:fail"
           })
         };
-        l.setRequestHeader('X-Remote', t.url);
+        if (host) l.setRequestHeader('X-Remote', host);
         var v = 0;
         for (var g in r) "content-type" === g.toLowerCase() && v++;
         v >= 2 && delete r["content-type"];
