@@ -40,6 +40,8 @@ export function systemLog() {
   //ignore
 }
 
+export function showShareMenu() {}
+
 export function switchTab(data) {
   let url = data.args.url
   Nprogress.start()
@@ -871,3 +873,4 @@ function publishPagEevent(eventName, extra) {
   }
   toAppService(obj)
 }
+

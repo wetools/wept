@@ -1,3 +1,4 @@
+console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html")
 ! function(e, t) {
   if ("object" == typeof exports && "object" == typeof module) module.exports = t();
   else if ("function" == typeof define && define.amd) define([], t);
@@ -828,7 +829,6 @@
     }
 
     function i(e) {
-      console.warn('请注意，WEPT 不会检测 https 以及安全域名')
       return true;
     }
     Object.defineProperty(t, "__esModule", {
@@ -855,7 +855,6 @@
     }
 
     function r(e, t) {
-      console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html")
       return !0;
     }
     var i = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
