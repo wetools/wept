@@ -40,7 +40,7 @@ var notifier = new UpdateNotifier({
 notifier.check()
 
 if (program.list) {
-  open('https://github.com/chemzqm/wept/blob/master/history.md')
+  open('https://chemzqm.github.io/wept/#/history')
   process.exit()
 }
 
