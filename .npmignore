@@ -1,4 +1,5 @@
 lib
+docs
 src
 test
 .gitignore
