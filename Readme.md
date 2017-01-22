@@ -1,5 +1,7 @@
 # WEPT (Wechat app page development tool)
 
+[![Join the chat at https://gitter.im/we-wept/Lobby](https://badges.gitter.im/we-wept/Lobby.svg)](https://gitter.im/we-wept/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM version](https://img.shields.io/npm/v/wept.svg)](https://www.npmjs.com/package/wept)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
