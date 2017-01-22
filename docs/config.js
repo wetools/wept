@@ -4,7 +4,7 @@ self.$config = {
   repo: 'chemzqm/wept',
   debug: true,
   twitter: 'chemzqm',
-  'edit-link': 'https://github.com/egoist/docute/blob/master/docs',
+  'edit-link': 'https://github.com/chemzqm/wept/blob/master/docs',
   nav: {
     default: [
       {
