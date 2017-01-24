@@ -44,15 +44,6 @@ export function toAppService(data) {
   }
 }
 
-export function reload(path) {
-  toAppService({
-    msg: {
-      data: { path },
-      eventName: 'reload'
-    }
-  })
-}
-
 export function lifeSycleEvent(path, query, openType) {
   toAppService({
     msg: {

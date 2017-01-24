@@ -1,6 +1,5 @@
 import Nprogress from 'nprogress'
 import * as util from './util'
-import {onReloadJson, onReloadJavascript } from './notify'
 import Bus from './bus'
 import {eachView, navigateBack, navigateTo, currentView} from './viewManage'
 import {onBack, lifeSycleEvent, toAppService} from './service'
@@ -9,7 +8,6 @@ import tabbar from './tabbar'
 import debounce from 'debounce'
 import * as nativeMethods from './native'
 require('./message')
-require('stack-source-map')()
 
 let ua = navigator.userAgent
 Object.defineProperty(navigator, 'userAgent', {
