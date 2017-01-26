@@ -1,3 +1,9 @@
+## 0.8.1
+
+* 修复了 redirectTo、navigateTo 回调函数不起作用 bug [#82](https://github.com/chemzqm/wept/issues/82)
+* 移除了多余的 babel-polyfill 模块依赖
+* 升级 babel 相关模块到最新版
+
 ## 0.8.0
 
 * 页面栈到达 5 个改为显示警告，不报错
