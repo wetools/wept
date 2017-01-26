@@ -69,24 +69,27 @@ export function onBack() {
 }
 
 export function onNavigate(data, type = 'navigateTo') {
-  if (!data.args.url) throw new Error('url not found')
+  if (!data.args.url) {
+    console.error(`url argument not found for wx.${type}`)
+    return
+  }
   let view = currentView()
   if ((type == 'navigateTo' || type == 'redirectTo')
       && isTabbar(view.url)) {
     console.error('wx.navigateTo wx.redirectTo 不允许跳转到 tabbar 页面，请使用 wx.switchTab')
     return
   }
-  //message({
-  //  to: 'appservice',
-  //  msg: {
-  //    errMsg: `${data.sdkName}:ok`,
-  //    url: data.args.url,
-  //    webviewId: view.id
-  //  },
-  //  command: 'GET_ASSDK_RES',
-  //  ext: merge.recursive(true, {}, data),
-  //  webviewID: SERVICE_ID
-  //})
+  message({
+    to: 'appservice',
+    msg: {
+      errMsg: `${data.sdkName}:ok`,
+      url: data.args.url,
+      webviewId: view.id
+    },
+    command: 'GET_ASSDK_RES',
+    ext: merge.recursive(true, {}, data),
+    webviewID: SERVICE_ID
+  })
   view.onReady(() => {
     lifeSycleEvent(view.path, view.query,type)
   })
