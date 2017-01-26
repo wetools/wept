@@ -3,6 +3,7 @@ import Nprogress from 'nprogress'
 import * as command from './command'
 import {toAppService} from './service'
 import {currentView} from './viewManage'
+import {warn} from './util'
 
 window.addEventListener('message', function (e) {
   let data = e.data || {}
@@ -29,14 +30,14 @@ window.addEventListener('message', function (e) {
     if (command.hasOwnProperty(sdkName)) {
       command[sdkName](data)
     } else {
-      console.warn(`Method ${sdkName} not implemented for command!`)
+      warn(`Method ${sdkName} not implemented for command!`)
     }
   } else if (cmd == 'PULLDOWN_REFRESH') {
     command['PULLDOWN_REFRESH'](data)
   } else if (cmd == 'WEBVIEW_READY') {
     // TODO figure out WTF is this
   } else {
-    console.warn(`Command ${cmd} not recognized!`)
+    warn(`Command ${cmd} not recognized!`)
   }
 })
 
@@ -57,7 +58,7 @@ function sdk(data) {
             || n == 'onKeyboardShow') {
       //do nothing
     } else {
-      console.warn(`Ignored EXEC_JSSDK ${JSON.stringify(data.msg)}`)
+      warn(`Ignored EXEC_JSSDK ${JSON.stringify(data.msg)}`)
     }
   }
 }

@@ -122,3 +122,9 @@ export function toNumber(arr) {
   if (typeof arr === 'string') return Number(arr)
   return arr
 }
+
+export function warn(msg) {
+  if (process.env.NODE_ENV != 'production') {
+    console.warn(msg)
+  }
+}
