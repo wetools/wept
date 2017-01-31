@@ -1,3 +1,15 @@
+## weui-wxss
+
+https://github.com/weui/weui-wxss
+
+微信官方设计团队出品的小程序 UI 组件库。
+
+## weui-design
+
+https://github.com/weui/weui-design
+
+微信官方设计团队设计的一套同原生视觉体验一致的基础视觉样式库。
+
 ## wxapp.vim
 
 https://github.com/chemzqm/wxapp.vim

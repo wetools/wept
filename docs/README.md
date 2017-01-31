@@ -1,6 +1,7 @@
 # WEPT
 
-微信小程序 web 端实时运行工具
+微信小程序 web 端实时运行工具，借助 WEPT 和 Chrome
+浏览器，开发者可以更加透明的进行开发和调试。
 
 ## 简介
 
@@ -66,6 +67,10 @@ WEPT 会自动读取运行目录下的 `wept.json` 文件， 一个有效的示�
   "babel": false
 }
 ```
+
+<p class="warning">
+如果你使用 wepy 或者其它工具编译小程序 js 代码，请确保配置 `babel: false`。
+</p>
 
 WEPT 目前支持以下的配置项：
 
