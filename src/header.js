@@ -136,15 +136,15 @@ class Header extends Component {
   onHome() {
     util.navigateHome()
   }
+  refresh() {
+    Bus.emit('refresh')
+  }
   render() {
     let state = this.state
     let iconStyle = {
       borderLeft: `1px solid ${state.color}`,
       borderBottom: `1px solid ${state.color}`
     }
-    let clz = cx('head-option-icon', {
-      'white': state.color == 'white'
-    })
     let homeClz = cx('head-home-icon', {
       'white': state.color == 'white'
     })
@@ -164,10 +164,17 @@ class Header extends Component {
           <i className="head-title-loading" style={{display: state.loading? 'inline-block' : 'none'}}></i>
           <span>{state.title}</span>
         </h3>
-        <div className="head-option" onClick={this.onOptions.bind(this)}>
+        <div className="head-option">
           {do {
-            if (state.sendText) <div onClick={this.onSend.bind(this)}>发送</div>
-            else <i className={clz}></i>
+            if (state.sendText) {
+              <div onClick={this.onSend.bind(this)}>发送</div>
+            } else {
+              <div className="flex">
+                <i className={cx('head-option-refresh', { 'white': state.color == 'white' })} 
+                  onClick={this.refresh.bind(this)}></i>
+                <i className={cx('head-option-more', { 'white': state.color == 'white' })} onClick={this.onOptions.bind(this)}></i>
+              </div>
+            }
           }}
         </div>
       </div>
