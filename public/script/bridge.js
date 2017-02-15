@@ -1,4 +1,3 @@
-console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html")
 ! function(e, t) {
   if ("object" == typeof exports && "object" == typeof module) module.exports = t();
   else if ("function" == typeof define && define.amd) define([], t);
@@ -142,11 +141,29 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
       }, {
         fun: "showDebugInfoTable"
       }, {
-        fun: "openToolsLog"
+        fun: "openToolsLog",
+        "arg[0]": "",
+        "arg[1]": "",
+        example: "openVendor() ",
+        openToolsLog: "open log folder"
       }, {
-        fun: "openVendor"
+        fun: "openVendor",
+        "arg[0]": "",
+        "arg[1]": "",
+        example: "openVendor() ",
+        openToolsLog: "open vendor folder"
       }, {
-        fun: "showRequestInfo"
+        fun: "showRequestInfo",
+        "arg[0]": "",
+        "arg[1]": "",
+        example: "showRequestInfo() ",
+        openToolsLog: "show request info"
+      }, {
+        fun: "showSystemInfo",
+        "arg[0]": "",
+        "arg[1]": "",
+        example: "showSystemInfo() ",
+        openToolsLog: "show tools info"
       }])
     }, window.showRequestInfo = function() {
       var e = JSON.parse(JSON.stringify(window.securityDetails));
@@ -169,6 +186,10 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
     }, window.showNewFeatureCheck = function() {
       i["default"].sendMsgToNW({
         sdkName: "__show-new-feature-check"
+      })
+    }, window.showSystemInfo = function() {
+      i["default"].sendMsgToNW({
+        sdkName: "__show-sys-info"
       })
     }, window.hhdmb = function() {
       i["default"].sendMsgToNW({
@@ -473,8 +494,9 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
         onMusicEnd: [],
         onMusicError: [],
         onPullDownRefresh: [],
+        onCompassChange: [],
         onAccelerometerChange: [],
-        onCompassChange: []
+        onNetworkStatusChange: []
       },
       d = {
         onShareAppMessage: !0
@@ -829,7 +851,22 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
     }
 
     function i(e) {
-      return true;
+      if (true) return !0;
+      if (0 !== e.indexOf("https://")) return !0;
+      e = r(e);
+      var t = l[e],
+        n = !1;
+      if (void 0 === t) {
+        var o = f++;
+        return l[e] = {
+          isReady: n,
+          id: o
+        }, !0
+      }
+      if (!t.isReady) return !0;
+      var i = !1,
+        s = t.protocol;
+      return s && (s = s.replace("TLS ", ""), i = parseFloat(s) >= 1.2), i
     }
     Object.defineProperty(t, "__esModule", {
       value: !0
@@ -855,7 +892,25 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
     }
 
     function r(e, t) {
-      return !0;
+      if (true) return console.warn("工具未检查安全域名，更多请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"),!0;
+      if (!__wxConfig.urlCheck) return console.group(new Date + " 配置中关闭 URL 校验"), console.warn("开发者主动关闭 URL 检查，工具未检查安全域名"), console.groupEnd(), !0;
+      try {
+        var n = function() {
+          var n = [];
+          n = "download" === t ? u.NetworkConfig.DownloadDomain : "upload" === t ? u.NetworkConfig.UploadDomain : "webscoket" === t ? u.NetworkConfig.WsRequestDomain : u.NetworkConfig.RequestDomain;
+          for (var o = 0; o < n.length; o++)
+            if (e && 0 === e.indexOf(n[o])) return {
+              v: !0
+            };
+          var r = [];
+          n.forEach(function(e) {
+            r.push([e])
+          }), console.group(new Date + " 合法域名校验出错"), console.error(" " + e + " 不在以下合法域名列表中，请参考文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-request.html"), console.table(r), console.groupEnd()
+        }();
+        if ("object" === ("undefined" == typeof n ? "undefined" : i(n))) return n.v
+      } catch (o) {
+        return console.error(o), !1
+      }
     }
     var i = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
         return typeof e
@@ -913,10 +968,10 @@ console.warn("WEPT 未检查安全域名，更多请参考文档：https://mp.we
     "use strict";
 
     function n() {
-      var e = ["chrome", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
+      var e = ["Promise", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
       e.forEach(function(e) {
-        window[e] = void 0
-      }), window.addEventListener("load", function(e) {
+        delete window[e]
+      }), window.chrome = void 0, window.addEventListener("load", function(e) {
         history.replaceState({}, {}, location.href + "?load")
       })
     }

@@ -1,6 +1,7 @@
 {
   "pages": [
     "features/index",
+    "features/network",
     "features/setData",
     "features/tab",
     "features/canvas",

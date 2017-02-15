@@ -1,3 +1,4 @@
+*.diff
 lib
 docs
 src
