@@ -1,3 +1,8 @@
+## 0.9.0
+
+* 升级官方依赖到 140900
+* 修复 tabbar 页面 redirectTo 后无法显示的 bug [#84](https://github.com/chemzqm/wept/issues/84)
+
 ## 0.8.1
 
 * 修复了 redirectTo、navigateTo 回调函数不起作用 bug [#82](https://github.com/chemzqm/wept/issues/82)
