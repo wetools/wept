@@ -1,3 +1,7 @@
+## 0.9.1
+
+* 修复注释的 import 依然会被解析的 bug [#86](https://github.com/chemzqm/wept/issues/86)
+
 ## 0.9.0
 
 * 升级官方依赖到 140900
