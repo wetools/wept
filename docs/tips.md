@@ -6,7 +6,7 @@ A：因为小程序屏蔽了一部分原生的 API 接口，以下为被屏蔽�
 
 ## 如何自定义 toast， modal， actionsheet 组件的样式？
 
-A：新版使用原生接口暂时 toast， modal 和 actionsheet 组件，无法通过 css 设置，暂时并没有相关样式接口。
+A：新版使用原生接口展示 toast， modal 和 actionsheet 组件，无法通过 css 设置，暂时并没有相关样式接口。
 
 建议开发者尽可能使用微信官方提供 API 实现相应功能。
 
