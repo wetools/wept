@@ -128,3 +128,7 @@ export function warn(msg) {
     console.warn(msg)
   }
 }
+
+export function isAbs(url) {
+  return /^http/.test(url)
+}
