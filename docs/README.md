@@ -37,6 +37,23 @@ __windows 用户请确保 [添加 npm 环境变量](http://jingyan.baidu.com/art
 
 更新命令与安装命令相同。
 
+WEPT 在 Linux 环境下需依赖 `wine` 进行编译，对于 ubuntu 系统，可通过命令
+
+``` sh
+sudo apt-get install wine
+```
+
+进行安装，对于 64 位 Linux 系统，需针对 WEPT 创建 32 位运行环境：
+
+``` bash
+# 创建一个32位的环境(如果有了就不需要这步
+WINEARCH=win32 WINEPREFIX=~/.wine32 winecfg
+# 设置WINEPREFIX为上面刚设置环境的配置路径
+export WINEPREFIX=~/.wine32 
+# 启动
+wept
+```
+
 ## 快速上手
 
 到任意小程序项目根目录下执行命令：
