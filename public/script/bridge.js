@@ -968,7 +968,7 @@
     "use strict";
 
     function n() {
-      var e = ["Promise", "Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
+      var e = ["Caches", "screen", "performance ", "getComputedStyle", "openDatabase"];
       e.forEach(function(e) {
         delete window[e]
       }), window.chrome = void 0, window.addEventListener("load", function(e) {
