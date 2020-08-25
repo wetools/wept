@@ -5,7 +5,11 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/chemzqm/wept.svg)](http://isitmaintained.com/project/chemzqm/wept "Percentage of issues still open")
 
-**项目作者已无力继续维护，建议使用官方开发工具，感兴趣接手者可发私信到知乎：chemzqm**
+**由于chemzqm不在参与维护，后续维护人员更替**
+
+**本项目从最近到后续即将升级WEPT2.0版本，支持运行微信小程序 小游戏基础库2.9后版本功能，同时支持实现ios Android三端统一运行环境，欢迎大家持续关注**
+
+
 
 WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。
 
