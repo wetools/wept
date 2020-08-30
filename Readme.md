@@ -15,13 +15,16 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
 
-支持 Mac, Window 以及 Linux
+支持Ios Android Mac, Window 以及 Linux 
 
-* [详细文档](https://chemzqm.github.io/wept/#/home)
-* [更新日志](https://chemzqm.github.io/wept/#/history)
-* [API 支持情况](https://chemzqm.github.io/wept/#/api)
-* [小技巧](https://chemzqm.github.io/wept/#/tips)
-* [相关工具](https://chemzqm.github.io/wept/#/tools)
+## 文档与工具
+### web
++ [实现web微信小程序运行环境系列文档解析](https://github.com/gongmw/blog/issues)
+
+### ios
++ [逆向研究ios端微信小程序框架-1.窥探service的实现](https://github.com/lionvoom/WeAppCrack)
+### android
+
 
 ## 主要特性
 
