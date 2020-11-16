@@ -39,7 +39,7 @@
     "node-parallel": "^0.1.6",
     "node-serial": "^0.1.1",
     "object-assign": "^4.1.1",
-    "open": "0.0.5",
+    "open": "^7.3.0",
     "source-map": "^0.5.6",
     "throttleit": "^1.0.0",
     "tunnel": "0.0.4",
