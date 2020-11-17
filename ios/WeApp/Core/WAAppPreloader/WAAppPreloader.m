@@ -53,18 +53,15 @@
         if (handlerWrapper.completionHandler) handlerWrapper.completionHandler(error);
         return;
     }
-    
     //需要重启小程序
     if ([self shouldTaskBeReOpened:openParameter]) {
         [self reOpenApp:openParameter taskExtInfo:taskExtInfo handlerWrapper:handlerWrapper];
         return;
     }
-    
     [self firstLoadApp:openParameter taskExtInfo:taskExtInfo handlerWrapper:handlerWrapper];
 }
 
 - (void)reOpenApp:(WAAppOpenParameter *)parameter taskExtInfo:(nullable WAAppTaskExtInfo *)taskExtInfo handlerWrapper:(nullable WAAppTaskHandlerWrapper *)handlerWrapper {
-    
 }
 
 - (BOOL)shouldTaskBeReOpened:(WAAppOpenParameter *)parameter {
@@ -78,17 +75,20 @@
     task.m_handlerWrapper = handlerWrapper;
     [self.m_preloaderTasks addObject:task];
     
-    //TODO: 服务器下载`小程序包`
-    [self checkValidAndEnterApp:task];
+    BOOL isPackageReady = [WAFileMgr WAAppIsPackageExists:openParameter.m_nsAppId];
+    if (isPackageReady) {
+        [self checkValidAndEnterApp:task];
+        return;
+    }
+    
+    //TODO: 预留:下载`小程序包`
 }
 
 - (void)checkValidAndEnterApp:(WAAppPreloaderTask *)preloaderTask {
-    NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
-    BOOL isGame = preloaderTask.m_openInfo.m_isGame;
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
         NSError *error;
-        if (![WAFileMgr WAAPPCheckPackageValid:appId isGame:isGame error:&error]) {
+        if (![WAFileMgr WAAppCheckPackageValid:appId error:&error]) {
             if (preloaderTask.m_handlerWrapper.completionHandler) preloaderTask.m_handlerWrapper.completionHandler(error);
             return;
         }
@@ -97,7 +97,7 @@
         });
     });
 }
-    
+
 
 - (void)finalyOpenApp:(WAAppPreloaderTask *)preloaderTask {
     

@@ -5,6 +5,23 @@ NSErrorDomain const WAErrorDomain = @"com.wept.weapp.errorDomain";
 
 @implementation WAError
 
++ (NSError *)error:(NSInteger)errorCode {
+    return [self error:errorCode desc:nil];
+}
+
++ (NSError *)error:(NSInteger)errorCode desc:(NSString *)desc {
+    NSString *_desc = [self errorDescription:errorCode];
+    if (desc && desc.length > 0) {
+        _desc = [NSString stringWithFormat:@"%@\n%@", _desc, desc];
+    }
+    return [NSError errorWithDomain:WAErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:_desc}];
+}
+
++ (NSError *)errorFileRead:(NSString *)fileName {
+    NSString *_desc = fileName ? [NSString stringWithFormat:@"read '%@' fail", fileName] : nil;
+    return [self error:WAErrorFileReadError desc:_desc];
+}
+
 + (NSString *)errorDescription:(NSInteger)errorCode {
     NSDictionary *descMap =
     @{@(WAErrorUnknown):                        @"未知错误",
@@ -21,25 +38,6 @@ NSErrorDomain const WAErrorDomain = @"com.wept.weapp.errorDomain";
     NSString *desc = descMap[@(errorCode)];
     NSAssert(desc, @"please config errorCode desc");
     return desc ?: descMap[@(WAErrorUnknown)];
-}
-
-#pragma mark - init
-
-+ (NSError *)error:(NSInteger)errorCode {
-    return [self error:errorCode desc:nil];
-}
-
-+ (NSError *)error:(NSInteger)errorCode desc:(NSString *)desc {
-    NSString *_desc = [self errorDescription:errorCode];
-    if (desc && desc.length > 0) {
-        _desc = [NSString stringWithFormat:@"%@\n%@", _desc, desc];
-    }
-    return [NSError errorWithDomain:WAErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:_desc}];
-}
-
-+ (NSError *)errorFileRead:(NSString *)fileName {
-    NSString *_desc = fileName ? [NSString stringWithFormat:@"read '%@' fail", fileName] : nil;
-    return [self error:WAErrorFileReadError desc:_desc];
 }
 
 @end
