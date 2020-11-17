@@ -43,7 +43,8 @@
     "source-map": "^0.5.6",
     "throttleit": "^1.0.0",
     "tunnel": "0.0.4",
-    "update-notifier": "^1.0.3"
+    "update-notifier": "^1.0.3",
+    "yargs": "^16.1.1"
   },
   "devDependencies": {
     "stack-source-map": "^1.0.6",
