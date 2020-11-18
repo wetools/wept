@@ -84,11 +84,11 @@
     }
     
     //test
-    tasks = [[self allTaskArray] filteredArrayUsingPredicate:pred];
-    NSLog(@"-----");
-    for (WAAppTask *task in tasks) {
-        NSLog(@"appId: %@, appLaunchTimeInMs:%llu", task.appId, task.appLaunchTimeInMs);
-    }
+//    tasks = [[self allTaskArray] filteredArrayUsingPredicate:pred];
+//    NSLog(@"-----");
+//    for (WAAppTask *task in tasks) {
+//        NSLog(@"appId: %@, appLaunchTimeInMs:%llu", task.appId, task.appLaunchTimeInMs);
+//    }
 }
 
 @end

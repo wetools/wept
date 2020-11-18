@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */; };
+		09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */; };
+		09C2E64525650223003EA2D6 /* weapp-demo.zip in Resources */ = {isa = PBXBuildFile; fileRef = 09C2E64425650222003EA2D6 /* weapp-demo.zip */; };
+		09C2E64B25650717003EA2D6 /* WAWeakWKScriptMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E64925650717003EA2D6 /* WAWeakWKScriptMessageHandler.m */; };
 		09DB4C842562175B0037A656 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C832562175B0037A656 /* AppDelegate.m */; };
 		09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C862562175B0037A656 /* SceneDelegate.m */; };
 		09DB4C8A2562175B0037A656 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C892562175B0037A656 /* ViewController.m */; };
@@ -14,7 +18,6 @@
 		09DB4C8F2562175C0037A656 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09DB4C8E2562175C0037A656 /* Assets.xcassets */; };
 		09DB4C922562175C0037A656 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09DB4C902562175C0037A656 /* LaunchScreen.storyboard */; };
 		09DB4C952562175C0037A656 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C942562175C0037A656 /* main.m */; };
-		09DB4CB925622D260037A656 /* weapp-demo.zip in Resources */ = {isa = PBXBuildFile; fileRef = 09DB4CB825622D260037A656 /* weapp-demo.zip */; };
 		09DB4CEC256284900037A656 /* WAError.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4CDB2562848F0037A656 /* WAError.m */; };
 		09DB4CED256284900037A656 /* WAAppTaskHandlerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4CDD2562848F0037A656 /* WAAppTaskHandlerWrapper.m */; };
 		09DB4CEE256284900037A656 /* WAAppPreloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4CDF2562848F0037A656 /* WAAppPreloader.m */; };
@@ -31,10 +34,19 @@
 		09DB502C256389550037A656 /* WAAppTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB502B256389550037A656 /* WAAppTask.m */; };
 		09DB502F2563AC870037A656 /* WAConfigMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB502E2563AC870037A656 /* WAConfigMgr.m */; };
 		09DB50322563ACB50037A656 /* MMContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB50312563ACB50037A656 /* MMContext.m */; };
+		09DB50402564C5C30037A656 /* WASocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB503F2564C5C30037A656 /* WASocketServer.m */; };
+		09DB50432564C6030037A656 /* WASocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB50422564C6030037A656 /* WASocketClient.m */; };
 		F4B7F67AA9B15DCFCAA6D647 /* libPods-WeAppExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A14561E31578BA3D7FD690A /* libPods-WeAppExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09C2E63E2564D4BB003EA2D6 /* WAMsgHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAMsgHandler.h; sourceTree = "<group>"; };
+		09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAMsgHandler.m; sourceTree = "<group>"; };
+		09C2E641256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PSWebSocketDriver+FixSecWebsocketProtocol.h"; sourceTree = "<group>"; };
+		09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PSWebSocketDriver+FixSecWebsocketProtocol.m"; sourceTree = "<group>"; };
+		09C2E64425650222003EA2D6 /* weapp-demo.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "weapp-demo.zip"; sourceTree = "<group>"; };
+		09C2E64925650717003EA2D6 /* WAWeakWKScriptMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWeakWKScriptMessageHandler.m; sourceTree = "<group>"; };
+		09C2E64A25650717003EA2D6 /* WAWeakWKScriptMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWeakWKScriptMessageHandler.h; sourceTree = "<group>"; };
 		09DB4C7F2562175B0037A656 /* WeAppExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeAppExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09DB4C822562175B0037A656 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		09DB4C832562175B0037A656 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,7 +59,6 @@
 		09DB4C912562175C0037A656 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		09DB4C932562175C0037A656 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09DB4C942562175C0037A656 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		09DB4CB825622D260037A656 /* weapp-demo.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "weapp-demo.zip"; sourceTree = "<group>"; };
 		09DB4CD92562848F0037A656 /* WAError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAError.h; sourceTree = "<group>"; };
 		09DB4CDB2562848F0037A656 /* WAError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAError.m; sourceTree = "<group>"; };
 		09DB4CDD2562848F0037A656 /* WAAppTaskHandlerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppTaskHandlerWrapper.m; sourceTree = "<group>"; };
@@ -81,6 +92,10 @@
 		09DB50312563ACB50037A656 /* MMContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMContext.m; sourceTree = "<group>"; };
 		09DB50332563B9F60037A656 /* MMServiceProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MMServiceProtocol-Protocol.h"; sourceTree = "<group>"; };
 		09DB50382563D1330037A656 /* WAAppEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppEnum.h; sourceTree = "<group>"; };
+		09DB503E2564C5C30037A656 /* WASocketServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WASocketServer.h; sourceTree = "<group>"; };
+		09DB503F2564C5C30037A656 /* WASocketServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WASocketServer.m; sourceTree = "<group>"; };
+		09DB50412564C6030037A656 /* WASocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WASocketClient.h; sourceTree = "<group>"; };
+		09DB50422564C6030037A656 /* WASocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WASocketClient.m; sourceTree = "<group>"; };
 		319FEE0E073A30448673DB41 /* Pods-WeAppExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeAppExample.release.xcconfig"; path = "Target Support Files/Pods-WeAppExample/Pods-WeAppExample.release.xcconfig"; sourceTree = "<group>"; };
 		9A14561E31578BA3D7FD690A /* libPods-WeAppExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WeAppExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F00C790A0B9F835EB2DB4C5E /* Pods-WeAppExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeAppExample.debug.xcconfig"; path = "Target Support Files/Pods-WeAppExample/Pods-WeAppExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,7 +154,7 @@
 				09DB4C902562175C0037A656 /* LaunchScreen.storyboard */,
 				09DB4C932562175C0037A656 /* Info.plist */,
 				09DB4C942562175C0037A656 /* main.m */,
-				09DB4CB825622D260037A656 /* weapp-demo.zip */,
+				09C2E64425650222003EA2D6 /* weapp-demo.zip */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -160,7 +175,6 @@
 				09DB50382563D1330037A656 /* WAAppEnum.h */,
 				09DB4CDC2562848F0037A656 /* WAAppPreloader */,
 				09DB501F256386FB0037A656 /* WAAppTaskMgr */,
-				09DB5023256387140037A656 /* WAWebViewPageMgr */,
 				09DB50342563BBF10037A656 /* WAConfigMgr */,
 				09DB4CD82562848F0037A656 /* WAError */,
 				09DB50392563D2800037A656 /* MMContext */,
@@ -201,6 +215,8 @@
 				09DB501C256386E00037A656 /* WAUIKitUtil.m */,
 				09DB501B256386E00037A656 /* NSURLProtocol+WebKitSupport.h */,
 				09DB501A256386E00037A656 /* NSURLProtocol+WebKitSupport.m */,
+				09C2E64A25650717003EA2D6 /* WAWeakWKScriptMessageHandler.h */,
+				09C2E64925650717003EA2D6 /* WAWeakWKScriptMessageHandler.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -208,6 +224,8 @@
 		09DB501F256386FB0037A656 /* WAAppTaskMgr */ = {
 			isa = PBXGroup;
 			children = (
+				09DB503D2564C56A0037A656 /* WASocketServer */,
+				09DB5023256387140037A656 /* WAWebViewPageMgr */,
 				09DB5021256386FB0037A656 /* WAAppTaskMgr.h */,
 				09DB5020256386FB0037A656 /* WAAppTaskMgr.m */,
 				09DB502A256389550037A656 /* WAAppTask.h */,
@@ -246,6 +264,21 @@
 				09DB50312563ACB50037A656 /* MMContext.m */,
 			);
 			path = MMContext;
+			sourceTree = "<group>";
+		};
+		09DB503D2564C56A0037A656 /* WASocketServer */ = {
+			isa = PBXGroup;
+			children = (
+				09DB503E2564C5C30037A656 /* WASocketServer.h */,
+				09DB503F2564C5C30037A656 /* WASocketServer.m */,
+				09DB50412564C6030037A656 /* WASocketClient.h */,
+				09DB50422564C6030037A656 /* WASocketClient.m */,
+				09C2E63E2564D4BB003EA2D6 /* WAMsgHandler.h */,
+				09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */,
+				09C2E641256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.h */,
+				09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */,
+			);
+			path = WASocketServer;
 			sourceTree = "<group>";
 		};
 		B8A4C9631154A86C813104B2 /* Pods */ = {
@@ -325,8 +358,8 @@
 			files = (
 				09DB4C922562175C0037A656 /* LaunchScreen.storyboard in Resources */,
 				09DB4C8F2562175C0037A656 /* Assets.xcassets in Resources */,
-				09DB4CB925622D260037A656 /* weapp-demo.zip in Resources */,
 				09DB4CF3256284900037A656 /* WeApp.bundle in Resources */,
+				09C2E64525650223003EA2D6 /* weapp-demo.zip in Resources */,
 				09DB4C8D2562175B0037A656 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,16 +404,21 @@
 				09DB4CF2256284900037A656 /* WAFileMgr.m in Sources */,
 				09DB5022256386FB0037A656 /* WAAppTaskMgr.m in Sources */,
 				09DB501D256386E00037A656 /* NSURLProtocol+WebKitSupport.m in Sources */,
+				09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */,
 				09DB4CEF256284900037A656 /* WAAppTaskExtInfo.m in Sources */,
 				09DB4C8A2562175B0037A656 /* ViewController.m in Sources */,
+				09C2E64B25650717003EA2D6 /* WAWeakWKScriptMessageHandler.m in Sources */,
 				09DB4C842562175B0037A656 /* AppDelegate.m in Sources */,
+				09DB50402564C5C30037A656 /* WASocketServer.m in Sources */,
 				09DB4C952562175C0037A656 /* main.m in Sources */,
 				09DB4CEC256284900037A656 /* WAError.m in Sources */,
 				09DB4CF1256284900037A656 /* MMService.m in Sources */,
+				09DB50432564C6030037A656 /* WASocketClient.m in Sources */,
 				09DB50322563ACB50037A656 /* MMContext.m in Sources */,
 				09DB502F2563AC870037A656 /* WAConfigMgr.m in Sources */,
 				09DB5028256387140037A656 /* WABaseViewController.m in Sources */,
 				09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */,
+				09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */,
 				09DB5029256387140037A656 /* WANavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

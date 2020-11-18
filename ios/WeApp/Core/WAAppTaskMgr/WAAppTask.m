@@ -7,6 +7,8 @@
 //
 
 #import "WAAppTask.h"
+#import "MMContext.h"
+#import "WASocketClient.h"
 
 @interface WAAppTask()
 @property(copy, nonatomic) NSString *appId;
@@ -18,6 +20,7 @@
 @property(nonatomic) BOOL firstRenderFullCompleted;
 @property(nonatomic) BOOL firstRenderCompleted;
 @property(nonatomic) WAAppTaskPlatformState taskPlatformState;
+@property (strong, nonatomic) WASocketServer *socketServer;
 //@property(strong, nonatomic) WAJSCoreService *appService;
 //@property(strong, nonatomic) WAWebViewPageMgr *pageMgr;
 @end
@@ -30,6 +33,12 @@
         self.appId = appId;
     }
     return self;
+}
+
+- (void)setupSubModule {
+    [self setupWebSocketServer:^(NSError * _Nullable error) {
+        NSLog(@"");
+    }];
 }
 
 - (void)openAppTask:(WAAppOpenParameter *)parameter taskExtInfo:(nullable WAAppTaskExtInfo *)taskExtInfo completeHandler:(nullable void (^)(NSError * _Nullable))completionHandler {
@@ -53,6 +62,13 @@
 
 - (void)taskEnterBackground:(NSInteger)reason {
     self.taskPlatformState = WAAppTaskPlatformState_Background;
+}
+
+#pragma mark - setup
+- (void)setupWebSocketServer:(void(^)(NSError *_Nullable error))completionHandler {
+    NSString *wsProtocol = [WASocketClient WebSocketProtocolForService:self.taskOpenInfo.m_isGameApp];
+    self.socketServer = [[WASocketServer alloc] initWithAppTask:self port:10001 wsProtocol:wsProtocol];
+    [self.socketServer start:completionHandler];
 }
 
 @end

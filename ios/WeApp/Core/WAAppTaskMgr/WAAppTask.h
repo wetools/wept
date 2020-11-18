@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WAAppEnum.h"
 #import "WAAppOpenParameter.h"
 #import "WAAppTaskExtInfo.h"
-#import "WAAppEnum.h"
+#import "WASocketServer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly) BOOL firstRenderFullCompleted;
 @property(readonly) BOOL firstRenderCompleted;
 @property(readonly) WAAppTaskPlatformState taskPlatformState;
+@property (readonly) WASocketServer *socketServer;
 //@property(readonly) WAJSCoreService *appService;
 //@property(readonly) WAWebViewPageMgr *pageMgr;
 
