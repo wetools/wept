@@ -57,10 +57,10 @@
     
     if (self.webSocket) {
         NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:self.webSocket];
-        NSLog(@"WLF %@ queue message: %lu", protocol, self.msgQueue.count);
+        NSLog(@"%s %@ queue message: %lu", __func__, protocol, self.msgQueue.count);
         for (NSString *msg in self.msgQueue) {
             [self.webSocket send:msg];
-            NSLog(@"WLF %@ <== receive message: %@", protocol, msg);
+            NSLog(@"%s %@ <== %@", __func__, protocol, msg);
         }
         self.msgQueue = @[].mutableCopy;
     }
@@ -71,15 +71,13 @@
 }
 
 - (void)send:(NSString *)msg {
-    if (!msg || ![msg isKindOfClass:NSString.class]) {
-        return;
-    }
+    if (!msg || ![msg isKindOfClass:NSString.class]) return;
     if (!self.webSocket || self.webSocket.readyState != PSWebSocketReadyStateOpen) {
         [self.msgQueue addObject:msg];
     } else {
         [self.webSocket send:msg];
         NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:self.webSocket];
-        NSLog(@"WLF %@ <== receive message: %@", protocol, msg);
+        NSLog(@"%s %@ <== %@", __func__, protocol, msg);
     }
 }
 

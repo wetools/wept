@@ -26,7 +26,7 @@
 @implementation WASocketServer
 
 - (void)dealloc {
-    NSLog(@"⚠️%s", __func__);
+    NSLog(@"%s", __func__);
 }
 
 - (instancetype)initWithAppTask:(nullable id)appTask port:(NSInteger)port wsProtocol:(NSString *)wsProtocol {
@@ -82,7 +82,7 @@
 }
 
 - (void)server:(PSWebSocketServer *)server didFailWithError:(NSError *)error {
-    NSLog(@"⚠️%s", __func__);
+    NSLog(@"%s", __func__);
     dispatch_async(dispatch_get_main_queue(), ^{
         !self.startBlock ?: self.startBlock(nil);
         self.startBlock = nil;
@@ -90,7 +90,7 @@
 }
 
 - (void)serverDidStop:(PSWebSocketServer *)server {
-    NSLog(@"⚠️%s", __func__);
+    NSLog(@"%s", __func__);
     dispatch_async(dispatch_get_main_queue(), ^{
         !self.stopBlock ?: self.stopBlock(nil);
         self.stopBlock = nil;
@@ -107,7 +107,7 @@
 - (void)server:(PSWebSocketServer *)server webSocketDidOpen:(PSWebSocket *)webSocket {
     NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:webSocket];
     [self addSocketClient:webSocket];
-    NSLog(@"%s ~~~~ %@: socketClient connected ~~~~", __func__, protocol);
+    NSLog(@"%s %@", __func__, protocol);
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {
@@ -115,17 +115,17 @@
     if (!msgJSON || ![msgJSON isKindOfClass:NSDictionary.class]) return;
     NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:webSocket];
     [self handle:msgJSON];
-    NSLog(@"%@ ==> send message : %@", protocol, message);
+    NSLog(@"%@ ==> %@", protocol, message);
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error {
     NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:webSocket];
     [self removeSocketClient:protocol];
-    NSLog(@"⚠️%s, %@, error:%@", __func__, protocol, error);
+    NSLog(@"%s, %@, error:%@", __func__, protocol, error);
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    NSLog(@"⚠️%s", __func__);
+    NSLog(@"%s", __func__);
     NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:webSocket];
     [self removeSocketClient:protocol];
 }
@@ -222,7 +222,6 @@
 - (void)release:(void(^)(NSError *error))complete {
     self.isReleased = YES;
     [self stop:complete];
-//    [[CGHSocketConfig shared] releasePort:self.port];
 }
 
 @end

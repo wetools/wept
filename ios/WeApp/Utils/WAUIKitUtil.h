@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WAUIKitUtil : NSObject
 
-+ (NSString *)currentUserAgent;
++ (NSString *)UserAgent;
 
 /// 字符串是否为空
 + (BOOL)isEmptyStirng:(NSString *)str;
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)formatHtmlUrl:(NSString *)url;
 
 /**
- *  格式化html url
+ *  格式化并去掉 url query
  *
  * 例1："/index/index.html?id=1" => "/index/index.html"
  * 例2："/index/index" => "/index/index.html"
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取当前控制器
 + (UIViewController *)getCurrentVC;
 
-///获取某根控制器的顶层控制器
+/// 获取某根控制器的顶层控制器
 + (UIViewController*)topViewController:(UIViewController*)rootViewController;
 
 #pragma mark - UIColor

@@ -11,7 +11,7 @@
 
 @implementation WAUIKitUtil
 
-+ (NSString *)currentUserAgent {
++ (NSString *)UserAgent {
     static NSString *userAgent;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

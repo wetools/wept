@@ -11,11 +11,13 @@
 #import "WAAppOpenParameter.h"
 #import "WAAppTaskExtInfo.h"
 #import "WASocketServer.h"
+#import "WAJSCoreService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WAAppTask : NSObject
 @property(readonly) NSString *appId;
+@property(readonly) BOOL isGameApp;
 @property(readonly) NSString *instanceId;
 @property(readonly) unsigned long long appLaunchTimeInMs;
 @property(readonly) NSString *enterPath;

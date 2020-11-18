@@ -7,11 +7,14 @@
 //
 
 #import "WAAppTask.h"
+#import "YYKit.h"
 #import "MMContext.h"
+#import "WAWebSocketMgr.h"
 #import "WASocketClient.h"
 
 @interface WAAppTask()
 @property(copy, nonatomic) NSString *appId;
+@property(assign, nonatomic) BOOL isGameApp;
 @property(copy, nonatomic) NSString *instanceId;
 @property(nonatomic) unsigned long long appLaunchTimeInMs;
 @property(copy, nonatomic) NSString *enterPath;
@@ -21,11 +24,15 @@
 @property(nonatomic) BOOL firstRenderCompleted;
 @property(nonatomic) WAAppTaskPlatformState taskPlatformState;
 @property (strong, nonatomic) WASocketServer *socketServer;
-//@property(strong, nonatomic) WAJSCoreService *appService;
+@property(strong, nonatomic) WAJSCoreService *appService;
 //@property(strong, nonatomic) WAWebViewPageMgr *pageMgr;
 @end
 
 @implementation WAAppTask
+
+- (void)dealloc {
+    NSLog(@"%s", __func__);
+}
 
 - (instancetype)initWithAppId:(NSString *)appId {
     self = [super init];
@@ -35,21 +42,46 @@
     return self;
 }
 
-- (void)setupSubModule {
-    [self setupWebSocketServer:^(NSError * _Nullable error) {
-        NSLog(@"");
-    }];
+- (void)setupWebSocketServer:(void(^)(NSError *_Nullable error))completionHandler {
+    WAWebSocketMgr *webSocketMgr = [[MMContext currentContext] getService:WAWebSocketMgr.class];
+    NSInteger port = [webSocketMgr getAvailablePort];
+    NSString *wsProtocol = [WASocketClient WebSocketProtocolForService:self.taskOpenInfo.m_isGameApp];
+    self.socketServer = [[WASocketServer alloc] initWithAppTask:self port:port wsProtocol:wsProtocol];
+    [self.socketServer start:completionHandler];
 }
 
+- (void)setupService {
+    self.appService = [[WAJSCoreService alloc] initWithAppTask:self port:self.socketServer.port];
+    [self.appService startService];
+}
+
+- (void)resetTask {
+    [self.socketServer release:nil];
+    WAWebSocketMgr *webSocketMgr = [[MMContext currentContext] getService:WAWebSocketMgr.class];
+    [webSocketMgr releasePort:self.socketServer.port];
+}
+
+#pragma mark -
+
 - (void)openAppTask:(WAAppOpenParameter *)parameter taskExtInfo:(nullable WAAppTaskExtInfo *)taskExtInfo completeHandler:(nullable void (^)(NSError * _Nullable))completionHandler {
+    self.isGameApp = parameter.m_isGameApp;
     self.taskOpenInfo = parameter;
     self.taskExtInfo = taskExtInfo;
     self.appLaunchTimeInMs = NSDate.date.timeIntervalSince1970*1000;
+    
+    @weakify(self);
+    [self setupWebSocketServer:^(NSError * _Nullable error) {
+        @strongify(self);
+        NSLog(@"");
+        if (!error) {
+            [self setupService];
+        }
+    }];
     completionHandler(nil);
 }
 
 - (void)closeTaskWithReason:(NSInteger)reason {
-    
+    [self resetTask];
 }
 
 - (void)closeTask {
@@ -62,13 +94,6 @@
 
 - (void)taskEnterBackground:(NSInteger)reason {
     self.taskPlatformState = WAAppTaskPlatformState_Background;
-}
-
-#pragma mark - setup
-- (void)setupWebSocketServer:(void(^)(NSError *_Nullable error))completionHandler {
-    NSString *wsProtocol = [WASocketClient WebSocketProtocolForService:self.taskOpenInfo.m_isGameApp];
-    self.socketServer = [[WASocketServer alloc] initWithAppTask:self port:10001 wsProtocol:wsProtocol];
-    [self.socketServer start:completionHandler];
 }
 
 @end
