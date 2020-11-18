@@ -10,6 +10,8 @@
 #import "YYKit.h"
 #import "WAError.h"
 #import "WAFileMgr.h"
+#import "MMContext.h"
+#import "WAAppTaskMgr.h"
 
 @interface WAAppPreloaderTask : NSObject
 @property(strong, nonatomic) WAAppOpenParameter *m_openInfo;
@@ -28,14 +30,12 @@
 
 @implementation WAAppPreloader
 
-+ (instancetype)shared {
-    static WAAppPreloader *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-        instance.m_preloaderTasks = [NSMutableArray array];
-    });
-    return instance;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.m_preloaderTasks = [NSMutableArray array];
+    }
+    return self;
 }
 
 - (WAAppPreloaderTask *)isExistsPreloaderTask:(NSString *)appId {
@@ -100,7 +100,8 @@
 
 
 - (void)finalyOpenApp:(WAAppPreloaderTask *)preloaderTask {
-    
+    WAAppTaskMgr *appTaskMgr = [[MMContext currentContext] getService:WAAppTaskMgr.class];
+    [appTaskMgr openAppTask:preloaderTask.m_openInfo taskExtInfo:preloaderTask.m_taskExtInfo completeHandler:preloaderTask.m_handlerWrapper.completionHandler];
 }
 
 @end

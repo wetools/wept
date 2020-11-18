@@ -7,12 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "MMContext.h"
 #import "WAFileMgr.h"
 #import "WAAppPreloader.h"
 
-@interface ViewController ()
-
-@end
+#import "WAAppTaskMgr.h"
 
 @implementation ViewController
 
@@ -26,11 +25,13 @@
 - (IBAction)openWeApp:(UIButton *)sender {
     //准备debug包
     [WAFileMgr WAAppPrepareDebugPackage:@"weapp-demo"];
-    
+
     WAAppOpenParameter *parameter = [[WAAppOpenParameter alloc] init];
     parameter.m_nsAppId = @"weapp-demo";
     parameter.m_nsUserName = @"wept-user";
-    [[WAAppPreloader shared] openApp:parameter taskExtInfo:nil handlerWrapper:nil];
+
+    WAAppPreloader *preloader = [[MMContext currentContext] getService:WAAppPreloader.class];
+    [preloader openApp:parameter taskExtInfo:nil handlerWrapper:nil];
 }
 
 

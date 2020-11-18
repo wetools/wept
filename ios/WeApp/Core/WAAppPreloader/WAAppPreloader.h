@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WAAppPreloader : MMService
 
-+ (instancetype)shared;
-
 /// 启动小程序
 /// @param parameter 启动参数
 /// @param taskExtInfo 扩展参数

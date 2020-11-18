@@ -23,6 +23,14 @@
 		09DB4CF1256284900037A656 /* MMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4CE62562848F0037A656 /* MMService.m */; };
 		09DB4CF2256284900037A656 /* WAFileMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4CE9256284900037A656 /* WAFileMgr.m */; };
 		09DB4CF3256284900037A656 /* WeApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 09DB4CEA256284900037A656 /* WeApp.bundle */; };
+		09DB501D256386E00037A656 /* NSURLProtocol+WebKitSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB501A256386E00037A656 /* NSURLProtocol+WebKitSupport.m */; };
+		09DB501E256386E00037A656 /* WAUIKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB501C256386E00037A656 /* WAUIKitUtil.m */; };
+		09DB5022256386FB0037A656 /* WAAppTaskMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB5020256386FB0037A656 /* WAAppTaskMgr.m */; };
+		09DB5028256387140037A656 /* WABaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB5024256387140037A656 /* WABaseViewController.m */; };
+		09DB5029256387140037A656 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB5025256387140037A656 /* WANavigationController.m */; };
+		09DB502C256389550037A656 /* WAAppTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB502B256389550037A656 /* WAAppTask.m */; };
+		09DB502F2563AC870037A656 /* WAConfigMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB502E2563AC870037A656 /* WAConfigMgr.m */; };
+		09DB50322563ACB50037A656 /* MMContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB50312563ACB50037A656 /* MMContext.m */; };
 		F4B7F67AA9B15DCFCAA6D647 /* libPods-WeAppExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A14561E31578BA3D7FD690A /* libPods-WeAppExample.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +63,24 @@
 		09DB4CE8256284900037A656 /* WAFileMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileMgr.h; sourceTree = "<group>"; };
 		09DB4CE9256284900037A656 /* WAFileMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileMgr.m; sourceTree = "<group>"; };
 		09DB4CEA256284900037A656 /* WeApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeApp.bundle; sourceTree = "<group>"; };
+		09DB5019256386E00037A656 /* WAUIKitUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUIKitUtil.h; sourceTree = "<group>"; };
+		09DB501A256386E00037A656 /* NSURLProtocol+WebKitSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLProtocol+WebKitSupport.m"; sourceTree = "<group>"; };
+		09DB501B256386E00037A656 /* NSURLProtocol+WebKitSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLProtocol+WebKitSupport.h"; sourceTree = "<group>"; };
+		09DB501C256386E00037A656 /* WAUIKitUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUIKitUtil.m; sourceTree = "<group>"; };
+		09DB5020256386FB0037A656 /* WAAppTaskMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppTaskMgr.m; sourceTree = "<group>"; };
+		09DB5021256386FB0037A656 /* WAAppTaskMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAppTaskMgr.h; sourceTree = "<group>"; };
+		09DB5024256387140037A656 /* WABaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABaseViewController.m; sourceTree = "<group>"; };
+		09DB5025256387140037A656 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
+		09DB5026256387140037A656 /* WABaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABaseViewController.h; sourceTree = "<group>"; };
+		09DB5027256387140037A656 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
+		09DB502A256389550037A656 /* WAAppTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppTask.h; sourceTree = "<group>"; };
+		09DB502B256389550037A656 /* WAAppTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppTask.m; sourceTree = "<group>"; };
+		09DB502D2563AC870037A656 /* WAConfigMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAConfigMgr.h; sourceTree = "<group>"; };
+		09DB502E2563AC870037A656 /* WAConfigMgr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAConfigMgr.m; sourceTree = "<group>"; };
+		09DB50302563ACB50037A656 /* MMContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMContext.h; sourceTree = "<group>"; };
+		09DB50312563ACB50037A656 /* MMContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMContext.m; sourceTree = "<group>"; };
+		09DB50332563B9F60037A656 /* MMServiceProtocol-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MMServiceProtocol-Protocol.h"; sourceTree = "<group>"; };
+		09DB50382563D1330037A656 /* WAAppEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppEnum.h; sourceTree = "<group>"; };
 		319FEE0E073A30448673DB41 /* Pods-WeAppExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeAppExample.release.xcconfig"; path = "Target Support Files/Pods-WeAppExample/Pods-WeAppExample.release.xcconfig"; sourceTree = "<group>"; };
 		9A14561E31578BA3D7FD690A /* libPods-WeAppExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WeAppExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F00C790A0B9F835EB2DB4C5E /* Pods-WeAppExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeAppExample.debug.xcconfig"; path = "Target Support Files/Pods-WeAppExample/Pods-WeAppExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -131,10 +157,13 @@
 		09DB4CD72562848F0037A656 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				09DB4CD82562848F0037A656 /* WAError */,
+				09DB50382563D1330037A656 /* WAAppEnum.h */,
 				09DB4CDC2562848F0037A656 /* WAAppPreloader */,
-				09DB4CE52562848F0037A656 /* MMService.h */,
-				09DB4CE62562848F0037A656 /* MMService.m */,
+				09DB501F256386FB0037A656 /* WAAppTaskMgr */,
+				09DB5023256387140037A656 /* WAWebViewPageMgr */,
+				09DB50342563BBF10037A656 /* WAConfigMgr */,
+				09DB4CD82562848F0037A656 /* WAError */,
+				09DB50392563D2800037A656 /* MMContext */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -168,8 +197,55 @@
 			children = (
 				09DB4CE8256284900037A656 /* WAFileMgr.h */,
 				09DB4CE9256284900037A656 /* WAFileMgr.m */,
+				09DB5019256386E00037A656 /* WAUIKitUtil.h */,
+				09DB501C256386E00037A656 /* WAUIKitUtil.m */,
+				09DB501B256386E00037A656 /* NSURLProtocol+WebKitSupport.h */,
+				09DB501A256386E00037A656 /* NSURLProtocol+WebKitSupport.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		09DB501F256386FB0037A656 /* WAAppTaskMgr */ = {
+			isa = PBXGroup;
+			children = (
+				09DB5021256386FB0037A656 /* WAAppTaskMgr.h */,
+				09DB5020256386FB0037A656 /* WAAppTaskMgr.m */,
+				09DB502A256389550037A656 /* WAAppTask.h */,
+				09DB502B256389550037A656 /* WAAppTask.m */,
+			);
+			path = WAAppTaskMgr;
+			sourceTree = "<group>";
+		};
+		09DB5023256387140037A656 /* WAWebViewPageMgr */ = {
+			isa = PBXGroup;
+			children = (
+				09DB5026256387140037A656 /* WABaseViewController.h */,
+				09DB5024256387140037A656 /* WABaseViewController.m */,
+				09DB5027256387140037A656 /* WANavigationController.h */,
+				09DB5025256387140037A656 /* WANavigationController.m */,
+			);
+			path = WAWebViewPageMgr;
+			sourceTree = "<group>";
+		};
+		09DB50342563BBF10037A656 /* WAConfigMgr */ = {
+			isa = PBXGroup;
+			children = (
+				09DB502D2563AC870037A656 /* WAConfigMgr.h */,
+				09DB502E2563AC870037A656 /* WAConfigMgr.m */,
+			);
+			path = WAConfigMgr;
+			sourceTree = "<group>";
+		};
+		09DB50392563D2800037A656 /* MMContext */ = {
+			isa = PBXGroup;
+			children = (
+				09DB50332563B9F60037A656 /* MMServiceProtocol-Protocol.h */,
+				09DB4CE52562848F0037A656 /* MMService.h */,
+				09DB4CE62562848F0037A656 /* MMService.m */,
+				09DB50302563ACB50037A656 /* MMContext.h */,
+				09DB50312563ACB50037A656 /* MMContext.m */,
+			);
+			path = MMContext;
 			sourceTree = "<group>";
 		};
 		B8A4C9631154A86C813104B2 /* Pods */ = {
@@ -288,16 +364,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				09DB4CED256284900037A656 /* WAAppTaskHandlerWrapper.m in Sources */,
+				09DB502C256389550037A656 /* WAAppTask.m in Sources */,
 				09DB4CEE256284900037A656 /* WAAppPreloader.m in Sources */,
 				09DB4CF0256284900037A656 /* WAAppOpenParameter.m in Sources */,
+				09DB501E256386E00037A656 /* WAUIKitUtil.m in Sources */,
 				09DB4CF2256284900037A656 /* WAFileMgr.m in Sources */,
+				09DB5022256386FB0037A656 /* WAAppTaskMgr.m in Sources */,
+				09DB501D256386E00037A656 /* NSURLProtocol+WebKitSupport.m in Sources */,
 				09DB4CEF256284900037A656 /* WAAppTaskExtInfo.m in Sources */,
 				09DB4C8A2562175B0037A656 /* ViewController.m in Sources */,
 				09DB4C842562175B0037A656 /* AppDelegate.m in Sources */,
 				09DB4C952562175C0037A656 /* main.m in Sources */,
 				09DB4CEC256284900037A656 /* WAError.m in Sources */,
 				09DB4CF1256284900037A656 /* MMService.m in Sources */,
+				09DB50322563ACB50037A656 /* MMContext.m in Sources */,
+				09DB502F2563AC870037A656 /* WAConfigMgr.m in Sources */,
+				09DB5028256387140037A656 /* WABaseViewController.m in Sources */,
 				09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */,
+				09DB5029256387140037A656 /* WANavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
