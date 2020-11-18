@@ -1,0 +1,7 @@
+textarea {
+    width: 350px;
+    padding: 13px 0;
+}
+.textarea-wrp {
+    padding: 0 13px;
+}
