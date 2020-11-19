@@ -1,3 +1,0 @@
-<view>
-  <button type="default" size="default" bindtap="switchTab">switchTab</button>
-</view>

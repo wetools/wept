@@ -1,101 +1,73 @@
 #!/usr/bin/env node
-var os = require('os')
-var exec = require('child_process').exec
-var program = require('commander')
-var json = require('../package.json')
-var UpdateNotifier = require('update-notifier').UpdateNotifier
-var fs = require('fs')
-var open = require('open')
-var chalk = require('chalk')
-var net = require('net')
-var boxen = require('boxen')
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const yargs = require('yargs');
+const chalk = require('chalk');
 
-program.version(json.version + ' 140900')
-  .usage('[app root]')
-  .option('-o, --open', '使用 Chrome 打开小程序，仅对 Mac 有效')
-  .option('-l, --list', '使用默认浏览器打开更新历史')
-  .option('-p, --port <n>', '指定服务端口，默认 3000', parseInt)
-
-program.parse(process.argv)
-
-var notifier = new UpdateNotifier({
-  pkg: json,
-  callback: function (err, result) {
-    if (err) return
-    if (result.current !== result.latest) {
-      var message = 'Update available ' + chalk.dim(result.current) + chalk.reset(' → ') +
-        chalk.green(result.latest) + ' \nRun ' + chalk.cyan('npm i -g ' + json.name) + ' to update'
-      var msg = '\n' + boxen(message, {
-        padding: 1,
-        margin: 1,
-        align: 'center',
-        borderColor: 'yellow',
-        borderStyle: 'round'
-      })
-      console.log(msg)
-    }
-  }
-})
-
-notifier.check()
-
-if (program.list) {
-  open('https://chemzqm.github.io/wept/#/history')
-  process.exit()
+const clearConsole = () => {
+  process.stdout.write(/^win/.test(process.platform) ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H');
 }
 
-var folder = program.args[0]
-if (folder) {
-  var stats
+const checkcompiledProject = (compiledPath) => {
+  if (!compiledPath) throw new Error('小程序编译后项目路径不能为空');
+  if (!path.isAbsolute(compiledPath)) throw new Error('小程序编译后项目路径必须为绝对路径');
+  const parent = path.dirname(compiledPath);
   try {
-    stats = fs.statSync(folder)
-  } catch(e) {}
-  if (!stats || !stats.isDirectory()) {
-    console.log('指定目录不存在或者不是目录，请检查')
-    process.exit()
+    fs.accessSync(parent, fs.constants.R_OK | fs.constants.W_OK);
+  } catch (err) {
+    throw new Error(`小程序编译后项目读写权限缺失 [${compiledPath}]`);
   }
-  try {
-    process.chdir(folder)
-  } catch(err) {
-    console.log('切换目录失败: ' + err)
+};
+
+const checkAppletProject = (projectPath) => {
+  if (!projectPath) throw new Error('不存在此小程序项目');
+  if (!path.isAbsolute(projectPath)) throw new Error('小程序项目路径应为绝对路径');
+  if (!fs.existsSync(projectPath)) throw new Error(`指定小程序项目${projectPath} 不存在`);
+
+  let appJsonPath = path.resolve(projectPath, 'app.json');
+  if (!fs.existsSync(appJsonPath)) throw new Error(`小程序项目 [${appJsonPath}] 不存在app.json文件`);
+
+  let appJsPath = path.resolve(projectPath, 'app.js');
+  if (!fs.existsSync(appJsPath)) throw new Error(`小程序项目 [${appJsonPath}] 不存在app.js文件`);
+};
+
+const runWeb = async () => {
+  let appletSources = path.resolve(process.cwd());
+  checkAppletProject(appletSources);
+
+  const cacheFolder = path.resolve(__dirname, '..', 'appletProjectCache');
+  if (!fs.existsSync(cacheFolder)) {
+    fs.mkdirSync(cacheFolder, { recursive: true });
   }
-}
 
-if (!fs.existsSync('./app.json')) {
-  console.log(chalk.red('无法找到 app.json 文件，请检查'))
-  process.exit()
-}
+  let compiledPath = path.resolve(cacheFolder, path.basename(appletSources));
+  checkAppletProject(compiledPath);
+};
 
-var server = require('../build/server')
-var startPort = 3000
-
-getPort(function (port) {
-  if (os.platform() == 'darwin' && program.open) {
-    exec('osascript chrome.scpt ' + port, {cwd: __dirname}, function () { })
-  }
-  server.listen(port, function () {
-    console.log('listening on port ' + port)
-  })
-})
-
-function getPort(cb) {
-  if (program.port) return cb(program.port)
-  var port = startPort
-
-  var server = net.createServer()
-  server.listen(port, function () {
-    server.once('close', function () {
-      cb(port)
+const weptCli = async () => {
+  clearConsole()
+  yargs.usage('Usage: $0 <command> [options]')
+    .command('web', '在浏览器中运行小程序应用', (yargs) => {
+      return yargs
+        .usage('')
+    }, async (args) => {
+      // TODO 
+      // 实现打包在浏览器环境中运行
+      await runWeb();
     })
-    server.close()
-  })
-  server.on('error', function () {
-    startPort += 1
-    getPort(cb)
-  })
-}
+    .command('ios', '在IOS环境中运行小程序应用', (yargs) => {
+      return yargs
+        .usage('')
+    }, async (args) => {
+      // TODO 
+      // 实现打包在ios环境中运行
+    })
+    .demandCommand(1, chalk.red('[ERROR]: 需执行一项wept web或wept ios 命令'))
+    .parse();
+};
 
-process.on('uncaughtException', function (e) {
-  console.log(chalk.red('发生了未知错误'))
-  console.error(e.stack)
-})
+weptCli().catch(err => {
+  console.log('%s %s %s', chalk.red(`[${(new Date()).toUTCString()}]`), chalk.red('[ERROR]'), chalk.red(err));
+  process.exit();
+});

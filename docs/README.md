@@ -128,15 +128,24 @@ WEPT 后台使用 node 提供服务完全动态生成小程序，前端实现了
 * [微信小程序架构分析（中）](https://zhuanlan.zhihu.com/p/22765476)
 * [微信小程序架构分析（下）](https://zhuanlan.zhihu.com/p/22932309)
 
-需要一提的是部分实现细节已经发生了一些变化，但是基本原理就是三层间的互相通讯。
+最新实现机制可参考github文章
 
-为了方便后续保证与官方实现的一致性， WEPT 的 view 层和 service
-层代码使用的是官方的代码，而控制层则是完全重新实现的。
+#### web
+* [实现微信小程序最新运行环境系列(初始篇)](https://github.com/gongmw/blog/issues/5)
+* [实现微信小程序最新运行环境系列(进阶篇)](https://github.com/gongmw/blog/issues/6)
+* [实现微信小程序最新运行环境系列(核心篇 一)](https://github.com/gongmw/blog/issues/7)
+* [实现微信小程序最新运行环境系列(核心篇 二)](https://github.com/gongmw/blog/issues/8)
+* [实现微信小程序最新运行环境系列(核心篇 三)](https://github.com/gongmw/blog/issues/9)
+* [实现微信小程序最新运行环境系列(核心篇 四)](https://github.com/gongmw/blog/issues/18)
+
+#### ios
+* [逆向WeApp-准备工作](https://github.com/wetools/wept/blob/master/docs/ios/逆向WeApp准备工作.md)
+* [逆向研究ios端微信小程序框架-1.窥探service的实现](https://github.com/lionvoom/WeAppCrack)
+
+
 
 ## 技术支持
 
-推荐使用 [github issues](https://github.com/chemzqm/wept/issues) 进行问题反馈，
+推荐使用 [github issues](https://github.com/wetools/wept/issues) 进行问题反馈，
 
-如果你想与我讨论，可以使用 gitter: https://gitter.im/we-wept/
-
-或者发送邮件到 <a href="mailto:chemzqm@gmail.com">chemzqm@gmail.com</a>
+如果你想与我讨论，可以发送邮件到 <a href="gongmw08@163.com">gongmw08@163.com</a>

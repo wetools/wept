@@ -1,3 +1,0 @@
-<view>
-  <button size="default" bindtap="download">download</button>
-</view>

@@ -22,6 +22,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 + [实现web微信小程序运行环境系列文档解析](https://github.com/gongmw/blog/issues)
 
 ### ios
+* [逆向WeApp-准备工作](https://github.com/wetools/wept/blob/master/docs/ios/逆向WeApp准备工作.md)
 + [逆向研究ios端微信小程序框架-1.窥探service的实现](https://github.com/lionvoom/WeAppCrack)
 ### android
 
