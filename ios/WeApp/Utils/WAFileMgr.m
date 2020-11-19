@@ -10,14 +10,16 @@
 #import "SSZipArchive.h"
 #import "NSData+YYAdd.h"
 #import "NSString+YYAdd.h"
+#import "WAAppEnum.h"
+#import "WAUIKitUtil.h"
 #import "WAError.h"
 
 static NSString *kWAFileDir_WeAppRoot   = @"wept";
 static NSString *kWAFileDir_apps        = @"WeApps";
-NSString * const kWAFileDir_Source      = @"__pkg__";
-NSString * const kWAFileDir_tmp         = @"tmp";
-NSString * const kWAFileDir_store       = @"store";
-NSString * const kWAFileDir_usr         = @"usr";
+static NSString *kWAFileDir_pkg         = @"__pkg__";
+static NSString *kWAFileDir_tmp         = @"tmp";
+static NSString *kWAFileDir_store       = @"store";
+static NSString *kWAFileDir_usr         = @"usr";
 
 @implementation WAFileMgr
 
@@ -56,7 +58,8 @@ NSString * const kWAFileDir_usr         = @"usr";
     NSString *zipTempFolder = [[zipSrcPath stringByDeletingLastPathComponent] stringByAppendingFormat:@"/%@_upzip_temp", zipSrcPath.lastPathComponent.stringByDeletingPathExtension];
     if ([fileManager fileExistsAtPath:zipTempFolder] && ![fileManager removeItemAtPath:zipTempFolder error:&error]) return NO;
     
-    if ([fileManager fileExistsAtPath:destDir] && !isReplace) {//合并
+    //合并
+    if ([fileManager fileExistsAtPath:destDir] && !isReplace) {
         return [SSZipArchive unzipFileAtPath:zipSrcPath toDestination:destDir overwrite:YES password:nil error:&error];
     }
     
@@ -130,63 +133,54 @@ NSString * const kWAFileDir_usr         = @"usr";
     return rootPath;
 }
 
-/// 小程序目录
 + (NSString *)WAAppDir:(NSString *)appId {
     NSString *rootPath = [self WAAppAppsDir];
     NSString *appDirPath = [rootPath stringByAppendingPathComponent:appId];
     return appDirPath;
 }
 
-/// `Source`目录
-+ (NSString *)WAAppSourceDir:(NSString *)appId {
-    NSString *sourceDir = [[self WAAppDir:appId] stringByAppendingPathComponent:kWAFileDir_Source];
++ (NSString *)WAAppPkgDir:(NSString *)appId {
+    NSString *sourceDir = [[self WAAppDir:appId] stringByAppendingPathComponent:kWAFileDir_pkg];
     return sourceDir;
 }
 
-/// `tmp`目录
 + (NSString *)WAAppTmpDir:(NSString *)appId {
     NSString *tempFileCachePath = [[self WAAppDir:appId] stringByAppendingPathComponent:kWAFileDir_tmp];
     return tempFileCachePath;
 }
 
-/// `store`目录
 + (NSString *)WAAppStoreDir:(NSString *)appId {
     NSString *storageDirPath = [[self WAAppDir:appId] stringByAppendingPathComponent:kWAFileDir_store];
     return storageDirPath;
 }
 
-/// `usr` 目录
 + (NSString *)WAAppUsrDir:(NSString *)appId {
     NSString *dir = [[self WAAppDir:appId] stringByAppendingPathComponent:kWAFileDir_usr];
     return dir;
 }
 
-/// 小程序压缩包
 + (NSString *)WAAppZipPath:(NSString *)appId {
     NSString *serviceHtml = [[self WAAppDir:appId] stringByAppendingPathComponent:[appId stringByAppendingString:@".zip"]];
     return serviceHtml;
 }
 
-/// 获取小程序入口文件，小程序 service.js，小游戏 gamePage.html
 + (NSString *)WAAppEnterencePath:(NSString *)appId isGame:(BOOL)isGame {
-    NSString *htmlPath;
+    NSString *filePath;
     if (isGame) {
-        htmlPath = [[self WAAppSourceDir:appId] stringByAppendingPathComponent:@"gamePage.html"];
+        filePath = [[self WAAppPkgDir:appId] stringByAppendingPathComponent:@"gamePage.html"];
     } else {
-        htmlPath = [[self WAAppSourceDir:appId] stringByAppendingFormat:@"/__dev__/service.js"];//service JSContext模式
-        // htmlPath = [[self appSourceDirPath:appId] stringByAppendingPathComponent:@"appservice.html"];//service WebView模式
+        filePath = [[self WAAppPkgDir:appId] stringByAppendingPathComponent:@"appservice.html"];
     }
-    return htmlPath;
+    return filePath;
 }
 
-/// 获取小程序的config
 + (NSString *)WAAppConfigPath:(NSString *)appId isGame:(BOOL)isGame {
-    return [[self WAAppSourceDir:appId] stringByAppendingPathComponent:(isGame ? @"game.json" : @"app.json")];
+    return [[self WAAppPkgDir:appId] stringByAppendingPathComponent:(isGame ? @"game.json" : @"app.json")];
 }
 
 + (BOOL)WAAppUnZip:(NSString *)appId {
     NSString *zipPath = [self WAAppZipPath:appId];
-    NSString *appSourceDir = [self WAAppSourceDir:appId];
+    NSString *appSourceDir = [self WAAppPkgDir:appId];
     BOOL ret = [self unzip:zipPath toDestDir:appSourceDir isReplace:YES];
     if (ret) {
         [self removePath:zipPath];
@@ -194,18 +188,27 @@ NSString * const kWAFileDir_usr         = @"usr";
     return ret;
 }
 
-+ (BOOL)WAAPPCheckPackageValid:(NSString *)appId isGame:(BOOL)isGame error:(NSError **)error {
++ (BOOL)WAAppIsPackageExists:(NSString *)appId {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *appZipPath = [WAFileMgr WAAppZipPath:appId];
+    NSString *pkgDir = [WAFileMgr WAAppPkgDir:appId];
+    if ([fileManager fileExistsAtPath:pkgDir] || [fileManager fileExistsAtPath:appZipPath]) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)WAAppCheckPackageValid:(NSString *)appId error:(NSError **)error {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *appZipPath = [WAFileMgr WAAppZipPath:appId];
     if ([fileManager fileExistsAtPath:appZipPath] && ![WAFileMgr WAAppUnZip:appId]) {
+        [fileManager removeItemAtPath:appZipPath error:nil];
         *error = [WAError error:WAErrorFileUnzipFail];
         return NO;
     }
     
-    NSString *appEnterencePath = [WAFileMgr WAAppEnterencePath:appId isGame:isGame];
-    if (![fileManager fileExistsAtPath:appEnterencePath]) {
-        NSString *sourceDir = [WAFileMgr WAAppSourceDir:appId];
-        [fileManager removeItemAtPath:sourceDir error:nil];
+    NSString *pkgDir = [WAFileMgr WAAppPkgDir:appId];
+    if (![fileManager fileExistsAtPath:pkgDir]) {
         *error = [WAError error:WAErrorFileBroken];
         return NO;
     }
@@ -230,76 +233,45 @@ NSString * const kWAFileDir_usr         = @"usr";
     return [fileManager copyItemAtPath:debugZipPath toPath:appZipPath error:&error];
 }
 
-#pragma mark -
-
-+ (NSString *)getRootAbsolutePathWithFilePath:(NSString *)filePath forAppId:(NSString *)appId {
-    return [self _absolutePathWithOriginPath:filePath basePath:[self WAAppDir:appId] forAppId:appId];
-}
-
-+ (NSString *)getSourceAbsolutePathWithFilePath:(NSString *)filePath forAppId:(NSString *)appId {
-    return [self _absolutePathWithOriginPath:filePath basePath:[self WAAppSourceDir:appId] forAppId:appId];
-}
-
-+ (NSString *)_absolutePathWithOriginPath:(NSString *)filePath basePath:(NSString *)basePath forAppId:(NSString *)appId {
-    if (filePath.length == 0 || !appId) {
-        return nil;
-    }
-    
-    if ([filePath hasPrefix:@"http://"]) { //http://
-        return filePath;
-    }
-    
-    if ([filePath hasPrefix:@"/"]) { //绝对路径
-        if ([self isFullFilePath:filePath]) { //文件全路径
-            return filePath;
-        } else {
-            return [NSString stringWithFormat:@"%@%@", [self WAAppSourceDir:appId], filePath];
-        }
-    }
-    
-//    NSString *cgfile = [NSString stringWithFormat:@"%@://%@", <#scheme#>, appId];
-//    NSArray *protocolArr =
-//    @[cgfile];
-    NSArray *protocolArr;
-    
-    NSString *matchProtocol;
-    for (NSString *protocol in protocolArr) {
-        if ([filePath hasPrefix:protocol]) {
-            matchProtocol = protocol;
-            break;
-        }
-    }
-    
-    if (matchProtocol) {
-        if ([filePath isEqualToString:matchProtocol]) {// cgfile://appId 表示 basePath
-            return basePath;
-        } else {
-            NSString *relativePath = [filePath substringFromIndex:matchProtocol.length];
-            return [NSString stringWithFormat:@"%@%@", basePath, relativePath];
-        }
-        
-    } else {
-        return [NSString stringWithFormat:@"%@/%@", basePath, filePath];
-    }
-}
-
-+ (NSString *)findAbsolutePathWithFilePath:(NSString *)filePath forAppId:(NSString *)appId {
-    if ([filePath.lowercaseString hasPrefix:@"http"]) {
-        return filePath;
-    }
-    
++ (NSString *)searchFileInApp:(NSString *)filePath appId:(NSString *)appId {
+    if ([filePath hasPrefix:@"http://"] || [filePath hasPrefix:@"https://"]) return filePath;
     NSString *formatFilePath;
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *rootFilePath = [self getRootAbsolutePathWithFilePath:filePath forAppId:appId];
+    NSString *rootFilePath = [self getAbsolutePathInAppRoot:filePath appId:appId];
     if ([fileManager fileExistsAtPath:rootFilePath]) {
         formatFilePath = rootFilePath;
     } else {
-        NSString *sourceFilePath = [self getSourceAbsolutePathWithFilePath:filePath forAppId:appId];
-        if ([fileManager fileExistsAtPath:sourceFilePath]) {
-            formatFilePath = sourceFilePath;
+        NSString *pkgDir = [self getAbsolutePathInAppPkg:filePath appId:appId];
+        if ([fileManager fileExistsAtPath:pkgDir]) {
+            formatFilePath = pkgDir;
         }
     }
     return formatFilePath;
+}
+
++ (NSString *)getAbsolutePathInAppRoot:(NSString *)filePath appId:(NSString *)appId {
+    return [self getAbsolutePath:filePath basePath:[self WAAppDir:appId] appId:appId];
+}
+
++ (NSString *)getAbsolutePathInAppPkg:(NSString *)filePath appId:(NSString *)appId {
+    return [self getAbsolutePath:filePath basePath:[self WAAppPkgDir:appId] appId:appId];
+}
+
++ (NSString *)getAbsolutePath:(NSString *)originPath basePath:(NSString *)basePath appId:(NSString *)appId {
+    if ([WAUIKitUtil isEmptyStirng:originPath] || !appId) return nil;
+    if ([originPath hasPrefix:@"http://"] || [originPath hasPrefix:@"https://"]) return originPath;
+    
+    if ([originPath hasPrefix:@"/"]) {//绝对路径
+        if ([self isFullFilePath:originPath]) return originPath;//全路径
+        return [NSString stringWithFormat:@"%@%@", [self WAAppPkgDir:appId], originPath];
+    }
+    NSString *hookWAAppURLScheme = [NSString stringWithFormat:@"%@://%@", kWAAppHookURLScheme_wxfile, appId];
+    if ([originPath hasPrefix:hookWAAppURLScheme]) {
+        if ([originPath isEqualToString:hookWAAppURLScheme]) return basePath;
+        NSString *relativePath = [originPath substringFromIndex:hookWAAppURLScheme.length];
+        return [NSString stringWithFormat:@"%@%@", basePath, relativePath];
+    }
+    return [NSString stringWithFormat:@"%@/%@", basePath, originPath];
 }
 
 @end

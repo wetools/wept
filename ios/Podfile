@@ -9,5 +9,6 @@ target 'WeAppExample' do
   pod 'AFNetworking', '~> 3.2.1'
   pod 'Masonry', '~> 1.0.0'
   pod 'YYKit', '~> 1.0.9'
+  pod 'PocketSocket', '~> 1.0.1'
   
 end

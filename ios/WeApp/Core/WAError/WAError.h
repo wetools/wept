@@ -21,8 +21,6 @@ NS_ERROR_ENUM(WAErrorDomain) {
 
 @interface WAError : NSObject
 
-#pragma mark - init
-
 + (NSError *)error:(NSInteger)errorCode;
 
 + (NSError *)error:(NSInteger)errorCode desc:(NSString *)desc;

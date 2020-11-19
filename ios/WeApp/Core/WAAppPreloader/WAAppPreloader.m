@@ -7,14 +7,15 @@
 //
 
 #import "WAAppPreloader.h"
-#import "YYKit.h"
 #import "WAError.h"
 #import "WAFileMgr.h"
+#import "MMContext.h"
+#import "WAAppTaskMgr.h"
 
 @interface WAAppPreloaderTask : NSObject
-@property(strong, nonatomic) WAAppOpenParameter *m_openInfo;
-@property(strong, nonatomic) WAAppTaskExtInfo *m_taskExtInfo;
-@property(strong, nonatomic) WAAppTaskHandlerWrapper *m_handlerWrapper;
+@property(nonatomic, strong) WAAppOpenParameter *m_openInfo;
+@property(nonatomic, strong) WAAppTaskExtInfo *m_taskExtInfo;
+@property(nonatomic, strong) WAAppTaskHandlerWrapper *m_handlerWrapper;
 @end
 
 @implementation WAAppPreloaderTask
@@ -28,14 +29,12 @@
 
 @implementation WAAppPreloader
 
-+ (instancetype)shared {
-    static WAAppPreloader *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-        instance.m_preloaderTasks = [NSMutableArray array];
-    });
-    return instance;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.m_preloaderTasks = [NSMutableArray array];
+    }
+    return self;
 }
 
 - (WAAppPreloaderTask *)isExistsPreloaderTask:(NSString *)appId {
@@ -53,18 +52,15 @@
         if (handlerWrapper.completionHandler) handlerWrapper.completionHandler(error);
         return;
     }
-    
     //需要重启小程序
     if ([self shouldTaskBeReOpened:openParameter]) {
         [self reOpenApp:openParameter taskExtInfo:taskExtInfo handlerWrapper:handlerWrapper];
         return;
     }
-    
     [self firstLoadApp:openParameter taskExtInfo:taskExtInfo handlerWrapper:handlerWrapper];
 }
 
 - (void)reOpenApp:(WAAppOpenParameter *)parameter taskExtInfo:(nullable WAAppTaskExtInfo *)taskExtInfo handlerWrapper:(nullable WAAppTaskHandlerWrapper *)handlerWrapper {
-    
 }
 
 - (BOOL)shouldTaskBeReOpened:(WAAppOpenParameter *)parameter {
@@ -78,17 +74,20 @@
     task.m_handlerWrapper = handlerWrapper;
     [self.m_preloaderTasks addObject:task];
     
-    //TODO: 服务器下载`小程序包`
-    [self checkValidAndEnterApp:task];
+    BOOL isPackageReady = [WAFileMgr WAAppIsPackageExists:openParameter.m_nsAppId];
+    if (isPackageReady) {
+        [self checkValidAndEnterApp:task];
+        return;
+    }
+    
+    //TODO: 预留:下载`小程序包`
 }
 
 - (void)checkValidAndEnterApp:(WAAppPreloaderTask *)preloaderTask {
-    NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
-    BOOL isGame = preloaderTask.m_openInfo.m_isGame;
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
         NSError *error;
-        if (![WAFileMgr WAAPPCheckPackageValid:appId isGame:isGame error:&error]) {
+        if (![WAFileMgr WAAppCheckPackageValid:appId error:&error]) {
             if (preloaderTask.m_handlerWrapper.completionHandler) preloaderTask.m_handlerWrapper.completionHandler(error);
             return;
         }
@@ -97,10 +96,11 @@
         });
     });
 }
-    
+
 
 - (void)finalyOpenApp:(WAAppPreloaderTask *)preloaderTask {
-    
+    WAAppTaskMgr *appTaskMgr = [[MMContext currentContext] getService:WAAppTaskMgr.class];
+    [appTaskMgr openAppTask:preloaderTask.m_openInfo taskExtInfo:preloaderTask.m_taskExtInfo completeHandler:preloaderTask.m_handlerWrapper.completionHandler];
 }
 
 @end
