@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly) BOOL firstRenderCompleted;
 @property(readonly) WAAppTaskPlatformState taskPlatformState;
 @property (readonly) WASocketServer *socketServer;
-//@property(readonly) WAJSCoreService *appService;
+@property(readonly) WAJSCoreService *appService;
 //@property(readonly) WAWebViewPageMgr *pageMgr;
 
 - (instancetype)initWithAppId:(NSString *)appId;

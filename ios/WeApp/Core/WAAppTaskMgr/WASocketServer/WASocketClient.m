@@ -2,7 +2,7 @@
 //  WASocketClient.m
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/18.
+//  Created by lionvoom on 2020/11/18.
 //  Copyright © 2020 wept. All rights reserved.
 //
 
@@ -57,10 +57,10 @@
     
     if (self.webSocket) {
         NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:self.webSocket];
-        NSLog(@"%s %@ queue message: %lu", __func__, protocol, self.msgQueue.count);
+        NSLog(@"%s %@ msgQueue count: %lu", __func__, protocol, self.msgQueue.count);
         for (NSString *msg in self.msgQueue) {
             [self.webSocket send:msg];
-            NSLog(@"%s %@ <== %@", __func__, protocol, msg);
+            NSLog(@"%@ <== %@", protocol, msg);
         }
         self.msgQueue = @[].mutableCopy;
     }
@@ -77,7 +77,7 @@
     } else {
         [self.webSocket send:msg];
         NSString *protocol = [WASocketClient WebSocketProtocolForWebSocket:self.webSocket];
-        NSLog(@"%s %@ <== %@", __func__, protocol, msg);
+        NSLog(@"%@ <== %@", protocol, msg);
     }
 }
 

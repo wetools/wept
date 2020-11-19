@@ -7,16 +7,15 @@
 //
 
 #import "WAAppPreloader.h"
-#import "YYKit.h"
 #import "WAError.h"
 #import "WAFileMgr.h"
 #import "MMContext.h"
 #import "WAAppTaskMgr.h"
 
 @interface WAAppPreloaderTask : NSObject
-@property(strong, nonatomic) WAAppOpenParameter *m_openInfo;
-@property(strong, nonatomic) WAAppTaskExtInfo *m_taskExtInfo;
-@property(strong, nonatomic) WAAppTaskHandlerWrapper *m_handlerWrapper;
+@property(nonatomic, strong) WAAppOpenParameter *m_openInfo;
+@property(nonatomic, strong) WAAppTaskExtInfo *m_taskExtInfo;
+@property(nonatomic, strong) WAAppTaskHandlerWrapper *m_handlerWrapper;
 @end
 
 @implementation WAAppPreloaderTask

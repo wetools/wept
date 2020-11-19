@@ -7,6 +7,7 @@
 //
 
 #import "WAUIKitUtil.h"
+#include <CoreServices/UTType.h>
 #import "NSString+YYAdd.h"
 
 @implementation WAUIKitUtil
@@ -70,6 +71,14 @@
 + (NSString *)formatHtmlUrlAndRemoveQuery:(NSString *)url {
     url = [url componentsSeparatedByString:@"?"].firstObject;
     return [self formatHtmlUrl:url];
+}
+
++ (NSString *)MIMETypeForLocalFilePath:(NSString *)path {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) return nil;
+    NSString *extension = path.pathExtension;
+    NSString *UTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+    NSString *contentType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassMIMEType);
+    return contentType ?: @"application/octet-stream";
 }
 
 #pragma mark - UIKit

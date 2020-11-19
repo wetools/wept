@@ -2,7 +2,7 @@
 //  WAJSCoreService.h
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/18.
+//  Created by lionvoom on 2020/11/18.
 //  Copyright © 2020 wept. All rights reserved.
 //
 
@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAppTask:(WAAppTask *)appTask port:(NSInteger)port;
 
 - (void)startService;
+
+- (void)setupInvokeHandler:(NSString *)api param:(NSDictionary *)args completionHandler:(void(^)(NSDictionary *res))completionHandler;
 
 @end
 

@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (WAAppTask *)getTaskWithAppID:(NSString *)appId;
 
+- (WAAppTask *)currentForegroundTask;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -8,17 +8,23 @@
 
 #import "WAAppTaskMgr.h"
 #import "YYKitMacro.h"
+#import "NSURLProtocol+WebKitSupport.h"
 
 @interface WAAppTaskMgr()
-@property(strong, nonatomic) NSMutableDictionary<NSString*,WAAppTask*> *dicAppID2Task;
+@property(nonatomic, strong) NSMutableDictionary<NSString*,WAAppTask*> *dicAppID2Task;
 @end
 
 @implementation WAAppTaskMgr
+
+- (void)dealloc {
+    [self unregisterNSURLProtocol];
+}
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         self.dicAppID2Task = [NSMutableDictionary dictionary];
+        [self registerNSURLProtocol];
     }
     return self;
 }
@@ -64,6 +70,10 @@
     return self.dicAppID2Task[appId];
 }
 
+- (WAAppTask *)currentForegroundTask {
+    return [self allTaskArray].lastObject;
+}
+
 #pragma mark -
 
 - (NSArray *)allTaskArray {
@@ -89,6 +99,21 @@
 //    for (WAAppTask *task in tasks) {
 //        NSLog(@"appId: %@, appLaunchTimeInMs:%llu", task.appId, task.appLaunchTimeInMs);
 //    }
+}
+
+#pragma mark -
+- (void)registerNSURLProtocol {
+    [NSURLProtocol registerClass:NSClassFromString(@"WAAppURLProtocol")];
+    [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_file];
+    [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_http];
+    [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_wxfile];
+}
+
+- (void)unregisterNSURLProtocol {
+    [NSURLProtocol unregisterClass:NSClassFromString(@"WAAppURLProtocol")];
+    [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_file];
+    [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_http];
+    [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_wxfile];
 }
 
 @end

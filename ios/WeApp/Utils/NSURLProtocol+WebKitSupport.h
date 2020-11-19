@@ -3,14 +3,10 @@
 
 @interface NSURLProtocol (WebKitSupport)
 
-/**
- 注册拦截schema
- */
+/// 注册拦截scheme
 + (void)wk_registerScheme:(NSString*)scheme;
 
-/**
- 注销schema
- */
+/// 注销拦截scheme
 + (void)wk_unregisterScheme:(NSString*)scheme;
 
 @end

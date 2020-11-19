@@ -2,15 +2,18 @@
 //  WAMsgHandler.m
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/18.
+//  Created by lionvoom on 2020/11/18.
 //  Copyright © 2020 wept. All rights reserved.
 //
 
 #import "WAMsgHandler.h"
+#import "YYKitMacro.h"
 #import "WAUIKitUtil.h"
 
 @implementation WAMsgHandler
-- (void)appTask:(WAAppTask *)appTask handleMessage:(NSDictionary *)msg {}
++ (void)appTask:(WAAppTask *)appTask handleMessage:(NSDictionary *)msg {
+    NSAssert(NO, @"subclass impl");
+}
 @end
 
 @interface WAMsgHandler_APPSERVICE_INVOKE : WAMsgHandler
@@ -25,7 +28,9 @@
     NSDictionary *args = data[@"args"];
     if (!args || ![args isKindOfClass:NSDictionary.class]) return;
     
+    @weakify(appTask);
     void(^callback)(NSDictionary *result) = ^(NSDictionary *result) {
+        @strongify(appTask);
         NSDictionary *res =
         @{@"command": @"APPSERVICE_INVOKE_CALLBACK",
           @"data": @{@"callbackID": @(callbackID),
@@ -33,10 +38,7 @@
           };
         [appTask.socketServer sendMessageToService:res];
     };
-    
-//    [target.manager serviceApiRequest:api param:args callback:^(NSDictionary *response) {
-//        callback(response);
-//    }];
+    [appTask.appService setupInvokeHandler:api param:args completionHandler:callback];
 }
 @end
 
@@ -78,7 +80,9 @@
     NSString *fromWebviewID = [NSString stringWithFormat:@"%@", messageJSON[@"fromWebviewID"]];
     if ([WAUIKitUtil isEmptyStirng:fromWebviewID]) return;
 
+    @weakify(appTask);
     void(^callback)(NSDictionary *result) = ^(NSDictionary *result) {
+        @strongify(appTask);
         NSDictionary *resultDict =
         @{@"command": @"WEBVIEW_INVOKE_CALLBACK",
           @"data": @{@"callbackID": @(callbackID),
@@ -86,10 +90,7 @@
           };
         [appTask.socketServer sendMessageToSpecialWebview:fromWebviewID message:resultDict];
     };
-
-//    [target.manager serviceApiRequest:api param:args callback:^(NSDictionary *response) {
-//        callback(response);
-//    }];
+    [appTask.appService setupInvokeHandler:api param:args completionHandler:callback];
 }
 @end
 

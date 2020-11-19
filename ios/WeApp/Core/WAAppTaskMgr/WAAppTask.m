@@ -7,24 +7,24 @@
 //
 
 #import "WAAppTask.h"
-#import "YYKit.h"
+#import "YYKitMacro.h"
 #import "MMContext.h"
 #import "WAWebSocketMgr.h"
 #import "WASocketClient.h"
 
 @interface WAAppTask()
-@property(copy, nonatomic) NSString *appId;
-@property(assign, nonatomic) BOOL isGameApp;
-@property(copy, nonatomic) NSString *instanceId;
-@property(nonatomic) unsigned long long appLaunchTimeInMs;
-@property(copy, nonatomic) NSString *enterPath;
-@property(strong, nonatomic) WAAppOpenParameter *taskOpenInfo;
-@property(strong, nonatomic) WAAppTaskExtInfo *taskExtInfo;
-@property(nonatomic) BOOL firstRenderFullCompleted;
-@property(nonatomic) BOOL firstRenderCompleted;
-@property(nonatomic) WAAppTaskPlatformState taskPlatformState;
-@property (strong, nonatomic) WASocketServer *socketServer;
-@property(strong, nonatomic) WAJSCoreService *appService;
+@property(nonatomic, copy) NSString *appId;
+@property(nonatomic, assign) BOOL isGameApp;
+@property(nonatomic, copy) NSString *instanceId;
+@property(nonatomic, assign) unsigned long long appLaunchTimeInMs;
+@property(nonatomic, copy) NSString *enterPath;
+@property(nonatomic, strong) WAAppOpenParameter *taskOpenInfo;
+@property(nonatomic, strong) WAAppTaskExtInfo *taskExtInfo;
+@property(nonatomic, assign) BOOL firstRenderFullCompleted;
+@property(nonatomic, assign) BOOL firstRenderCompleted;
+@property(nonatomic, assign) WAAppTaskPlatformState taskPlatformState;
+@property(nonatomic, strong) WASocketServer *socketServer;
+@property(nonatomic, strong) WAJSCoreService *appService;
 //@property(strong, nonatomic) WAWebViewPageMgr *pageMgr;
 @end
 

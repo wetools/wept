@@ -10,6 +10,8 @@
 #import "SSZipArchive.h"
 #import "NSData+YYAdd.h"
 #import "NSString+YYAdd.h"
+#import "WAAppEnum.h"
+#import "WAUIKitUtil.h"
 #import "WAError.h"
 
 static NSString *kWAFileDir_WeAppRoot   = @"wept";
@@ -229,6 +231,47 @@ static NSString *kWAFileDir_usr         = @"usr";
         return NO;
     }
     return [fileManager copyItemAtPath:debugZipPath toPath:appZipPath error:&error];
+}
+
++ (NSString *)searchFileInApp:(NSString *)filePath appId:(NSString *)appId {
+    if ([filePath hasPrefix:@"http://"] || [filePath hasPrefix:@"https://"]) return filePath;
+    NSString *formatFilePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *rootFilePath = [self getAbsolutePathInAppRoot:filePath appId:appId];
+    if ([fileManager fileExistsAtPath:rootFilePath]) {
+        formatFilePath = rootFilePath;
+    } else {
+        NSString *pkgDir = [self getAbsolutePathInAppPkg:filePath appId:appId];
+        if ([fileManager fileExistsAtPath:pkgDir]) {
+            formatFilePath = pkgDir;
+        }
+    }
+    return formatFilePath;
+}
+
++ (NSString *)getAbsolutePathInAppRoot:(NSString *)filePath appId:(NSString *)appId {
+    return [self getAbsolutePath:filePath basePath:[self WAAppDir:appId] appId:appId];
+}
+
++ (NSString *)getAbsolutePathInAppPkg:(NSString *)filePath appId:(NSString *)appId {
+    return [self getAbsolutePath:filePath basePath:[self WAAppPkgDir:appId] appId:appId];
+}
+
++ (NSString *)getAbsolutePath:(NSString *)originPath basePath:(NSString *)basePath appId:(NSString *)appId {
+    if ([WAUIKitUtil isEmptyStirng:originPath] || !appId) return nil;
+    if ([originPath hasPrefix:@"http://"] || [originPath hasPrefix:@"https://"]) return originPath;
+    
+    if ([originPath hasPrefix:@"/"]) {//绝对路径
+        if ([self isFullFilePath:originPath]) return originPath;//全路径
+        return [NSString stringWithFormat:@"%@%@", [self WAAppPkgDir:appId], originPath];
+    }
+    NSString *hookWAAppURLScheme = [NSString stringWithFormat:@"%@://%@", kWAAppHookURLScheme_wxfile, appId];
+    if ([originPath hasPrefix:hookWAAppURLScheme]) {
+        if ([originPath isEqualToString:hookWAAppURLScheme]) return basePath;
+        NSString *relativePath = [originPath substringFromIndex:hookWAAppURLScheme.length];
+        return [NSString stringWithFormat:@"%@%@", basePath, relativePath];
+    }
+    return [NSString stringWithFormat:@"%@/%@", basePath, originPath];
 }
 
 @end

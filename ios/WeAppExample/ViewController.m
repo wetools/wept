@@ -12,7 +12,7 @@
 #import "WAAppPreloader.h"
 #import "WAAppTaskMgr.h"
 
-static NSString *kDemoAppId = @"weapp-demo";
+static NSString *kDemoAppId = @"miniprogram";
 
 @implementation ViewController
 

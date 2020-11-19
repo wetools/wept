@@ -8,6 +8,11 @@
 
 #ifndef WAAppEnum_h
 #define WAAppEnum_h
+#import <Foundation/Foundation.h>
+
+static NSString * const kWAAppHookURLScheme_file    = @"file";
+static NSString * const kWAAppHookURLScheme_http    = @"http";
+static NSString * const kWAAppHookURLScheme_wxfile  = @"wxfile";
 
 typedef NS_ENUM(NSInteger, WAAppTaskPlatformState) {
     WAAppTaskPlatformState_Foreground       = 0,

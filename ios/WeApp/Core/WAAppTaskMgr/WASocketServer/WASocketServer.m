@@ -2,25 +2,26 @@
 //  WASocketServer.m
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/18.
+//  Created by lionvoom on 2020/11/18.
 //  Copyright © 2020 wept. All rights reserved.
 //
 
 #import "WASocketServer.h"
 #import "PSWebSocketServer.h"
-#import "YYKit.h"
+#import "NSString+YYAdd.h"
+#import "NSDictionary+YYAdd.h"
 #import "WASocketClient.h"
 #import "WAMsgHandler.h"
 
 @interface WASocketServer()<PSWebSocketServerDelegate>
-@property (assign, nonatomic) NSInteger port;
-@property (copy, nonatomic) NSString *wsProtocol;
-@property (strong, nonatomic) NSMutableDictionary<NSString*, WASocketClient*> *socketClientsMap;
-@property (strong, nonatomic) PSWebSocketServer *wsServer;
-@property (assign, nonatomic) BOOL isRunning;
-@property (assign, nonatomic) BOOL isReleased;
-@property (copy, nonatomic) void(^startBlock)(NSError *error);
-@property (copy, nonatomic) void(^stopBlock)(NSError *error);
+@property (nonatomic, assign) NSInteger port;
+@property (nonatomic, copy) NSString *wsProtocol;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, WASocketClient*> *socketClientsMap;
+@property (nonatomic, strong) PSWebSocketServer *wsServer;
+@property (nonatomic, assign) BOOL isRunning;
+@property (nonatomic, assign) BOOL isReleased;
+@property (nonatomic, copy) void(^startBlock)(NSError *error);
+@property (nonatomic, copy) void(^stopBlock)(NSError *error);
 @end
 
 @implementation WASocketServer
@@ -29,12 +30,13 @@
     NSLog(@"%s", __func__);
 }
 
-- (instancetype)initWithAppTask:(nullable id)appTask port:(NSInteger)port wsProtocol:(NSString *)wsProtocol {
+- (instancetype)initWithAppTask:(WAAppTask *)appTask port:(NSInteger)port wsProtocol:(NSString *)wsProtocol {
     self = [super init];
     if (self) {
-        self.socketClientsMap = @{}.mutableCopy;
+        self.appTask = appTask;
         self.port = port;
         self.wsProtocol = wsProtocol;
+        self.socketClientsMap = @{}.mutableCopy;
         self.wsServer = [PSWebSocketServer serverWithHost:@"127.0.0.1" port:self.port];
         self.wsServer.delegate = self;
     }

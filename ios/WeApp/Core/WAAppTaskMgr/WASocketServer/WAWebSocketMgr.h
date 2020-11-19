@@ -2,7 +2,7 @@
 //  WAWebSocketMgr.h
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/18.
+//  Created by lionvoom on 2020/11/18.
 //  Copyright © 2020 wept. All rights reserved.
 //
 

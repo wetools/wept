@@ -38,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)formatHtmlUrlAndRemoveQuery:(NSString *)url;
 
+/// 获取本地文件的MIMEType
++ (NSString *)MIMETypeForLocalFilePath:(NSString *)path;
+
 #pragma mark - UIKit
 
 + (UIWindow *)keyWindow;

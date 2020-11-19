@@ -7,12 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		095E7F8625666E89000039AD /* weapp-demo.zip in Resources */ = {isa = PBXBuildFile; fileRef = 095E7F8525666E89000039AD /* weapp-demo.zip */; };
+		095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */; };
+		095E7F8C2566710E000039AD /* WAJSEventHandler_getNetworkType.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */; };
+		095E7F9025667DE0000039AD /* miniprogram.zip in Resources */ = {isa = PBXBuildFile; fileRef = 095E7F8F25667DE0000039AD /* miniprogram.zip */; };
 		09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */; };
 		09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */; };
-		09C2E64525650223003EA2D6 /* weapp-demo.zip in Resources */ = {isa = PBXBuildFile; fileRef = 09C2E64425650222003EA2D6 /* weapp-demo.zip */; };
 		09C2E64B25650717003EA2D6 /* WAWeakWKScriptMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E64925650717003EA2D6 /* WAWeakWKScriptMessageHandler.m */; };
 		09C2E64F25650853003EA2D6 /* WAJSCoreService.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E64D25650853003EA2D6 /* WAJSCoreService.m */; };
 		09C2E65225651A69003EA2D6 /* WAWebSocketMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E65125651A69003EA2D6 /* WAWebSocketMgr.m */; };
+		09C2E65625652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E65525652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m */; };
+		09C2E65A25661F5C003EA2D6 /* WAAppURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E65825661F5C003EA2D6 /* WAAppURLProtocol.m */; };
+		09C2E65D25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E65C25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m */; };
 		09DB4C842562175B0037A656 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C832562175B0037A656 /* AppDelegate.m */; };
 		09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C862562175B0037A656 /* SceneDelegate.m */; };
 		09DB4C8A2562175B0037A656 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C892562175B0037A656 /* ViewController.m */; };
@@ -42,17 +48,28 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		095E7F8525666E89000039AD /* weapp-demo.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "weapp-demo.zip"; sourceTree = "<group>"; };
+		095E7F87256670FC000039AD /* WAJSEventHandler_getClipboardData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_getClipboardData.h; sourceTree = "<group>"; };
+		095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_getClipboardData.m; sourceTree = "<group>"; };
+		095E7F8A2566710E000039AD /* WAJSEventHandler_getNetworkType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_getNetworkType.h; sourceTree = "<group>"; };
+		095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_getNetworkType.m; sourceTree = "<group>"; };
+		095E7F8F25667DE0000039AD /* miniprogram.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = miniprogram.zip; sourceTree = "<group>"; };
 		09C2E63E2564D4BB003EA2D6 /* WAMsgHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAMsgHandler.h; sourceTree = "<group>"; };
 		09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAMsgHandler.m; sourceTree = "<group>"; };
 		09C2E641256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PSWebSocketDriver+FixSecWebsocketProtocol.h"; sourceTree = "<group>"; };
 		09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PSWebSocketDriver+FixSecWebsocketProtocol.m"; sourceTree = "<group>"; };
-		09C2E64425650222003EA2D6 /* weapp-demo.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "weapp-demo.zip"; sourceTree = "<group>"; };
 		09C2E64925650717003EA2D6 /* WAWeakWKScriptMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWeakWKScriptMessageHandler.m; sourceTree = "<group>"; };
 		09C2E64A25650717003EA2D6 /* WAWeakWKScriptMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWeakWKScriptMessageHandler.h; sourceTree = "<group>"; };
 		09C2E64D25650853003EA2D6 /* WAJSCoreService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAJSCoreService.m; sourceTree = "<group>"; };
 		09C2E64E25650853003EA2D6 /* WAJSCoreService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAJSCoreService.h; sourceTree = "<group>"; };
 		09C2E65025651A69003EA2D6 /* WAWebSocketMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAWebSocketMgr.h; sourceTree = "<group>"; };
 		09C2E65125651A69003EA2D6 /* WAWebSocketMgr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAWebSocketMgr.m; sourceTree = "<group>"; };
+		09C2E65425652C86003EA2D6 /* WAJSEventHandler_BaseEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_BaseEvent.h; sourceTree = "<group>"; };
+		09C2E65525652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_BaseEvent.m; sourceTree = "<group>"; };
+		09C2E65825661F5C003EA2D6 /* WAAppURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppURLProtocol.m; sourceTree = "<group>"; };
+		09C2E65925661F5C003EA2D6 /* WAAppURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAppURLProtocol.h; sourceTree = "<group>"; };
+		09C2E65B25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_getSystemInfo.h; sourceTree = "<group>"; };
+		09C2E65C25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_getSystemInfo.m; sourceTree = "<group>"; };
 		09DB4C7F2562175B0037A656 /* WeAppExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeAppExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09DB4C822562175B0037A656 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		09DB4C832562175B0037A656 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -128,6 +145,21 @@
 			path = WAJSCoreService;
 			sourceTree = "<group>";
 		};
+		09C2E65325652C6F003EA2D6 /* WAJSEventHandler */ = {
+			isa = PBXGroup;
+			children = (
+				09C2E65425652C86003EA2D6 /* WAJSEventHandler_BaseEvent.h */,
+				09C2E65525652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m */,
+				09C2E65B25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.h */,
+				09C2E65C25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m */,
+				095E7F87256670FC000039AD /* WAJSEventHandler_getClipboardData.h */,
+				095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */,
+				095E7F8A2566710E000039AD /* WAJSEventHandler_getNetworkType.h */,
+				095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */,
+			);
+			path = WAJSEventHandler;
+			sourceTree = "<group>";
+		};
 		09DB4C762562175B0037A656 = {
 			isa = PBXGroup;
 			children = (
@@ -169,7 +201,8 @@
 				09DB4C902562175C0037A656 /* LaunchScreen.storyboard */,
 				09DB4C932562175C0037A656 /* Info.plist */,
 				09DB4C942562175C0037A656 /* main.m */,
-				09C2E64425650222003EA2D6 /* weapp-demo.zip */,
+				095E7F8F25667DE0000039AD /* miniprogram.zip */,
+				095E7F8525666E89000039AD /* weapp-demo.zip */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -228,6 +261,8 @@
 				09DB4CE9256284900037A656 /* WAFileMgr.m */,
 				09DB5019256386E00037A656 /* WAUIKitUtil.h */,
 				09DB501C256386E00037A656 /* WAUIKitUtil.m */,
+				09C2E65925661F5C003EA2D6 /* WAAppURLProtocol.h */,
+				09C2E65825661F5C003EA2D6 /* WAAppURLProtocol.m */,
 				09DB501B256386E00037A656 /* NSURLProtocol+WebKitSupport.h */,
 				09DB501A256386E00037A656 /* NSURLProtocol+WebKitSupport.m */,
 				09C2E64A25650717003EA2D6 /* WAWeakWKScriptMessageHandler.h */,
@@ -239,6 +274,7 @@
 		09DB501F256386FB0037A656 /* WAAppTaskMgr */ = {
 			isa = PBXGroup;
 			children = (
+				09C2E65325652C6F003EA2D6 /* WAJSEventHandler */,
 				09DB503D2564C56A0037A656 /* WASocketServer */,
 				09C2E64C25650853003EA2D6 /* WAJSCoreService */,
 				09DB5023256387140037A656 /* WAWebViewPageMgr */,
@@ -377,7 +413,8 @@
 				09DB4C922562175C0037A656 /* LaunchScreen.storyboard in Resources */,
 				09DB4C8F2562175C0037A656 /* Assets.xcassets in Resources */,
 				09DB4CF3256284900037A656 /* WeApp.bundle in Resources */,
-				09C2E64525650223003EA2D6 /* weapp-demo.zip in Resources */,
+				095E7F9025667DE0000039AD /* miniprogram.zip in Resources */,
+				095E7F8625666E89000039AD /* weapp-demo.zip in Resources */,
 				09DB4C8D2562175B0037A656 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,7 +460,10 @@
 				09DB4CF2256284900037A656 /* WAFileMgr.m in Sources */,
 				09DB5022256386FB0037A656 /* WAAppTaskMgr.m in Sources */,
 				09C2E65225651A69003EA2D6 /* WAWebSocketMgr.m in Sources */,
+				095E7F8C2566710E000039AD /* WAJSEventHandler_getNetworkType.m in Sources */,
+				09C2E65D25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m in Sources */,
 				09DB501D256386E00037A656 /* NSURLProtocol+WebKitSupport.m in Sources */,
+				09C2E65A25661F5C003EA2D6 /* WAAppURLProtocol.m in Sources */,
 				09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */,
 				09DB4CEF256284900037A656 /* WAAppTaskExtInfo.m in Sources */,
 				09DB4C8A2562175B0037A656 /* ViewController.m in Sources */,
@@ -432,6 +472,7 @@
 				09DB50402564C5C30037A656 /* WASocketServer.m in Sources */,
 				09DB4C952562175C0037A656 /* main.m in Sources */,
 				09DB4CEC256284900037A656 /* WAError.m in Sources */,
+				095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */,
 				09DB4CF1256284900037A656 /* MMService.m in Sources */,
 				09DB50432564C6030037A656 /* WASocketClient.m in Sources */,
 				09DB50322563ACB50037A656 /* MMContext.m in Sources */,
@@ -439,6 +480,7 @@
 				09DB5028256387140037A656 /* WABaseViewController.m in Sources */,
 				09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */,
 				09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */,
+				09C2E65625652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m in Sources */,
 				09DB5029256387140037A656 /* WANavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,6 +625,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9PJ22KK765;
 				INFOPLIST_FILE = WeAppExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -601,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9PJ22KK765;
 				INFOPLIST_FILE = WeAppExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

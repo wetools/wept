@@ -90,4 +90,13 @@
 /// 准备小程序debug包（用于本地调试）
 + (BOOL)WAAppPrepareDebugPackage:(NSString *)appId;
 
+/// `appId`小程序目录下的搜索文件
++ (NSString *)searchFileInApp:(NSString *)filePath appId:(NSString *)appId;
+
+/// `appId`小程序根目录下的绝对路径
++ (NSString *)getAbsolutePathInAppRoot:(NSString *)filePath appId:(NSString *)appId;
+
+/// `appId`小程序`pkg`目录下的绝对路径
++ (NSString *)getAbsolutePathInAppPkg:(NSString *)filePath appId:(NSString *)appId;
+
 @end
