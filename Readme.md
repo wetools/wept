@@ -28,7 +28,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 
 ## 浏览器效果预览
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c8821d127bd342ae93c68325919527a2~tplv-k3u1fbpfcp-watermark.image)
+![weptwdeb](https://applet-doc.oss-cn-zhangjiakou.aliyuncs.com/jingo/weptweb.gif)
 
 ## 安装 & 使用方法
 
