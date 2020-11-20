@@ -27,16 +27,8 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 ### android
 
 
-## 主要特性
-
-* 支持 wxml, wxss, javascript 和 json 保存后热更新
-* 支持系统 notification 更早提示构建和请求错误
-* 使用后台转发 XMLHttpRequest 请求，无需配置 CORS, 可 [配置代理](https://github.com/chemzqm/wept/wiki/wept-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
-* 支持 [所有小程序公开 API](https://github.com/chemzqm/wept/wiki/API-%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%8A%B6%E6%80%81)
-* 可使用 Chrome 移动页面调试，可在移动端体验
-* 支持 appData 和 storage 面板，需下载 [Chrome 插件](https://chrome.google.com/webstore/detail/wechat-devtools-extension/cmpjfobofbhbghjodehbohchlghacmll)
-
-![one](https://cloud.githubusercontent.com/assets/251450/19413094/f46273d6-9356-11e6-9216-06ef2e2e3888.gif)
+## 浏览器效果预览
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c8821d127bd342ae93c68325919527a2~tplv-k3u1fbpfcp-watermark.image)
 
 ## 安装 & 使用方法
 
@@ -61,7 +53,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 ## LICENSE
 
-Copyright 2016 chemzqm@gmail.com
+Copyright 2020 gongmw08@163.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
