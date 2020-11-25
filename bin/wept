@@ -5,6 +5,8 @@ const path = require('path');
 const yargs = require('yargs');
 const chalk = require('chalk');
 const logs = require('../lib/logs');
+const WeptApplet=require('../lib/build/WeptApplet')
+
 
 const clearConsole = () => {
   process.stdout.write(/^win/.test(process.platform) ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H');
@@ -45,7 +47,10 @@ const runWeb = async () => {
   let compiledPath = path.resolve(cacheFolder, path.basename(appletSources));
   checkCompileProject(compiledPath);
 
-  
+  const weptApplet = new WeptApplet({appletSources, compiledPath});
+  await weptApplet.run();
+
+
 };
 
 const weptCli = async () => {
