@@ -4,12 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 const chalk = require('chalk');
+const logs = require('../lib/logs');
 
 const clearConsole = () => {
   process.stdout.write(/^win/.test(process.platform) ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H');
 }
 
-const checkcompiledProject = (compiledPath) => {
+const checkCompileProject = (compiledPath) => {
   if (!compiledPath) throw new Error('小程序编译后项目路径不能为空');
   if (!path.isAbsolute(compiledPath)) throw new Error('小程序编译后项目路径必须为绝对路径');
   const parent = path.dirname(compiledPath);
@@ -42,7 +43,9 @@ const runWeb = async () => {
   }
 
   let compiledPath = path.resolve(cacheFolder, path.basename(appletSources));
-  checkAppletProject(compiledPath);
+  checkCompileProject(compiledPath);
+
+  
 };
 
 const weptCli = async () => {
@@ -68,6 +71,6 @@ const weptCli = async () => {
 };
 
 weptCli().catch(err => {
-  console.log('%s %s %s', chalk.red(`[${(new Date()).toUTCString()}]`), chalk.red('[ERROR]'), chalk.red(err));
+  logs.error(err)
   process.exit();
 });
