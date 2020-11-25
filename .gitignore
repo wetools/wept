@@ -2,9 +2,6 @@
 npm-debug.log
 Thumbs.db
 node_modules/
-build
-build.js
-build.js.map
 *.map
 .official
 *.diff
