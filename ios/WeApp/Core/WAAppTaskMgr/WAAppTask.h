@@ -12,10 +12,13 @@
 #import "WAAppTaskExtInfo.h"
 #import "WASocketServer.h"
 #import "WAJSCoreService.h"
+#import "WAWebViewPageMgr.h"
+#import "WAGlobalConfig.h"
+#import "WACapsuleMenuDelegate-Protocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WAAppTask : NSObject
+@interface WAAppTask : NSObject <WACapsuleMenuDelegate>
 @property(readonly) NSString *appId;
 @property(readonly) BOOL isGameApp;
 @property(readonly) NSString *instanceId;
@@ -26,9 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly) BOOL firstRenderFullCompleted;
 @property(readonly) BOOL firstRenderCompleted;
 @property(readonly) WAAppTaskPlatformState taskPlatformState;
-@property (readonly) WASocketServer *socketServer;
+
+@property(readonly) WAGlobalConfig *appGlobalConfig;
+@property(readonly) WASocketServer *socketServer;
 @property(readonly) WAJSCoreService *appService;
-//@property(readonly) WAWebViewPageMgr *pageMgr;
+@property(readonly) WAWebViewPageMgr *pageMgr;
+@property(nonatomic, assign) NSUInteger baseWebViewId;
+@property(nonatomic, copy) NSString *templateHtml;
 
 - (instancetype)initWithAppId:(NSString *)appId;
 

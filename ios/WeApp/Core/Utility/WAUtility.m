@@ -1,16 +1,16 @@
 //
 //  MAUIUtil.m
-//  MiniApp
+//  WeAppExample
 //
 //  Created by lionvoom on 2020/10/19.
 //  Copyright © 2020 wept. All rights reserved.
 //
 
-#import "WAUIKitUtil.h"
+#import "WAUtility.h"
 #include <CoreServices/UTType.h>
 #import "NSString+YYAdd.h"
 
-@implementation WAUIKitUtil
+@implementation WAUtility
 
 + (NSString *)UserAgent {
     static NSString *userAgent;
@@ -73,6 +73,24 @@
     return [self formatHtmlUrl:url];
 }
 
++ (BOOL)isEquelPagePath1:(NSString *)pagePath1 withPagePath2:(NSString *)pagePath2 isCheckQuery:(BOOL)isCheckQuery {
+    NSString *kHtmlSuffix = @".html";
+    NSString *kQuerySep = @"?";
+    NSString *_pagePath1 = pagePath1.copy;
+    NSString *_pagePath2 = pagePath2.copy;
+    if (!isCheckQuery) {
+        _pagePath1 = [_pagePath1 componentsSeparatedByString:kQuerySep].firstObject;
+        _pagePath2 = [_pagePath2 componentsSeparatedByString:kQuerySep].firstObject;
+    }
+    if(![_pagePath1 containsString:kQuerySep] && ![_pagePath1 hasSuffix:kHtmlSuffix]) {
+        _pagePath1 = [_pagePath1 stringByAppendingString:kHtmlSuffix];
+    }
+    if(![_pagePath2 containsString:kQuerySep] && ![_pagePath2 hasSuffix:kHtmlSuffix]) {
+        _pagePath2 = [_pagePath2 stringByAppendingString:kHtmlSuffix];
+    }
+    return [_pagePath1 isEqualToString:_pagePath2];
+}
+
 + (NSString *)MIMETypeForLocalFilePath:(NSString *)path {
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) return nil;
     NSString *extension = path.pathExtension;
@@ -81,7 +99,7 @@
     return contentType ?: @"application/octet-stream";
 }
 
-#pragma mark - UIKit
+#pragma mark - UIKit (Extension)
 + (UIWindow *)keyWindow {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     if (nil==window || window.windowLevel != UIWindowLevelNormal) {
@@ -131,7 +149,7 @@
 
 
 
-#pragma mark - UIColor
+#pragma mark UIColor
 
 FOUNDATION_STATIC_INLINE NSUInteger hexStrToInt(NSString *str) {
     uint32_t result = 0;
@@ -180,6 +198,31 @@ FOUNDATION_STATIC_INLINE BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g
         return [UIColor colorWithRed:r green:g blue:b alpha:a];
     }
     return nil;
+}
+
+#pragma mark - Foundation (Extension)
+
++ (id)mutableDictionaryCopyIfNeeded:(id)dictObj {
+    if ([dictObj isKindOfClass:[NSDictionary class]] &&
+        ![dictObj isKindOfClass:[NSMutableDictionary class]]) {
+        dictObj = [dictObj mutableCopy];
+    }
+    return dictObj;
+}
+
+/// 合并两个字典
++ (void)mutableDictionary:(NSMutableDictionary *)mDict merge:(NSDictionary *)dict {
+    for (id key in [dict allKeys]) {
+        id obj = [self mutableDictionaryCopyIfNeeded:[dict objectForKey:key]];
+        id localObj = [self mutableDictionaryCopyIfNeeded:[mDict objectForKey:key]];
+        if ([obj isKindOfClass:[NSDictionary class]] &&
+            [localObj isKindOfClass:[NSMutableDictionary class]]) {
+            // Recursive merge for NSDictionary
+            [self mutableDictionary:localObj merge:obj];
+        } else if (obj) {
+            [mDict setObject:obj forKey:key];
+        }
+    }
 }
 
 @end

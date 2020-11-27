@@ -7,10 +7,16 @@
 //
 
 #import "WAAppTask.h"
+#import "NSObject+YYModel.h"
 #import "YYKitMacro.h"
+#import "WAUtility.h"
 #import "MMContext.h"
+#import "WAAppTaskMgr.h"
 #import "WAWebSocketMgr.h"
 #import "WASocketClient.h"
+#import "WAConfigMgr.h"
+#import "WAPageDataGenerator.h"
+#import "WAMsgGenerator.h"
 
 @interface WAAppTask()
 @property(nonatomic, copy) NSString *appId;
@@ -23,9 +29,10 @@
 @property(nonatomic, assign) BOOL firstRenderFullCompleted;
 @property(nonatomic, assign) BOOL firstRenderCompleted;
 @property(nonatomic, assign) WAAppTaskPlatformState taskPlatformState;
+@property(nonatomic, strong) WAGlobalConfig *appGlobalConfig;
 @property(nonatomic, strong) WASocketServer *socketServer;
 @property(nonatomic, strong) WAJSCoreService *appService;
-//@property(strong, nonatomic) WAWebViewPageMgr *pageMgr;
+@property(strong, nonatomic) WAWebViewPageMgr *pageMgr;
 @end
 
 @implementation WAAppTask
@@ -55,10 +62,29 @@
     [self.appService startService];
 }
 
+- (void)setupPageMgr {
+    self.pageMgr = [[WAWebViewPageMgr alloc] init];
+}
+
+- (void)setupEntrancePage {
+    WAWebViewController *page = [[WAWebViewController alloc] init];
+    WAWebViewPageData *pageData = [WAPageDataGenerator genSinglePageWithOpenType:@"appLaunch" pagePath:self.appGlobalConfig.appLaunchInfo.path appTask:self];
+    page.appTask = self;
+    page.pageModel = pageData;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:page];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    self.pageMgr.navigationController = nav;
+    [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
+    
+    NSDictionary *msg = [WAMsgGenerator onAppRoute:page.pageModel.pageId path:page.pageModel.pagePath query:page.pageModel.query openType:@"appLaunch" scene:1001];
+    [self.socketServer sendMessageToService:msg];
+}
+
 - (void)resetTask {
     [self.socketServer release:nil];
     WAWebSocketMgr *webSocketMgr = [[MMContext currentContext] getService:WAWebSocketMgr.class];
     [webSocketMgr releasePort:self.socketServer.port];
+    [self.pageMgr popAllWebViewPage];
 }
 
 #pragma mark -
@@ -69,13 +95,32 @@
     self.taskExtInfo = taskExtInfo;
     self.appLaunchTimeInMs = NSDate.date.timeIntervalSince1970*1000;
     
+    NSError *error;
+    NSDictionary *dict = [WAConfigMgr WAAppGlobalConfig:self.appId isGame:self.isGameApp error:&error];
+    self.appGlobalConfig = [WAGlobalConfig modelWithDictionary:dict];
+    if (error) {
+        completionHandler(error);
+        return;
+    }
+    
+    self.templateHtml = [WAConfigMgr WAAppTemplateHtml:self.appId error:&error];
+    if (error) {
+        completionHandler(error);
+        return;
+    }
+    
     @weakify(self);
     [self setupWebSocketServer:^(NSError * _Nullable error) {
         @strongify(self);
-        NSLog(@"");
-        if (!error) {
-            [self setupService];
+        if (error) {
+            completionHandler(error);
+            return;
         }
+        [self setupService];
+        [self setupPageMgr];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupEntrancePage];
+        });
     }];
     completionHandler(nil);
 }
@@ -94,6 +139,16 @@
 
 - (void)taskEnterBackground:(NSInteger)reason {
     self.taskPlatformState = WAAppTaskPlatformState_Background;
+}
+
+#pragma mark - WACapsuleMenuDelegate
+- (void)onMenuMore {
+    
+}
+
+- (void)onMenuExit {
+    WAAppTaskMgr *appTaskManager = [[MMContext currentContext] getService:WAAppTaskMgr.class];
+    [appTaskManager closeTask:self reason:0];
 }
 
 @end
