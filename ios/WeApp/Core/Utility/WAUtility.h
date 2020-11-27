@@ -1,6 +1,6 @@
 //
 //  MAUIUtil.h
-//  MiniApp
+//  WeAppExample
 //
 //  Created by lionvoom on 2020/10/19.
 //  Copyright © 2020 wept. All rights reserved.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WAUIKitUtil : NSObject
+@interface WAUtility : NSObject
 
 + (NSString *)UserAgent;
 
@@ -38,10 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)formatHtmlUrlAndRemoveQuery:(NSString *)url;
 
++ (BOOL)isEquelPagePath1:(NSString *)pagePath1 withPagePath2:(NSString *)pagePath2 isCheckQuery:(BOOL)isCheckQuery;
+
 /// 获取本地文件的MIMEType
 + (NSString *)MIMETypeForLocalFilePath:(NSString *)path;
 
-#pragma mark - UIKit
+#pragma mark - UIKit (Extentsion)
 
 + (UIWindow *)keyWindow;
 
@@ -60,6 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
  fix: #fff
  */
 + (UIColor *)colorWithHexString:(NSString *)hexStr;
+
+#pragma mark - Foundation (Extentsion)
+/// 合并两个字典
++ (void)mutableDictionary:(NSMutableDictionary *)mDict merge:(NSDictionary *)dict;
 
 @end
 

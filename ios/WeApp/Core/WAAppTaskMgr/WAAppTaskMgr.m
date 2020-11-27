@@ -105,15 +105,15 @@
 - (void)registerNSURLProtocol {
     [NSURLProtocol registerClass:NSClassFromString(@"WAAppURLProtocol")];
     [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_file];
-    [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_http];
     [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_wxfile];
+    // [NSURLProtocol wk_registerScheme:kWAAppHookURLScheme_http];
 }
 
 - (void)unregisterNSURLProtocol {
     [NSURLProtocol unregisterClass:NSClassFromString(@"WAAppURLProtocol")];
     [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_file];
-    [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_http];
     [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_wxfile];
+    // [NSURLProtocol wk_unregisterScheme:kWAAppHookURLScheme_http];
 }
 
 @end

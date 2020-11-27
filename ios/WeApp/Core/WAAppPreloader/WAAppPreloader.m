@@ -8,7 +8,7 @@
 
 #import "WAAppPreloader.h"
 #import "WAError.h"
-#import "WAFileMgr.h"
+#import "WAConfigMgr.h"
 #import "MMContext.h"
 #import "WAAppTaskMgr.h"
 
@@ -74,33 +74,23 @@
     task.m_handlerWrapper = handlerWrapper;
     [self.m_preloaderTasks addObject:task];
     
-    BOOL isPackageReady = [WAFileMgr WAAppIsPackageExists:openParameter.m_nsAppId];
+    BOOL isPackageReady = [WAConfigMgr WAAppIsPackageExists:openParameter.m_nsAppId];
     if (isPackageReady) {
-        [self checkValidAndEnterApp:task];
+        [self finalyOpenApp:task];
         return;
     }
     
     //TODO: 预留:下载`小程序包`
 }
 
-- (void)checkValidAndEnterApp:(WAAppPreloaderTask *)preloaderTask {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
-        NSError *error;
-        if (![WAFileMgr WAAppCheckPackageValid:appId error:&error]) {
-            if (preloaderTask.m_handlerWrapper.completionHandler) preloaderTask.m_handlerWrapper.completionHandler(error);
-            return;
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self finalyOpenApp:preloaderTask];
-        });
-    });
-}
-
-
 - (void)finalyOpenApp:(WAAppPreloaderTask *)preloaderTask {
     WAAppTaskMgr *appTaskMgr = [[MMContext currentContext] getService:WAAppTaskMgr.class];
-    [appTaskMgr openAppTask:preloaderTask.m_openInfo taskExtInfo:preloaderTask.m_taskExtInfo completeHandler:preloaderTask.m_handlerWrapper.completionHandler];
+    [appTaskMgr openAppTask:preloaderTask.m_openInfo taskExtInfo:preloaderTask.m_taskExtInfo completeHandler:^(NSError * _Nullable error) {
+        if (preloaderTask.m_handlerWrapper.completionHandler) {
+            preloaderTask.m_handlerWrapper.completionHandler(error);
+        }
+        [self.m_preloaderTasks removeObject:preloaderTask];
+    }];
 }
 
 @end
