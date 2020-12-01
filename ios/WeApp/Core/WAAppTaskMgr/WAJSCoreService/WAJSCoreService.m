@@ -7,10 +7,11 @@
 //
 
 #import "WAJSCoreService.h"
+#import <WebKit/WebKit.h>
 #import "YYKitMacro.h"
-#import "WAWeakWKScriptMessageHandler.h"
-#import "WAUIKitUtil.h"
+#import "WAUtility.h"
 #import "WAFileMgr.h"
+#import "WAConfigMgr.h"
 #import "WAAppTask.h"
 #import "WAJSEventHandler_BaseEvent.h"
 
@@ -44,8 +45,8 @@
 }
 
 - (void)startService {
-    NSString *userAgent = [WAUIKitUtil UserAgent];
-    userAgent = [NSString stringWithFormat:@"%@ wechatdevtools appservice port/%lu token/194c98b09147b6b1fb522e38cd983f54 appid/%@", userAgent, (unsigned long)self.port, self.appTask.appId];
+    NSString *userAgent = [WAUtility UserAgent];
+    userAgent = [NSString stringWithFormat:@"%@ wechatdevtools appservice port/%lu token/194c98b09147b6b1fb522e38cd983f54", userAgent, (unsigned long)self.port];
     
     WKWebView *webView = [[WKWebView alloc] initWithFrame:(CGRect){0,-200,0,0} configuration:[self WKWebViewConfig]];
     webView.navigationDelegate = self;
@@ -53,21 +54,21 @@
     self.webView = webView;
     
     //不添加到view上，跟safari联调看不到资源
-    UIWindow *window = [WAUIKitUtil keyWindow];
+    UIWindow *window = [WAUtility keyWindow];
     [window addSubview:webView];
     
-    NSString *serviceFilePath = [WAFileMgr WAAppEnterencePath:self.appTask.appId isGame:self.appTask.isGameApp];
-    NSString *basePath = [serviceFilePath stringByDeletingLastPathComponent];
+    NSString *servicePath = [WAConfigMgr WAAppEnterencePath:self.appTask.appId isGame:self.appTask.isGameApp];
+    NSString *basePath = [servicePath stringByDeletingLastPathComponent];
     NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-//    NSError *error = nil;
-//    NSString *html = [[NSString alloc] initWithContentsOfURL:[NSURL fileURLWithPath:serviceFilePath] encoding:NSUTF8StringEncoding error:&error];
-//    [self.webView loadHTMLString:html baseURL:baseURL];
+    NSError *error = nil;
+    NSString *html = [[NSString alloc] initWithContentsOfURL:[NSURL fileURLWithPath:servicePath] encoding:NSUTF8StringEncoding error:&error];
+    [self.webView loadHTMLString:html baseURL:baseURL];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSError *error = nil;
-        NSString *html = [[NSString alloc] initWithContentsOfURL:[NSURL fileURLWithPath:serviceFilePath] encoding:NSUTF8StringEncoding error:&error];
-        [self.webView loadHTMLString:html baseURL:baseURL];
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        NSError *error = nil;
+//        NSString *html = [[NSString alloc] initWithContentsOfURL:[NSURL fileURLWithPath:serviceFilePath] encoding:NSUTF8StringEncoding error:&error];
+//        [self.webView loadHTMLString:html baseURL:baseURL];
+//    });
 }
 
 - (WKWebViewConfiguration *)WKWebViewConfig {

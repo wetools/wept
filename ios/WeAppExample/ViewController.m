@@ -8,11 +8,10 @@
 
 #import "ViewController.h"
 #import "MMContext.h"
-#import "WAFileMgr.h"
+#import "WAConfigMgr.h"
 #import "WAAppPreloader.h"
-#import "WAAppTaskMgr.h"
 
-static NSString *kDemoAppId = @"miniprogram";
+static NSString *kDemoAppId = @"weapp-demo";
 
 @implementation ViewController
 
@@ -25,7 +24,7 @@ static NSString *kDemoAppId = @"miniprogram";
 
 - (IBAction)openWeApp:(UIButton *)sender {
     //准备debug包
-    [WAFileMgr WAAppPrepareDebugPackage:kDemoAppId];
+    [WAConfigMgr WAAppPrepareDebugPackage:kDemoAppId];
 
     WAAppOpenParameter *parameter = [[WAAppOpenParameter alloc] init];
     parameter.m_nsAppId = kDemoAppId;
@@ -33,11 +32,6 @@ static NSString *kDemoAppId = @"miniprogram";
 
     WAAppPreloader *preloader = [[MMContext currentContext] getService:WAAppPreloader.class];
     [preloader openApp:parameter taskExtInfo:nil handlerWrapper:nil];
-}
-
-- (IBAction)closeWeApp:(id)sender {
-    WAAppTaskMgr *appTaskManager = [[MMContext currentContext] getService:WAAppTaskMgr.class];
-    [appTaskManager closeTaskWithAppID:kDemoAppId reason:0];
 }
 
 @end

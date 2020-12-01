@@ -8,7 +8,7 @@
 
 #import "WAMsgHandler.h"
 #import "YYKitMacro.h"
-#import "WAUIKitUtil.h"
+#import "WAUtility.h"
 
 @implementation WAMsgHandler
 + (void)appTask:(WAAppTask *)appTask handleMessage:(NSDictionary *)msg {
@@ -78,7 +78,7 @@
     NSDictionary *args = data[@"args"];
     if (!args || ![args isKindOfClass:NSDictionary.class]) return;
     NSString *fromWebviewID = [NSString stringWithFormat:@"%@", messageJSON[@"fromWebviewID"]];
-    if ([WAUIKitUtil isEmptyStirng:fromWebviewID]) return;
+    if ([WAUtility isEmptyStirng:fromWebviewID]) return;
 
     @weakify(appTask);
     void(^callback)(NSDictionary *result) = ^(NSDictionary *result) {
@@ -101,7 +101,7 @@
 
 @implementation WAMsgHandler_WEBVIEW_PUBLISH
 + (void)appTask:(WAAppTask *)appTask handleMessage:(NSDictionary *)messageJSON {
-    [appTask.socketServer sendMessageToWildWebview:messageJSON];
+    [appTask.socketServer sendMessageToService:messageJSON];
 }
 @end
 

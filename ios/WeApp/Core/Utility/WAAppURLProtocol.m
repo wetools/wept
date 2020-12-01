@@ -8,18 +8,16 @@
 #import "WAAppURLProtocol.h"
 #import "YYKit.h"
 #import "WAAppEnum.h"
-#import "WAUIKitUtil.h"
-#import "WAFileMgr.h"
+#import "WAUtility.h"
+#import "WAConfigMgr.h"
 #import "MMContext.h"
 #import "WAAppTaskMgr.h"
 
+static NSString* const kURLHasHandle = @"URLHasHandle";
 static NSString *const WAAppURLProtocol_hook_calibration = @"file:///calibration";
 static NSString *const WAAppURLProtocol_hook_calibration_toHttp = @"http://calibration";
-
 static NSString *const WAAppURLProtocol_hook_apihelper_assdk = @"file:///apihelper/assdk";
 static NSString *const WAAppURLProtocol_hook_apihelper_assdk_toHttp = @"http://apihelper/assdk";
-
-static NSString* const kURLHasHandle = @"URLHasHandle";
 
 @interface WAAppURLProtocol ()<NSURLSessionDelegate>
 @property (nonatomic, strong) NSURLSessionDataTask *task;
@@ -41,7 +39,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
     NSURL *url = request.URL;
     NSString *scheme = url.scheme;
     if ([scheme isEqualToString:kWAAppHookURLScheme_file]) {
-        // "file:///" --> "'"http://"
+        // "file:///" --> "http://"
         NSString *absoluteString = request.URL.absoluteString;
         if (([absoluteString hasPrefix:WAAppURLProtocol_hook_apihelper_assdk]
              || [absoluteString hasPrefix:WAAppURLProtocol_hook_calibration])) {
@@ -51,7 +49,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
         } else {//js绝对路径，需补全路径
             WAAppTaskMgr *appTaskMgr = [[MMContext currentContext] getService:WAAppTaskMgr.class];
             WAAppTask *app = [appTaskMgr currentForegroundTask];
-            NSString *filePath = [NSString stringWithFormat:@"%@%@", [WAFileMgr WAAppPkgDir:app.appId], url.path];
+            NSString *filePath = [NSString stringWithFormat:@"%@%@", [WAConfigMgr WAAppPkgDir:app.appId], url.path];
             return [NSMutableURLRequest requestWithURL:[NSURL fileURLWithPath:filePath]];
         }
     }
@@ -64,7 +62,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
 
 - (void)startLoading {
     NSMutableURLRequest *mutableReqeust = [self.request mutableCopy];
-    //给我们处理过的请求设置一个标识符, 防止无限循环.
+    //给处理过的请求设置一个标识符, 防止无限循环.
     [NSURLProtocol setProperty:@YES forKey:kURLHasHandle inRequest:mutableReqeust];
     
     NSURL *url = self.request.URL;
@@ -126,7 +124,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
 - (void)hook_apihelper_assdk_toHttp:(NSString *)originPath {
     NSString *pre = @"http://apihelper/assdk?t=";
     NSString *paramsStr = [originPath substringFromIndex:pre.length];
-    NSLog(@"[SYNC]==>: %@", paramsStr);
+    NSLog(@"[SYNC]<==: %@", paramsStr);
     NSDictionary *data = [paramsStr jsonValueDecoded];
     
     WAAppTaskMgr *appTaskMgr = [[MMContext currentContext] getService:WAAppTaskMgr.class];
@@ -147,7 +145,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
 
 - (void)hook_WAAppURLScheme:(NSString *)originPath {
     NSString *appId = [NSURL URLWithString:originPath].host;
-    NSString *formatFilePath = [WAFileMgr searchFileInApp:originPath appId:appId];
+    NSString *formatFilePath = [WAConfigMgr searchFileInApp:originPath appId:appId];
     [self loadLocalFile:[NSURL fileURLWithPath:formatFilePath]];
 }
 
@@ -184,7 +182,7 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
 }
 
 - (void)loadLocalFile:(NSURL *)url {
-    NSString *MIMEType = [WAUIKitUtil MIMETypeForLocalFilePath:url.path];
+    NSString *MIMEType = [WAUtility MIMETypeForLocalFilePath:url.path];
     
     @weakify(self);
     void(^successBlock)(NSData *data) = ^(NSData *data){
@@ -225,17 +223,9 @@ static NSString* const kURLHasHandle = @"URLHasHandle";
     }];
 }
 
-- (NSString *)_appIdFromUserAgent:(NSString *)userAgent {
-    NSArray *items = [userAgent componentsSeparatedByString:@" "];
-    NSString *regex = @"cg_oauth_client_id/.+";
-    NSPredicate *pre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
-    NSString *appId = [items filteredArrayUsingPredicate:pre].firstObject;
-    return [[appId componentsSeparatedByString:@"/"] lastObject];
-}
-
 - (void)_httpCallback:(NSDictionary *)dict {
     NSString *dataStr = [dict jsonStringEncoded];
-    NSLog(@"[SYNC]<==: %@", dataStr);
+    NSLog(@"[SYNC]==>: %@", dataStr);
     NSData *data = [dict modelToJSONData];
     NSDictionary *header =
     @{@"Access-Control-Allow-Origin": @"*",
