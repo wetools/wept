@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isPortraitOrientationApp;
 
+- (BOOL)isInTabbarItems:(NSString *)pagePath;
+
 @end
 
 NS_ASSUME_NONNULL_END

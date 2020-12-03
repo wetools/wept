@@ -92,13 +92,6 @@
     if (tasks.count > [self maxTaskRunningCount]) {
         [self closeTask:tasks[0] reason:WAAppTaskCloseReason_ExceedMaxConcurrentCountTask];
     }
-    
-    //test
-//    tasks = [[self allTaskArray] filteredArrayUsingPredicate:pred];
-//    NSLog(@"-----");
-//    for (WAAppTask *task in tasks) {
-//        NSLog(@"appId: %@, appLaunchTimeInMs:%llu", task.appId, task.appLaunchTimeInMs);
-//    }
 }
 
 #pragma mark -

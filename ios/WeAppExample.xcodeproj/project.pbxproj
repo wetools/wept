@@ -11,6 +11,10 @@
 		095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */; };
 		095E7F8C2566710E000039AD /* WAJSEventHandler_getNetworkType.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */; };
 		095E7F9025667DE0000039AD /* miniprogram.zip in Resources */ = {isa = PBXBuildFile; fileRef = 095E7F8F25667DE0000039AD /* miniprogram.zip */; };
+		098E06222578851A00182195 /* WATabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E06212578851A00182195 /* WATabbarController.m */; };
+		098E06272578856500182195 /* WeAppCustomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E06262578856500182195 /* WeAppCustomTabbar.m */; };
+		098E062C25788DC100182195 /* WeAppCustomTabbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E062B25788DC100182195 /* WeAppCustomTabbarItem.m */; };
+		098E06322578D1D400182195 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E06302578D1D400182195 /* WANavigationController.m */; };
 		09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */; };
 		09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E642256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m */; };
 		09C2E64F25650853003EA2D6 /* WAJSCoreService.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C2E64D25650853003EA2D6 /* WAJSCoreService.m */; };
@@ -30,6 +34,7 @@
 		09C502322570AC14001C992A /* WAAppBundleUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C502312570AC14001C992A /* WAAppBundleUtility.m */; };
 		09C502362570B0D5001C992A /* WACapsuleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C502352570B0D5001C992A /* WACapsuleView.m */; };
 		09C5023A2570B779001C992A /* WAWebViewMutiFuncMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C502392570B779001C992A /* WAWebViewMutiFuncMenuView.m */; };
+		09C5023F25710928001C992A /* WAJSEventHandler_navigateTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C5023E25710928001C992A /* WAJSEventHandler_navigateTo.m */; };
 		09DB4C842562175B0037A656 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C832562175B0037A656 /* AppDelegate.m */; };
 		09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C862562175B0037A656 /* SceneDelegate.m */; };
 		09DB4C8A2562175B0037A656 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09DB4C892562175B0037A656 /* ViewController.m */; };
@@ -63,6 +68,16 @@
 		095E7F8A2566710E000039AD /* WAJSEventHandler_getNetworkType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_getNetworkType.h; sourceTree = "<group>"; };
 		095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_getNetworkType.m; sourceTree = "<group>"; };
 		095E7F8F25667DE0000039AD /* miniprogram.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = miniprogram.zip; sourceTree = "<group>"; };
+		098E06202578851A00182195 /* WATabbarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WATabbarController.h; sourceTree = "<group>"; };
+		098E06212578851A00182195 /* WATabbarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WATabbarController.m; sourceTree = "<group>"; };
+		098E06252578856500182195 /* WeAppCustomTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeAppCustomTabbar.h; sourceTree = "<group>"; };
+		098E06262578856500182195 /* WeAppCustomTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeAppCustomTabbar.m; sourceTree = "<group>"; };
+		098E062925788D6200182195 /* WeAppCustomTabbarDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WeAppCustomTabbarDelegate-Protocol.h"; sourceTree = "<group>"; };
+		098E062A25788DC100182195 /* WeAppCustomTabbarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeAppCustomTabbarItem.h; sourceTree = "<group>"; };
+		098E062B25788DC100182195 /* WeAppCustomTabbarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeAppCustomTabbarItem.m; sourceTree = "<group>"; };
+		098E06302578D1D400182195 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
+		098E06312578D1D400182195 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
+		098E06332578E38700182195 /* WAPageRouteDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WAPageRouteDelegate-Protocol.h"; sourceTree = "<group>"; };
 		09C2E63E2564D4BB003EA2D6 /* WAMsgHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAMsgHandler.h; sourceTree = "<group>"; };
 		09C2E63F2564D4BB003EA2D6 /* WAMsgHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAMsgHandler.m; sourceTree = "<group>"; };
 		09C2E641256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PSWebSocketDriver+FixSecWebsocketProtocol.h"; sourceTree = "<group>"; };
@@ -105,6 +120,8 @@
 		09C502392570B779001C992A /* WAWebViewMutiFuncMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAWebViewMutiFuncMenuView.m; sourceTree = "<group>"; };
 		09C5023B2570D4A6001C992A /* WAWebViewMutiFuncMenuViewDataSource-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WAWebViewMutiFuncMenuViewDataSource-Protocol.h"; sourceTree = "<group>"; };
 		09C5023C2570FCF5001C992A /* WACapsuleMenuDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WACapsuleMenuDelegate-Protocol.h"; sourceTree = "<group>"; };
+		09C5023D25710928001C992A /* WAJSEventHandler_navigateTo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAJSEventHandler_navigateTo.h; sourceTree = "<group>"; };
+		09C5023E25710928001C992A /* WAJSEventHandler_navigateTo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_navigateTo.m; sourceTree = "<group>"; };
 		09DB4C7F2562175B0037A656 /* WeAppExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeAppExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09DB4C822562175B0037A656 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		09DB4C832562175B0037A656 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -167,6 +184,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		098E06232578853600182195 /* WAWebViewMutiFuncMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				09C5023B2570D4A6001C992A /* WAWebViewMutiFuncMenuViewDataSource-Protocol.h */,
+				09C502372570B57B001C992A /* WAWebViewMutiFuncMenuViewDelegate-Protocol.h */,
+				09C502382570B779001C992A /* WAWebViewMutiFuncMenuView.h */,
+				09C502392570B779001C992A /* WAWebViewMutiFuncMenuView.m */,
+			);
+			path = WAWebViewMutiFuncMenuView;
+			sourceTree = "<group>";
+		};
+		098E06242578854500182195 /* WACapsuleView */ = {
+			isa = PBXGroup;
+			children = (
+				09C5023C2570FCF5001C992A /* WACapsuleMenuDelegate-Protocol.h */,
+				09C502342570B0D5001C992A /* WACapsuleView.h */,
+				09C502352570B0D5001C992A /* WACapsuleView.m */,
+			);
+			path = WACapsuleView;
+			sourceTree = "<group>";
+		};
+		098E06282578856C00182195 /* WeAppCustomTabbar */ = {
+			isa = PBXGroup;
+			children = (
+				098E06252578856500182195 /* WeAppCustomTabbar.h */,
+				098E06262578856500182195 /* WeAppCustomTabbar.m */,
+				098E062A25788DC100182195 /* WeAppCustomTabbarItem.h */,
+				098E062B25788DC100182195 /* WeAppCustomTabbarItem.m */,
+				098E062925788D6200182195 /* WeAppCustomTabbarDelegate-Protocol.h */,
+			);
+			path = WeAppCustomTabbar;
+			sourceTree = "<group>";
+		};
 		09C2E64C25650853003EA2D6 /* WAJSCoreService */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +237,8 @@
 				095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */,
 				095E7F8A2566710E000039AD /* WAJSEventHandler_getNetworkType.h */,
 				095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */,
+				09C5023D25710928001C992A /* WAJSEventHandler_navigateTo.h */,
+				09C5023E25710928001C992A /* WAJSEventHandler_navigateTo.m */,
 			);
 			path = WAJSEventHandler;
 			sourceTree = "<group>";
@@ -205,10 +257,14 @@
 		09C5021F256F96F6001C992A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				098E06312578D1D400182195 /* WANavigationController.h */,
+				098E06302578D1D400182195 /* WANavigationController.m */,
 				09C5021A256F9570001C992A /* WABaseViewController.h */,
 				09C5021C256F9570001C992A /* WABaseViewController.m */,
 				09C5021B256F9570001C992A /* WAWebViewController.h */,
 				09C50218256F956F001C992A /* WAWebViewController.m */,
+				098E06202578851A00182195 /* WATabbarController.h */,
+				098E06212578851A00182195 /* WATabbarController.m */,
 				09C50219256F956F001C992A /* WAWebViewDelegate-Protocol.h */,
 			);
 			path = Controller;
@@ -228,13 +284,9 @@
 		09C502332570B0B8001C992A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				09C5023B2570D4A6001C992A /* WAWebViewMutiFuncMenuViewDataSource-Protocol.h */,
-				09C502372570B57B001C992A /* WAWebViewMutiFuncMenuViewDelegate-Protocol.h */,
-				09C5023C2570FCF5001C992A /* WACapsuleMenuDelegate-Protocol.h */,
-				09C502382570B779001C992A /* WAWebViewMutiFuncMenuView.h */,
-				09C502392570B779001C992A /* WAWebViewMutiFuncMenuView.m */,
-				09C502342570B0D5001C992A /* WACapsuleView.h */,
-				09C502352570B0D5001C992A /* WACapsuleView.m */,
+				098E06282578856C00182195 /* WeAppCustomTabbar */,
+				098E06242578854500182195 /* WACapsuleView */,
+				098E06232578853600182195 /* WAWebViewMutiFuncMenuView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -370,6 +422,7 @@
 				09C50217256F9558001C992A /* Style */,
 				09C5021F256F96F6001C992A /* Controller */,
 				09C502332570B0B8001C992A /* View */,
+				098E06332578E38700182195 /* WAPageRouteDelegate-Protocol.h */,
 				09C5020E256F8E8A001C992A /* WAGlobalConfig.h */,
 				09C5020F256F8E8A001C992A /* WAGlobalConfig.m */,
 				09C50208256F4ED4001C992A /* WAWebViewPageMgr.h */,
@@ -553,6 +606,7 @@
 				09C2E65225651A69003EA2D6 /* WAWebSocketMgr.m in Sources */,
 				095E7F8C2566710E000039AD /* WAJSEventHandler_getNetworkType.m in Sources */,
 				09C2E65D25666100003EA2D6 /* WAJSEventHandler_getSystemInfo.m in Sources */,
+				09C5023F25710928001C992A /* WAJSEventHandler_navigateTo.m in Sources */,
 				09DB501D256386E00037A656 /* NSURLProtocol+WebKitSupport.m in Sources */,
 				09C2E65A25661F5C003EA2D6 /* WAAppURLProtocol.m in Sources */,
 				09C2E643256500B8003EA2D6 /* PSWebSocketDriver+FixSecWebsocketProtocol.m in Sources */,
@@ -568,12 +622,16 @@
 				095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */,
 				09DB4CF1256284900037A656 /* MMService.m in Sources */,
 				09DB50432564C6030037A656 /* WASocketClient.m in Sources */,
+				098E062C25788DC100182195 /* WeAppCustomTabbarItem.m in Sources */,
+				098E06322578D1D400182195 /* WANavigationController.m in Sources */,
 				09DB50322563ACB50037A656 /* MMContext.m in Sources */,
 				09C5021E256F9570001C992A /* WABaseViewController.m in Sources */,
 				09C5023A2570B779001C992A /* WAWebViewMutiFuncMenuView.m in Sources */,
 				09DB502F2563AC870037A656 /* WAConfigMgr.m in Sources */,
 				09DB4C872562175B0037A656 /* SceneDelegate.m in Sources */,
+				098E06272578856500182195 /* WeAppCustomTabbar.m in Sources */,
 				09C50222256F9D05001C992A /* WAPageDataGenerator.m in Sources */,
+				098E06222578851A00182195 /* WATabbarController.m in Sources */,
 				09C2E6402564D4BB003EA2D6 /* WAMsgHandler.m in Sources */,
 				09C2E65625652C86003EA2D6 /* WAJSEventHandler_BaseEvent.m in Sources */,
 			);

@@ -7,6 +7,7 @@
 //
 
 #import "WAAppPreloader.h"
+#import "WAUtility.h"
 #import "WAError.h"
 #import "WAConfigMgr.h"
 #import "MMContext.h"
@@ -68,14 +69,24 @@
 }
 
 - (void)firstLoadApp:(WAAppOpenParameter *)openParameter taskExtInfo:(WAAppTaskExtInfo *)taskExtInfo handlerWrapper:(WAAppTaskHandlerWrapper *)handlerWrapper {
+    
+    //TODO: loading
+    UIViewController *loadingView = [[UIViewController alloc] init];
+    WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:loadingView];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
+    openParameter.m_navigationController = nav;
+    
     WAAppPreloaderTask *task = [[WAAppPreloaderTask alloc] init];
     task.m_openInfo = openParameter;
     task.m_taskExtInfo = taskExtInfo;
     task.m_handlerWrapper = handlerWrapper;
     [self.m_preloaderTasks addObject:task];
     
-    BOOL isPackageReady = [WAConfigMgr WAAppIsPackageExists:openParameter.m_nsAppId];
+    NSString *appId = openParameter.m_nsAppId;
+    BOOL isPackageReady = [WAConfigMgr WAAppIsPackageExists:appId] || [WAConfigMgr WAAppUnZip:appId];
     if (isPackageReady) {
+        [WAConfigMgr WAAppUnZip:openParameter.m_nsAppId];
         [self finalyOpenApp:task];
         return;
     }

@@ -95,9 +95,8 @@ static NSString *kWAFileDir_usr         = @"usr";
 
 + (BOOL)WAAppIsPackageExists:(NSString *)appId {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *appZipPath = [self WAAppZipPath:appId];
     NSString *pkgDir = [self WAAppPkgDir:appId];
-    if ([fileManager fileExistsAtPath:pkgDir] || [fileManager fileExistsAtPath:appZipPath]) {
+    if ([fileManager fileExistsAtPath:pkgDir]) {
         return YES;
     }
     return NO;

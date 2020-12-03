@@ -28,4 +28,20 @@
     return !self.deviceOrientation || [self.deviceOrientation isEqualToString:@"portrait"];
 }
 
+- (BOOL)isInTabbarItems:(NSString *)targetPage {
+    if (!targetPage) return NO;
+    
+    NSDictionary *tabbar = self.tabBar;
+    BOOL isTabPage = tabbar && [tabbar[@"list"] count] > 0;
+    if (!isTabPage) return NO;
+    
+    for (NSDictionary *item in tabbar[@"list"]) {
+        NSString *itemPagePath = item[@"pagePath"];
+        if ([WAUtility isEquelPagePath1:itemPagePath withPagePath2:targetPage isCheckQuery:NO]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end
