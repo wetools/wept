@@ -70,3 +70,23 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+
+
+#define kIsPad ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+
+#define kIsIPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+
+#define kIsIOS11  ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.f)
+
+#define kIsIPhone_XSeries (kIsIOS11 && kIsIPhone && (MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) >= 375 && MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) >= 812))
+
+#define kStatusBarHeight            (kIsIPhone_XSeries ? 44.0 : 20.0)
+
+#define kSafeTopHeight              (kIsIPhone_XSeries ? 24.f : 0)
+#define kDefaultNavigationBarHeight (64.f)
+#define kSafeNavigationBarHeight    (kSafeTopHeight + kDefaultNavigationBarHeight)
+
+#define kSafeBottomHeight           (kIsIPhone_XSeries ? 34.f : 0)
+#define kDefaultTabbarHeight        (49.f)
+#define kSafeTabbarHeight           (kSafeBottomHeight + kDefaultTabbarHeight)

@@ -2,7 +2,7 @@
 //  WACapsuleMenuDelegate-Protocol.h
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/11/27.
+//  Created by lionvoom on 2020/11/27.
 //  Copyright © 2020 wept. All rights reserved.
 //
 

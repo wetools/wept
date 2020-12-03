@@ -53,7 +53,7 @@
         model.pagePath = itemStyle.pagePath;
         model.openType = itemStyle.isDefaultPath ? openType : @"switchTab";
         model.pageStyle = [self genPageStyleWithPagePath:itemStyle.pagePath appTask:appTask];
-        model.isTabBarVC = YES;
+        model.isTabbarVC = YES;
         model.pageId = itemStyle.isDefaultPath ? defaultPathWebViewId : (++appTask.baseWebViewId);
         [pageModels addObject:model];
     }

@@ -7,6 +7,7 @@
 //
 
 #import "WANavigationController.h"
+#import "WAAppTask.h"
 
 @implementation WANavigationController
 
