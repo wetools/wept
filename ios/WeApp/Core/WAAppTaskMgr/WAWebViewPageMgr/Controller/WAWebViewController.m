@@ -30,13 +30,36 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.appTask webViewDidLoad:self];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = UIColor.whiteColor;
     [self setupWebView];
     [self setupMenuView];
     [self setupCapsuleView];
     [self updateNavView];
+    [self.view layoutIfNeeded];
     [self loadWebViewContent];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.appTask webViewDidAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (!self.pageModel.backType) {
+        self.pageModel.backType = @"navigateBack";
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.appTask webViewDidDisappear:self];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -82,6 +105,8 @@
 - (void)setupMenuView {
     if (![self.pageModel.pageStyle navigationStyleDefault]) return;
     self.menuView = [[WAWebViewMutiFuncMenuView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 64)];
+    self.menuView.delegate = (id<WAWebViewMutiFuncMenuViewDelegate>)self.appTask.pageMgr;
+    self.menuView.dataSource = (id<WAWebViewMutiFuncMenuViewDataSource>)self.appTask.pageMgr;
     [self.view addSubview:self.menuView];
 }
 
@@ -150,7 +175,7 @@
     UIColor *textColor = [style.navigationBarTextStyle isEqualToString:@"white"] ? UIColor.whiteColor : UIColor.blackColor;
     [self.menuView setMenuNavTitle:style.navigationBarTitleText];
     [self.menuView setMenuNavTitleColor:textColor];
-    [self.menuView setLeftBtnHidden:YES];
+    [self.menuView setLeftBtnHidden:[self.appTask.pageMgr stackPagesCount] == 1];
 }
 
 - (void)setNavLoading:(BOOL)loading {

@@ -63,21 +63,12 @@
 }
 
 - (void)setupPageMgr {
-    self.pageMgr = [[WAWebViewPageMgr alloc] init];
-}
-
-- (void)setupEntrancePage {
-    WAWebViewController *page = [[WAWebViewController alloc] init];
-    WAWebViewPageData *pageData = [WAPageDataGenerator genSinglePageWithOpenType:@"appLaunch" pagePath:self.appGlobalConfig.appLaunchInfo.path appTask:self];
-    page.appTask = self;
-    page.pageModel = pageData;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:page];
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    self.pageMgr.navigationController = nav;
-    [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
+    self.pageMgr = [[WAWebViewPageMgr alloc] initWithAppTask:self];
     
-    NSDictionary *msg = [WAMsgGenerator onAppRoute:page.pageModel.pageId path:page.pageModel.pagePath query:page.pageModel.query openType:@"appLaunch" scene:1001];
-    [self.socketServer sendMessageToService:msg];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.pageMgr.navigationController = (WANavigationController *)self.taskOpenInfo.m_navigationController;
+        [self.pageMgr launchHome];
+    });
 }
 
 - (void)resetTask {
@@ -118,9 +109,6 @@
         }
         [self setupService];
         [self setupPageMgr];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setupEntrancePage];
-        });
     }];
     completionHandler(nil);
 }
@@ -149,6 +137,30 @@
 - (void)onMenuExit {
     WAAppTaskMgr *appTaskManager = [[MMContext currentContext] getService:WAAppTaskMgr.class];
     [appTaskManager closeTask:self reason:0];
+}
+
+#pragma mark - WAWebViewDelegate
+- (void)webViewDidLoad:(WAWebViewController *)vc {
+    
+}
+
+- (void)webViewDidDisappear:(WAWebViewController *)vc {
+    
+}
+
+- (void)webViewDidAppear:(WAWebViewController *)vc {
+    WAWebViewPageData *model = vc.pageModel;
+    NSDictionary *msg = [WAMsgGenerator onAppRoute:model.pageId path:model.pagePath query:model.query openType:model.backType scene:0];
+    if (msg) [self.socketServer sendMessageToService:msg];
+    
+    NSDictionary *msg2 = [WAMsgGenerator onAppRouteDone:model.pageId path:model.pagePath query:model.query openType:model.backType];
+    if (msg) [self.socketServer sendMessageToService:msg2];
+}
+
+- (void)webviewDidManuallyTerminated:(WAWebViewController *)vc {
+}
+
+- (void)webViewDidTerminateInContentProcess:(WAWebViewController *)vc {
 }
 
 @end

@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class WAAppTask;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WANavigationController : UINavigationController
-
+@property (nonatomic, weak) WAAppTask *appTask;
 @end
 
 NS_ASSUME_NONNULL_END

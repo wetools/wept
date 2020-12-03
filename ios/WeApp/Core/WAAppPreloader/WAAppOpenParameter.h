@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WAAppOpenParameter : NSObject
 @property(nonatomic, weak) UINavigationController *m_navigationController;
-@property(nonatomic, copy) NSDictionary *m_nsExtraParamInfo;
-@property(nonatomic, copy) NSString *m_nsPagePath;
 @property(nonatomic, copy) NSString *m_nsAppId;
 @property(nonatomic, copy) NSString *m_nsAppName;
 @property(nonatomic, copy) NSString *m_nsUserName;
 @property(nonatomic, assign) BOOL m_isGameApp;
+@property(nonatomic, copy, nullable) NSDictionary *m_nsExtraParamInfo;
+@property(nonatomic, copy, nullable) NSString *m_nsPagePath;
 @end
 
 NS_ASSUME_NONNULL_END

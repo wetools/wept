@@ -7,15 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WANavigationController.h"
 #import "WAWebViewController.h"
+#import "WAPageRouteDelegate-Protocol.h"
+
+@class WAAppTask;
+@class WANavigationController;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WAWebViewPageMgr : NSObject
+@interface WAWebViewPageMgr : NSObject <WAPageRouteDelegate>
 @property (nonatomic, weak) WAAppTask *appTask;
-@property(nonatomic, strong) UINavigationController *navigationController;
+@property(nonatomic, strong) WANavigationController *navigationController;
 
 - (instancetype)initWithAppTask:(WAAppTask *)appTask;
+
+- (NSUInteger)stackPagesCount;
 
 - (void)popAllWebViewPage;
 
