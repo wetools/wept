@@ -11,7 +11,7 @@
 #import "WAConfigMgr.h"
 #import "WAAppPreloader.h"
 
-static NSString *kDemoAppId = @"weapp-demo";
+static NSString *kDemoAppId = @"miniprogram";
 
 @implementation ViewController
 
@@ -30,8 +30,15 @@ static NSString *kDemoAppId = @"weapp-demo";
     parameter.m_nsAppId = kDemoAppId;
     parameter.m_nsUserName = @"wept-user";
 
+    WAAppTaskHandlerWrapper *handlerWrapper = [[WAAppTaskHandlerWrapper alloc] init];
+    handlerWrapper.completionHandler = ^(NSError * _Nonnull error) {
+        if (error) {
+            NSAssert(NO, error.localizedDescription);
+        }
+    };
+    
     WAAppPreloader *preloader = [[MMContext currentContext] getService:WAAppPreloader.class];
-    [preloader openApp:parameter taskExtInfo:nil handlerWrapper:nil];
+    [preloader openApp:parameter taskExtInfo:nil handlerWrapper:handlerWrapper];
 }
 
 @end
