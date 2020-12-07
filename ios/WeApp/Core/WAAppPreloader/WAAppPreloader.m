@@ -72,6 +72,7 @@
     
     //TODO: loading
     UIViewController *loadingView = [[UIViewController alloc] init];
+    loadingView.view.backgroundColor = UIColor.whiteColor;
     WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:loadingView];
     nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
@@ -86,12 +87,27 @@
     NSString *appId = openParameter.m_nsAppId;
     BOOL isPackageReady = [WAConfigMgr WAAppIsPackageExists:appId] || [WAConfigMgr WAAppUnZip:appId];
     if (isPackageReady) {
-        [WAConfigMgr WAAppUnZip:openParameter.m_nsAppId];
-        [self finalyOpenApp:task];
+        [self checkValidAndEnterApp:task];
         return;
     }
     
     //TODO: 预留:下载`小程序包`
+}
+
+
+
+- (void)checkValidAndEnterApp:(WAAppPreloaderTask *)preloaderTask {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *appId = preloaderTask.m_openInfo.m_nsAppId;
+        NSError *error;
+        if (![WAConfigMgr WAAppCheckPackageValid:appId error:&error]) {
+            if (preloaderTask.m_handlerWrapper.completionHandler) preloaderTask.m_handlerWrapper.completionHandler(error);
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self finalyOpenApp:preloaderTask];
+        });
+    });
 }
 
 - (void)finalyOpenApp:(WAAppPreloaderTask *)preloaderTask {
