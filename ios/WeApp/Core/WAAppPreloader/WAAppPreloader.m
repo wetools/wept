@@ -12,6 +12,7 @@
 #import "WAConfigMgr.h"
 #import "MMContext.h"
 #import "WAAppTaskMgr.h"
+#import "WAAppLaunchController.h"
 
 @interface WAAppPreloaderTask : NSObject
 @property(nonatomic, strong) WAAppOpenParameter *m_openInfo;
@@ -70,20 +71,14 @@
 
 - (void)firstLoadApp:(WAAppOpenParameter *)openParameter taskExtInfo:(WAAppTaskExtInfo *)taskExtInfo handlerWrapper:(WAAppTaskHandlerWrapper *)handlerWrapper {
     
-    //TODO: loading
-    UIViewController *loadingView = [[UIViewController alloc] init];
-    loadingView.view.backgroundColor = UIColor.whiteColor;
-    WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:loadingView];
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
-    openParameter.m_navigationController = nav;
+    [self showLaunchVC:openParameter];
     
     WAAppPreloaderTask *task = [[WAAppPreloaderTask alloc] init];
     task.m_openInfo = openParameter;
     task.m_taskExtInfo = taskExtInfo;
     task.m_handlerWrapper = handlerWrapper;
     [self.m_preloaderTasks addObject:task];
-    
+
     NSString *appId = openParameter.m_nsAppId;
     BOOL isPackageReady = [WAConfigMgr WAAppIsPackageExists:appId] || [WAConfigMgr WAAppUnZip:appId];
     if (isPackageReady) {
@@ -94,7 +89,15 @@
     //TODO: 预留:下载`小程序包`
 }
 
-
+- (void)showLaunchVC:(WAAppOpenParameter *)openParameter {
+    WAAppLaunchController *launchVC = [[WAAppLaunchController alloc] init];
+    launchVC.view.backgroundColor = UIColor.whiteColor;
+    [launchVC startLoading:@"" title:openParameter.m_nsAppName];
+    WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:launchVC];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    [[WAUtility getCurrentVC] presentViewController:nav animated:YES completion:nil];
+    openParameter.m_navigationController = nav;
+}
 
 - (void)checkValidAndEnterApp:(WAAppPreloaderTask *)preloaderTask {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

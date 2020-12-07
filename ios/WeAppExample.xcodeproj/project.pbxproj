@@ -11,6 +11,7 @@
 		095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F88256670FC000039AD /* WAJSEventHandler_getClipboardData.m */; };
 		095E7F8C2566710E000039AD /* WAJSEventHandler_getNetworkType.m in Sources */ = {isa = PBXBuildFile; fileRef = 095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */; };
 		095E7F9025667DE0000039AD /* miniprogram.zip in Resources */ = {isa = PBXBuildFile; fileRef = 095E7F8F25667DE0000039AD /* miniprogram.zip */; };
+		098B3B75257E18F300975904 /* WAAppLaunchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B3B74257E18F300975904 /* WAAppLaunchController.m */; };
 		098E06222578851A00182195 /* WATabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E06212578851A00182195 /* WATabbarController.m */; };
 		098E06272578856500182195 /* WeAppCustomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E06262578856500182195 /* WeAppCustomTabbar.m */; };
 		098E062C25788DC100182195 /* WeAppCustomTabbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098E062B25788DC100182195 /* WeAppCustomTabbarItem.m */; };
@@ -69,6 +70,8 @@
 		095E7F8B2566710E000039AD /* WAJSEventHandler_getNetworkType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAJSEventHandler_getNetworkType.m; sourceTree = "<group>"; };
 		095E7F8F25667DE0000039AD /* miniprogram.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = miniprogram.zip; sourceTree = "<group>"; };
 		098B3B72257DD4C400975904 /* WATabbarControllerDelegate-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WATabbarControllerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		098B3B73257E18F300975904 /* WAAppLaunchController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppLaunchController.h; sourceTree = "<group>"; };
+		098B3B74257E18F300975904 /* WAAppLaunchController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppLaunchController.m; sourceTree = "<group>"; };
 		098E06202578851A00182195 /* WATabbarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WATabbarController.h; sourceTree = "<group>"; };
 		098E06212578851A00182195 /* WATabbarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WATabbarController.m; sourceTree = "<group>"; };
 		098E06252578856500182195 /* WeAppCustomTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeAppCustomTabbar.h; sourceTree = "<group>"; };
@@ -268,6 +271,8 @@
 				098B3B72257DD4C400975904 /* WATabbarControllerDelegate-Protocol.h */,
 				098E06202578851A00182195 /* WATabbarController.h */,
 				098E06212578851A00182195 /* WATabbarController.m */,
+				098B3B73257E18F300975904 /* WAAppLaunchController.h */,
+				098B3B74257E18F300975904 /* WAAppLaunchController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -623,6 +628,7 @@
 				09C50216256F901C001C992A /* WATabbarStyle.m in Sources */,
 				095E7F89256670FC000039AD /* WAJSEventHandler_getClipboardData.m in Sources */,
 				09DB4CF1256284900037A656 /* MMService.m in Sources */,
+				098B3B75257E18F300975904 /* WAAppLaunchController.m in Sources */,
 				09DB50432564C6030037A656 /* WASocketClient.m in Sources */,
 				098E062C25788DC100182195 /* WeAppCustomTabbarItem.m in Sources */,
 				098E06322578D1D400182195 /* WANavigationController.m in Sources */,

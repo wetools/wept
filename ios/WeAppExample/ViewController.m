@@ -29,6 +29,7 @@ static NSString *kDemoAppId = @"miniprogram";
     WAAppOpenParameter *parameter = [[WAAppOpenParameter alloc] init];
     parameter.m_nsAppId = kDemoAppId;
     parameter.m_nsUserName = @"wept-user";
+    parameter.m_nsAppName = @"小程序demo";
 
     WAAppTaskHandlerWrapper *handlerWrapper = [[WAAppTaskHandlerWrapper alloc] init];
     handlerWrapper.completionHandler = ^(NSError * _Nonnull error) {
@@ -40,5 +41,7 @@ static NSString *kDemoAppId = @"miniprogram";
     WAAppPreloader *preloader = [[MMContext currentContext] getService:WAAppPreloader.class];
     [preloader openApp:parameter taskExtInfo:nil handlerWrapper:handlerWrapper];
 }
+
+
 
 @end
