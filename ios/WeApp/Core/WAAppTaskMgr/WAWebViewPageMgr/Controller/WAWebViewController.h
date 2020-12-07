@@ -7,11 +7,14 @@
 //
 
 #import "WABaseViewController.h"
+#import "WAWebViewDelegate-Protocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WAWebViewController : WABaseViewController
-
+@property (nonatomic, weak) id<WAWebViewDelegate> delegate;
+@property (nonatomic, assign) BOOL viewDidLoadFlag;
+@property (nonatomic, assign) BOOL firstTimeViewDidAppear;
 @end
 
 NS_ASSUME_NONNULL_END

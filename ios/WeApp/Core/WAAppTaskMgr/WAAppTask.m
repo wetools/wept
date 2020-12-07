@@ -139,28 +139,4 @@
     [appTaskManager closeTask:self reason:0];
 }
 
-#pragma mark - WAWebViewDelegate
-- (void)webViewDidLoad:(WAWebViewController *)vc {
-    
-}
-
-- (void)webViewDidDisappear:(WAWebViewController *)vc {
-    
-}
-
-- (void)webViewDidAppear:(WAWebViewController *)vc {
-    WAWebViewPageData *model = vc.pageModel;
-    NSDictionary *msg = [WAMsgGenerator onAppRoute:model.pageId path:model.pagePath query:model.query openType:model.backType scene:0];
-    if (msg) [self.socketServer sendMessageToService:msg];
-    
-    NSDictionary *msg2 = [WAMsgGenerator onAppRouteDone:model.pageId path:model.pagePath query:model.query openType:model.backType];
-    if (msg) [self.socketServer sendMessageToService:msg2];
-}
-
-- (void)webviewDidManuallyTerminated:(WAWebViewController *)vc {
-}
-
-- (void)webViewDidTerminateInContentProcess:(WAWebViewController *)vc {
-}
-
 @end

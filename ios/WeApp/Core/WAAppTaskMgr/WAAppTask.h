@@ -15,11 +15,10 @@
 #import "WAWebViewPageMgr.h"
 #import "WAGlobalConfig.h"
 #import "WACapsuleMenuDelegate-Protocol.h"
-#import "WAWebViewDelegate-Protocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WAAppTask : NSObject <WACapsuleMenuDelegate, WAWebViewDelegate>
+@interface WAAppTask : NSObject <WACapsuleMenuDelegate>
 @property(readonly) NSString *appId;
 @property(readonly) BOOL isGameApp;
 @property(readonly) NSString *instanceId;

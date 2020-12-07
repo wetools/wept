@@ -27,8 +27,10 @@
 - (void)setSelected:(BOOL)selected {
     super.selected = selected;
     self.titleLabel.textColor = selected ? self.selectedColor : self.normalColor;
-    UIImage *normalImage = [UIImage imageWithContentsOfFile:self.itemStyle.iconURL];
-    UIImage *selectedImage = [UIImage imageWithContentsOfFile:self.itemStyle.selectedIconURL];
+    UIImage *normalImagePlaceholder = [UIImage imageWithColor:UIColor.lightGrayColor size:CGSizeMake(20, 20)];
+    UIImage *selectedImagePlaceholder = [UIImage imageWithColor:UIColorHex(0x3CB371) size:CGSizeMake(20, 20)];
+    UIImage *normalImage = [UIImage imageWithContentsOfFile:self.itemStyle.iconURL] ?: normalImagePlaceholder;
+    UIImage *selectedImage = [UIImage imageWithContentsOfFile:self.itemStyle.selectedIconURL] ?: selectedImagePlaceholder;
     self.iconView.image = selected ? selectedImage : normalImage;
 }
 

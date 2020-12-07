@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WAWebViewController.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class WAWebViewController;
 
 @protocol WAWebViewDelegate <NSObject>
 
@@ -18,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)webViewDidDisappear:(WAWebViewController *)vc;
 
 - (void)webViewDidAppear:(WAWebViewController *)vc;
+
+- (void)webViewContentDidFinished:(WAWebViewController *)vc;
+
+- (void)webViewContentDidFail:(WAWebViewController *)vc withError:(NSError *)error;
 
 - (void)webviewDidManuallyTerminated:(WAWebViewController *)vc;
 
