@@ -30,8 +30,14 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 ## 浏览器效果预览
 ![weptwdeb](https://applet-doc.oss-cn-zhangjiakou.aliyuncs.com/jingo/weptweb.gif)
 
-## 安装 & 使用方法
 
+
+## IOS效果预览
+
+![weptios](https://applet-doc.oss-cn-zhangjiakou.aliyuncs.com/jingo/weptios.gif)
+
+## 安装 & 使用方法
+### Web
 
     npm i wept -g
 
@@ -42,6 +48,16 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
     cd case && wept
 
 使用 Chrome 访问 `http://localhost:3000` 打开开发者工具后启用移动页面调试模式（Mac 下快捷键为 `⌘ ⇧ M`）
+
+
+### iOS
+```js
+cd ios
+```
+
+```js
+pod install
+```
 
 ## 感谢
 
