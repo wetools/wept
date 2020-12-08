@@ -2,7 +2,7 @@
 //  WAAppLaunchController.h
 //  WeAppExample
 //
-//  Created by wulinfeng on 2020/12/7.
+//  Created by lionvoom on 2020/12/7.
 //  Copyright © 2020 wept. All rights reserved.
 //
 

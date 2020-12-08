@@ -11,7 +11,8 @@
 @implementation WAJSEventHandler_getClipboardData
 
 - (void)handleJSEvent:(NSDictionary *)args {
-    NSDictionary *res = @{@"data": @""};
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    NSDictionary *res = @{@"data": pasteboard.string ?: @""};
     [self endWithOk:res];
 }
 
