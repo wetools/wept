@@ -15,7 +15,7 @@ WEPT 是一个微信小程序实时开发环境，它的目标是为小程序开
 
 项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。
 
-支持Ios Android Mac, Window 以及 Linux 
+支持iOS Android Mac, Window 以及 Linux 
 
 ## 文档与工具
 ### web
