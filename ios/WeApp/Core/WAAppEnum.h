@@ -14,6 +14,13 @@ static NSString * const kWAAppHookURLScheme_file    = @"file";
 static NSString * const kWAAppHookURLScheme_http    = @"http";
 static NSString * const kWAAppHookURLScheme_wxfile  = @"wxfile";
 
+static NSString * const kWAAppRoute_openType_appLaunch      = @"appLaunch";
+static NSString * const kWAAppRoute_openType_navigateTo     = @"navigateTo";
+static NSString * const kWAAppRoute_openType_navigateBack   = @"navigateBack";
+static NSString * const kWAAppRoute_openType_switchTab      = @"switchTab";
+static NSString * const kWAAppRoute_openType_redirectTo     = @"redirectTo";
+static NSString * const kWAAppRoute_openType_reLaunch       = @"reLaunch";
+
 typedef NS_ENUM(NSInteger, WAAppTaskPlatformState) {
     WAAppTaskPlatformState_Foreground       = 0,
     WAAppTaskPlatformState_Background       = 1,

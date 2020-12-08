@@ -30,7 +30,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.appTask webViewDidLoad:self];
+    self.viewDidLoadFlag = YES;
+    self.firstTimeViewDidAppear = YES;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidLoad:)]) {
+        [self.delegate webViewDidLoad:self];
+    }
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = UIColor.whiteColor;
     [self setupWebView];
@@ -47,19 +52,25 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.appTask webViewDidAppear:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidAppear:)]) {
+        [self.delegate webViewDidAppear:self];
+    }
+    if (self.firstTimeViewDidAppear) self.firstTimeViewDidAppear = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (!self.pageModel.backType) {
-        self.pageModel.backType = @"navigateBack";
+        self.pageModel.backType = kWAAppRoute_openType_navigateBack;
     }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.appTask webViewDidDisappear:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidDisappear:)]) {
+        [self.delegate webViewDidDisappear:self];
+    }
+    self.firstTimeViewDidAppear = NO;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -87,7 +98,7 @@
     self.webView.navigationDelegate = self;
     [self.view addSubview:self.self.webView];
     
-    CGFloat navHeight = [self.pageModel.pageStyle navigationStyleDefault] ? 64 : 0;
+    CGFloat navHeight = [self.pageModel.pageStyle navigationStyleDefault] ? kSafeNavigationBarHeight : 0;
     [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).mas_offset(navHeight);
         make.left.right.equalTo(self.view);
@@ -104,7 +115,7 @@
 
 - (void)setupMenuView {
     if (![self.pageModel.pageStyle navigationStyleDefault]) return;
-    self.menuView = [[WAWebViewMutiFuncMenuView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 64)];
+    self.menuView = [[WAWebViewMutiFuncMenuView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kSafeNavigationBarHeight)];
     self.menuView.delegate = (id<WAWebViewMutiFuncMenuViewDelegate>)self.appTask.pageMgr;
     self.menuView.dataSource = (id<WAWebViewMutiFuncMenuViewDataSource>)self.appTask.pageMgr;
     [self.view addSubview:self.menuView];
@@ -188,15 +199,18 @@
 
 #pragma mark - WKNavigationDelegate
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-    NSLog(@"%s", __func__);
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"%s", __func__);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewContentDidFinished:)]) {
+        [self.delegate webViewContentDidFinished:self];
+    }
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    NSLog(@"%s", __func__);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewContentDidFail:withError:)]) {
+        [self.delegate webViewContentDidFail:self withError:error];
+    }
 }
 
 @end

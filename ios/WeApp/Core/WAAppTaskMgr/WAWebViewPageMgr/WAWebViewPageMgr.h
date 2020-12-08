@@ -10,13 +10,14 @@
 #import "WANavigationController.h"
 #import "WAWebViewController.h"
 #import "WAPageRouteDelegate-Protocol.h"
+#import "WAWebViewDelegate-Protocol.h"
 
 @class WAAppTask;
 @class WANavigationController;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WAWebViewPageMgr : NSObject <WAPageRouteDelegate>
+@interface WAWebViewPageMgr : NSObject <WAPageRouteDelegate, WAWebViewDelegate>
 @property (nonatomic, weak) WAAppTask *appTask;
 @property(nonatomic, strong) WANavigationController *navigationController;
 

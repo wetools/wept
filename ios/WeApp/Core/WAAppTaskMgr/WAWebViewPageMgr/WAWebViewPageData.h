@@ -10,8 +10,6 @@
 #import "WATabbarStyle.h"
 #import "WAPageStyle.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface WAWebViewPageData : NSObject
 @property (nonatomic, assign) NSInteger pageId;
 @property (nonatomic, copy) NSString *pagePath;
@@ -22,7 +20,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *backType;
 @property (nonatomic, assign) BOOL isTabbarVC;
-@property (nonatomic, assign) BOOL isFirstDidAppear;
 @end
-
-NS_ASSUME_NONNULL_END

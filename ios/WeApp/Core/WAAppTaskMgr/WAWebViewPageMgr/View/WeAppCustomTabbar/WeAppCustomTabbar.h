@@ -14,7 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WeAppCustomTabbar : UIView
 @property(readonly) NSInteger selectedIndex;
 @property(nonatomic, weak) id<WeAppCustomTabbarDelegate> delegate;
+
 - (void)setTabbar:(WATabbarStyle *)style;
+
+- (void)selectTabbarIndex:(NSUInteger)tabbarIndex;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -13,8 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class WeAppCustomTabbar;
 
 @protocol WeAppCustomTabbarDelegate <NSObject>
+
 @optional
-- (void)tabBar:(WeAppCustomTabbar *)tabbar didSelectIndex:(NSInteger)index;
+- (void)tabBar:(WeAppCustomTabbar *)tabbar didSelectDefaultIndex:(NSInteger)index;
+
+- (void)tabBar:(WeAppCustomTabbar *)tabbar didSelectIndex:(NSInteger)index isChangedSelected:(BOOL)isChangedSelected;
+
 @end
 
 NS_ASSUME_NONNULL_END
