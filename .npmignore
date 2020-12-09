@@ -4,9 +4,6 @@ docs
 src
 test
 .gitignore
-.babelrc
-gulpfile.js
-webpack.*.js
 Makefile
 *.map
 extensions
