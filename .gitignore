@@ -5,3 +5,4 @@ node_modules/
 *.map
 .official
 *.diff
+.idea
